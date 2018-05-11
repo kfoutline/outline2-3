@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>拖拽效果</title>
+	<style>
+		html,body{padding-bottom:1000px;}
+		#hg{position:absolute;top:0;right:0;background-color:#f00;}
+
+		#box{position:absolute;left:10px;top:10px;border:2px solid #aaa;background-color:#f5f5f5;border-radius:8px;box-shadow:0 0 10px rgba(0,0,0,.5);}
+		#box h2{margin:0;padding:8px 15px;border-bottom:1px solid #ddd;}
+		#box .content{padding:15px;}
+	</style>
+	<script>
+		window.onload = function(){
+			/*
+				拖拽效果
+					1)给元素设置定位（absolute,relative,fixed）
+					2)给元素绑定onmousedown事件
+						当onmousedown事件触发后（即当鼠标按下后），给document绑定onmousemove事件
+							在onmousemove事件触发时计算top,left的值
+							top = pageY - offsetY;
+							left = pageX - offsetX;
+					3）给document绑定onmouseup事件，用来停止拖拽效果
+						阻止：document.onmousemove = null;
+			 */
+			var hg = document.getElementById('hg');
+
+			hg.onmousedown = function(e){
+				var offsetX = e.offsetX;
+				var offsetY = e.offsetY;
+				document.onmousemove = function(evt){
+					var top = evt.pageY - offsetY;
+					var left = evt.pageX - offsetX;
+
+					hg.style.top = top + 'px';
+					hg.style.left = left + 'px';
+
+					// 阻止浏览器默认行为（图片的移动）
+					evt.preventDefault();
+				}
+			}
+
+			// hg.onmovestart = function(e){
+			// 	e.preventDefault();
+			// }
+			// hg.ondragstart = function(e){
+			// 	e.preventDefault();
+			// }
+
+			document.onmouseup = function(){
+				document.onmousemove = null;
+				title.style.cursor = 'default';
+			}
+
+			// 拖动窗口
+			var box = document.getElementById('box');
+			var title = box.firstElementChild;
+
+			title.onmousedown = function(e){
+				e = e || window.event;
+				// 鼠标按下后，先获取点击位置的相对坐标(相对于点击元素)
+				var offsetX = e.offsetX;
+				var offsetY = e.offsetY;
+
+				title.style.cursor = 'move';
+
+				// 给document绑定mousemove事件
+				document.onmousemove = function(evt){
+					evt = evt || window.event;
+
+					// pageX,Y的兼容写法
+					var scrollLeft = document.documentElement.scrollLeft || document.body.scrollLeft;
+					var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+					evt.pageX = evt.pageX || evt.clientX + scrollLeft;
+					evt.pageY = evt.pageY || evt.clientY + scrollTop;
+
+
+					var top = evt.pageY - offsetY;
+					var left = evt.pageX - offsetX;
+
+					// 定位元素
+					box.style.top = top + 'px';
+					box.style.left = left + 'px';
+
+					evt.preventDefault();
+				}
+			}
+		}
+	</script>
+</head>
+<body>
+<!-- <div id="hg"></div> -->
+	<img src="hg.jpg" id="hg">
+
+	<!-- 窗口拖拽 -->
+	<div id="box">
+		<h2>这是一个可以拖动的窗口</h2>
+		<div class="content">
+        ① 窗口可以拖动；<br>
+        ② 窗口可以通过八个方向改变大小；<br>
+        ③ 窗口可以最小化、最大化、还原、关闭；<br>
+        ④ 限制窗口最小宽度/高度。
+		</div>
+	</div>
+</body>
+</html>

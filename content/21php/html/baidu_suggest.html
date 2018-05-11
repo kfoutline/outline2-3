@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>利用后端代理实现百度搜索建议</title>
+	<script>
+		document.addEventListener('DOMContentLoaded',()=>{
+			var keyword = document.querySelector('#keyword');
+			var suggest = document.querySelector('#suggest');
+
+			var xhr = new XMLHttpRequest();
+			xhr.onreadystatechange = ()=>{
+				if(xhr.readyState === 4 && xhr.status === 200){
+					var res = JSON.parse(xhr.responseText).g;
+
+					suggest.innerHTML = res.map((item)=>{
+						return `<option value="${item.q}">${item.q}</option>`;
+					}).join('');
+				}
+			}
+			keyword.oninput = ()=>{
+				clearTimeout(keyword.timer);
+				keyword.timer = setTimeout(()=>{
+					xhr.open('get','/api/baidusearch.php?key='+keyword.value);
+					xhr.send();
+				},500);
+			}
+		});
+		function getData(data){
+			console.log(data)
+		}
+	</script>
+	<script src="https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?json=1&cb=getData&wd=html5"></script>
+</head>
+<body>
+	<h1>利用后端代理实现百度搜索建议</h1>
+	<input type="text" id="keyword" list="suggest">
+	<datalist id="suggest"></datalist>
+</body>
+</html>

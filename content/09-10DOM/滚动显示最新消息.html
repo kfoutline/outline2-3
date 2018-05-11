@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>滚动显现最新消息</title>
+	<style>
+		ul{padding:0;margin:0;list-style:none;}
+		#news{padding:10px;border:1px solid #ddd;}
+		#news li{border-bottom:1px dotted #ddd;line-height:2;}
+	</style>
+	<script>
+		/*
+			思路：
+				1）每隔3s滚动显示新闻
+					setInterval()
+				2）改变html结构
+					insertBefore
+		 */
+		window.onload = function(){
+			// 获取页面元素
+			var news = document.getElementById('news');
+			var lis = news.children;
+
+			// 1）每隔3s滚动显示新闻
+			setInterval(function(){
+				// 2）改变html结构
+				// 改变li的顺序:把最后一个li放到最前面
+				// insertBefore(最后一个li,第一个li)
+
+				// news.insertBefore(news.lastElementChild,news.firstElementChild);
+
+				// 把第一个li放到最后
+				// appendChild(第一个li)
+				news.appendChild(news.firstElementChild);
+
+
+			},1000);
+		}
+	</script>
+</head>
+<body>
+	<ul id="news">
+		<li>台风来了，霍建华结婚了</li>
+		<li>汪峰出轨了</li>
+		<li>奥运开始了，场馆没建好</li>
+		<li>城管来了，小贩跑了</li>
+		<li>虐狗的老司机，被抓去南海了</li>
+	</ul>
+</body>
+</html>

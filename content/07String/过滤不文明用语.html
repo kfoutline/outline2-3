@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>过滤不文明用语</title>
+	<style>
+		ul{padding:0;margin:0;list-style:none;}
+		.container{width:600px;margin:20px auto;}
+		.container li{border-bottom:1px dotted #ddd;padding:10px;margin:10px 0;}
+		textarea{display:block;width:100%;height:60px;}
+	</style>
+	<script>
+		window.onload = function(){
+			var msglist = document.getElementById('msglist');
+			var msg = document.getElementById('msg');
+			var btn = document.getElementById('btn');
+
+			// 敏感字符
+			var mingan = 'shit,fuck,法轮功,金三胖,六合彩,赌博,我操'.split(',');
+
+			var data = [];
+
+			btn.onclick = function(){
+				var _msg = msg.value;
+
+				// 非空验证
+				if(_msg.trim() === ''){
+					alert('内容不能为空');
+					return;
+				}
+
+				// 过滤敏感字符
+				mingan.forEach(function(item){
+					// var reg = /item/i;
+					// 如果是变量只能用构造函数方式创建正则表达式
+					var reg = new RegExp(item,'ig');
+
+					_msg = _msg.replace(reg,'**');
+				});
+				
+
+				data.push(_msg);
+
+				render();
+
+				// 清空并获得焦点
+				msg.value = '';
+				msg.focus();
+			}
+
+
+			// 把数据编程html结构
+			function render(){
+				var html = data.map(function(item){
+					return '<li>'+item+'</li>';
+				}).join('');
+
+				msglist.innerHTML = html;
+			}
+		}
+	</script>
+</head>
+<body>
+	<div class="container">
+		<h1>过滤敏感字符</h1>
+		<ul id="msglist"></ul>
+		<textarea id="msg"></textarea>
+		<button id="btn">提交</button>
+	</div>
+</body>
+</html>

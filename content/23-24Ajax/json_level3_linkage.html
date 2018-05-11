@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>全国地市三级联动</title>
+	<script type="text/javascript">
+		window.onload = function(){
+			var region = document.getElementById('region');
+			var req = new XMLHttpRequest();
+			req.onreadystatechange = function(){
+				if(req.readyState == 4 && req.status == 200){
+					var res = JSON.parse(req.responseText);
+
+					// 得到数据后进行初始化操作
+					init();
+
+					// 初始化函数
+					function init(){
+						// 当前数据：用于放置省，市，区(县)对应数据
+						var current = [];
+
+						// 得到所有省份
+						var proData = getData(res);
+
+						// 得到第一个省(直辖市)
+						var cityData = getData(proData[0]);
+
+						// 得到第一个县(区)
+						var areaData = getData(cityData[0]);
+
+						current[0] = proData;
+						current[1] = cityData;
+						current[2] = areaData;
+
+						// 生成省份与直辖市
+						current.forEach(function(data,idx){
+							ele = render(data);
+
+							// 给每一个select添加id,以便识别
+							ele.id = 'region' + idx;
+						});
+
+						// 通过实践委托绑定change事件到父级#region
+						region.onchange = function(e){
+							e = e || window.event;
+
+							// 只有select标签触发这个事件
+							if(e.target.tagName.toLowerCase() == 'select'){
+								// 获取当前下一个select标签
+								// PS:省份change，市(区)的内容改变
+								var next = e.target.nextElementSibling;
+
+								// 最后一个select值改变，不做操作
+								if(!next) return;
+
+								// 转换成Numer类型
+								var idx = +e.target.id.slice(-1);
+
+								// 获取当前对应下一级数据
+								var data = getData(current[idx],e.target.value);
+
+								// do..while循环生成当前级下所有数据
+								// PS:默认显示每一个层级的第一条数据
+								do{
+									// 选择后更新当前下一级数据，并改变html结构
+									current[++idx] = data;
+									render(data,next);
+
+									// 更新data数据与next元素，以供下次循环使用
+									data = data&&getData(data[0]);
+									next = next.nextElementSibling;
+								}while(idx<current.length-1);
+								// PS：最后一级数据不需要操作，故用length-1
+							}
+						}
+					}
+
+					// 生成html结构
+					// 如传入页面元素，则只改变内容，否则生成一个select
+					function render(data,ele){
+						if(!ele){
+							ele = document.createElement('select');
+							region.appendChild(ele);
+						}
+						ele.innerHTML = getHTML(data);
+
+						// 返回生成的对象，以便进行其他操作
+						return ele;
+					}
+
+				}
+			}
+
+			// 建立连接并发送ajax请求
+			req.open('get','data/region.json',true);
+			req.send();
+
+
+			// 获取地市数据
+			function getData(data,id){
+				// 传入id,获取下一级数据
+				if(id){
+					for(var i=0;i<data.length;i++){
+						if(data[i].id == id){
+							return data[i].regions;
+						}
+					}
+				}
+				return data.regions;
+			}
+
+			// 获取数据对应html
+			function getHTML(data){
+				if(!data) return '<option>无数据</option>'
+				return data.map(function(obj){
+					return '<option value="'+obj.id+'">' + obj.name + '</option>';
+				}).join('\n');
+			}
+		}
+	</script>
+</head>
+<body>
+	<h1>全国地市三级联动</h1>
+	<div id="region"></div>
+</body>
+</html>

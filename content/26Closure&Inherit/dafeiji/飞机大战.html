@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="css/dafeiji.css" />
+		
+		<script src="js/common.js"></script>
+		<script src="js/gameEngine.js"></script>
+		<script src="js/myPlane.js"></script>
+		<script src="js/bullet.js"></script>
+		<script src="js/enemy.js"></script>
+		
+		<script>
+			
+			//做游戏
+			// cocos2dx, cocos3dx, unity3d
+			// js做网页游戏
+			
+			// onload = function() {
+			// 	var oList = document.getElementById("list");
+			// 	var aLi = oList.getElementsByTagName("li");
+				
+			// 	for (var i=0; i<aLi.length; i++) {
+			// 		aLi[i].onclick = function() {
+						
+			// 			//1, 把oList消失
+			// 			oList.parentNode.removeChild(oList);
+						
+			// 			//2,设置游戏难度等级: 根据子弹的发射频率
+			// 			var fireInterval = this.value;
+			// 			myPlane.fireInterval = fireInterval - 0; 
+						
+			// 			//3, 开始游戏
+			// 			//游戏引擎(导演) : 对象(只有一个)
+			// 			/*
+			// 			 * 控制游戏进度: 开始游戏, 游戏过程, 结束游戏
+			// 			 * 加载游戏
+			// 			 * 碰撞检测
+			// 			 * 创建我的飞机:发射子弹
+			// 			 * 创建敌机
+			// 			 * 移动飞机
+			// 			 */
+			// 			//演员:
+			// 			//我的飞机: 对象(只有一个)
+			// 			//敌机: 类(构造函数)
+			// 			//子弹: 类(构造函数)
+						
+			// 			//开始启动游戏,进入加载游戏界面
+			// 			gameEngine.init().start();
+						
+			// 		}
+			// 	}
+				
+			// }
+
+			document.addEventListener('DOMContentLoaded',()=>{
+				// 游戏引擎（导演）
+				// 控制：
+				// * 游戏进度：加载，开始，游戏中，结束
+				// * 敌机数量
+				// * 子弹数量
+				var gameEngine = {
+					ele:'#main_body',
+					enemy:[],
+					bullet:[],
+					grade:['超级困难','非常困难','比较困难','春哥附体'],
+					init(){
+						this.ele = document.querySelector(this.ele);
+
+						// 游戏等级界面
+						var grade = document.createElement('ul');
+						grade.id = 'list';
+						grade.innerHTML = this.grade.map((item,idx)=>{
+							return `<li data-grade="${idx}">${item}</li>`;
+						}).join('');
+
+						this.ele.appendChild(grade);
+
+						this.grade = grade;
+
+						// 点击游戏难度事件
+						grade.onclick = e=>{
+							if(e.target.tagName.toLowerCase() === 'li'){
+								grade.parentNode.removeChild(grade);
+
+								// 开始游戏
+								this.start();
+							}
+						}
+
+						
+
+					},
+					loading(callback){
+						
+
+						// loading图片
+						var loading = document.createElement('div');
+						loading.classList.add('loading');
+						this.ele.appendChild(loading);
+
+						//显示logo
+						var logo = document.createElement('div');
+						logo.classList.add('logo');
+						this.ele.appendChild(logo);
+
+						var idx = 1;
+						var loadingTimer = setInterval(()=>{
+							idx++;
+							if(idx>3){
+								clearInterval(loadingTimer);
+								loading.parentNode.removeChild(loading);
+								logo.parentNode.removeChild(logo);
+
+								typeof callback === 'function' &&  callback();
+
+								return;
+							}
+							loading.style.backgroundImage = `url(images/loading${idx}.png)`;
+
+							
+						},600);
+					},
+					start(){
+						// 加载动画
+						this.loading(()=>{
+							// 移动背景
+							this.move();
+
+							// 创建敌机（大，中，小）
+							this.createEnemy();
+							
+							// 创建我的飞机（创建子弹）
+							// myPlane.init();
+						});
+						
+					},
+					move(){
+						var y = 0;
+						setInterval(()=>{
+							this.ele.style.backgroundPosition = `0 ${y++}px`;
+						},30);
+					},
+					createEnemy(){
+
+					},
+					showScore(){
+
+					}
+				}
+
+
+				gameEngine.init();
+			});
+						
+		</script>
+	</head>
+	<body>
+		<div id="main_body" class="main"></div>
+	</body>
+</html>

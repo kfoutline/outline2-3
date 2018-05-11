@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>单体模式</title>
+	<script>
+	document.addEventListener('DOMContentLoaded',()=>{
+		var singleton = function(){
+			if(!singleton.instance){
+				singleton.instance = {
+					name:'laoxie',
+					age:18
+				}
+			}
+			return singleton.instance;
+		}
+		
+		var a = singleton();
+		var b = singleton();
+
+		console.log(a,a===b);
+
+
+		// 方式二
+		var toast = (function(){
+			var t;
+			return function(){
+				if(!t){
+					t = document.createElement('div');
+					t.innerHTML = '终于等到你';
+					document.body.appendChild(t);
+				}
+				// t.style.display = 'block';
+			}
+		})();
+
+		toast();
+		toast();
+
+		// 方式三
+		function Toast(){
+			if(!Toast.body){
+				Toast.body = {
+					ele:document.createElement('div'),
+					show(){
+						this.ele.innerHTML = '实例化Toast';
+						document.body.appendChild(this.ele);
+					}
+				}
+			}
+
+			return Toast.body;
+		}
+
+		new Toast().show();
+		new Toast().show();
+
+
+		// 方式四
+		var obj = {
+			init:function(){
+				if(!this.has){
+					this.has = {name:'laoxie'};
+				}
+
+				return this.has;
+			}
+		}
+
+		var a = obj.init();
+		var b = obj.init();
+
+		console.log(a===b);
+	});
+		
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

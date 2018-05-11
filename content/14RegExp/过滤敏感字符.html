@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>过滤敏感字符</title>
+	<script>
+		window.onload = function(){
+			// 获取页面元素
+			var msg = document.getElementById('msg');
+			var btn = msg.nextElementSibling;
+			var output = document.getElementById('output');
+
+			// 敏感字符
+			var minganStr = 'fuck,shit,SB,TMD,吃屎,法轮功'.split(',');
+
+			// 点击提交信息
+			btn.onclick = function(){
+				var _msg = msg.value;
+
+				// 判断信息内是否含敏感字符
+				minganStr.forEach(function(str){
+					// str为每一个敏感字符
+					var reg = new RegExp(str,'gi');
+					_msg = _msg.replace(reg,'**');
+				});
+				/*if(_msg.indexOf('fuck') != -1){
+					_msg = _msg.replace('fuck','**')
+				}*/
+
+				var li = document.createElement('li');
+				li.innerHTML = _msg;
+
+
+
+				output.appendChild(li);
+
+				// 清空并获得焦点
+				msg.value = '';
+				msg.focus();
+			}
+		}
+		
+
+	</script>
+</head>
+<body>
+	<input type="text" id="msg"><button>提交</button>
+	<ul id="output"></ul>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>网页换肤</title>
+<link id="link" href="css/css1.css" rel="stylesheet" type="text/css" />
+<script>
+	/*
+		思路：利用cookie实现网页换肤
+			1）实现换肤功能
+				1>点击按钮替换#link的href属性
+				2>把替换的结果保存到cookie
+			2）刷新页面或重新打开时，读取cookie
+				得到cookie的值，然后修改#link的href属性
+	 */
+	window.onload = function(){
+		var message = document.getElementById('message');
+		var csslink = document.getElementById('link');
+		var btnClear = document.getElementById('btnClear');
+		
+		// 1）实现换肤功能
+		message.onclick = function(e){
+			e = e || window.event;
+			var target = e.target || e.srcElement;
+
+			// 利用事件源对象判断是否点击了换肤按钮
+			// 1>点击按钮替换#link的href属性
+			if(target.type === 'button'){
+				var cssname = target.getAttribute('data-css');
+				csslink.href = 'css/'+cssname+'.css';
+
+				// 2>把替换的结果保存到cookie
+				// 为了让关闭浏览器后cookie还存在，必须设置过期时间
+				var now = new Date();
+				now.setDate(now.getDate() + 7);
+				document.cookie = 'cssname=' + cssname + ';expires=' + now;
+			}
+		}
+
+		// 2）刷新页面或重新打开时，读取cookie，并设置#link的href属性
+		var cookie = document.cookie;
+
+		// 有cookie时才执行以下代码
+		if(cookie){
+			console.log(cookie);
+			var cookieList = cookie.split('; ');
+
+			/*cookieList.forEach(function(coo){
+				var temp = coo.split('=');
+				if(temp[0] === 'cssname'){
+					csslink.href = 'css/'+temp[1]+'.css';
+				}
+			});*/
+
+			for(var i=0;i<cookieList.length;i++){
+				// cookieList[i]==>cssname=css2 || left=569 || top=101
+				var temp = cookieList[i].split('=');//['cssname','css2'] || ['left','569']
+				if(temp[0] === 'cssname'){
+					csslink.href = 'css/' +temp[1]+ '.css';
+				}
+
+			}
+		}
+
+		// 清除cookie
+		btnClear.onclick = function(){
+			var now = new Date();
+			now.setDate(now.getDate() - 7);
+			document.cookie = 'cssname=xx;expires=' + now;
+		}
+
+	}
+</script>
+</head>
+<body>
+
+<dl id="message">
+	<form>
+		<dt>
+			<strong>可以换肤的提交框：</strong>
+			<input type="button" value="皮肤1" data-css="css1" />
+			<input type="button" value="皮肤2" data-css="css2" />
+		</dt>
+		<dd>输入姓名：<input class="text" type="text" /></dd>
+		<dd>输入密码：<input class="text" type="password" /></dd>
+		<dd>请您留言：<textarea></textarea></dd>
+		<dd class="center"><input class="btn" type="submit" value="提交" /></dd>
+	</form>
+</dl>
+<button id="btnClear">清除cookie</button>
+</body>
+</html>

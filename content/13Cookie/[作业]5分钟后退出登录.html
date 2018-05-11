@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>5分钟后自动退出登录</title>
+	<script src="../common.js"></script>
+	<script>
+		window.onload = function(){
+			var form = document.forms[0];
+			var username = document.getElementById('username');
+			var psw = document.getElementById('password');
+			var btnSubmit = document.getElementById('btnSubmit');
+			var loginInfo = document.getElementById('loginInfo');
+
+			// 默认退出时间
+			var time = 300;
+			var timer;
+
+			btnSubmit.onclick = function(e){
+				if(username.value == '' || password == ''){
+					alert('请输入用户名')
+					return;
+				}
+
+				// 获取当前时间
+				var expires = new Date();
+
+				//在当前时间的基础上加5分钟
+				expires.setMinutes(expires.getMinutes() + 5);
+				setCookie('username',username.value,expires);
+				setCookie('password',psw.value,expires);
+
+				// 显示登录信息
+				showInfo(username.value);
+				e.preventDefault();
+			}
+
+
+			var _username = getCookie('username');
+			var _psw = getCookie('password');
+			if(_username && _psw){
+				showInfo(_username);
+			}
+
+			function showInfo(user){
+				loginInfo.innerHTML = '你好，'+user + '欢迎登录银行管理系统, <span></span> <button id="signOut">退出</button>';
+				loginInfo.style.display = 'show';
+				form.style.display = 'none';
+
+				var btnSignOut = document.getElementById('signOut');
+				var timeInfo = btnSignOut.previousElementSibling;
+				btnSignOut.onclick = hideInfo;
+
+				// 显示退出时间
+				timeInfo.innerHTML = '还有 <strong>' + formatTime(time) +'</strong> 秒自动退出';
+				timer = setInterval(function(){
+					time--;
+					timeInfo.innerHTML = '还有 <strong>' + formatTime(time) +'</strong> 秒自动退出';
+					if(time==0){
+						clearInterval(timer);
+						hideInfo();
+					}
+				},1000);
+			}
+
+			function hideInfo(){
+				removeCookie('username');
+				removeCookie('password');
+
+				// 隐藏登录信息
+				loginInfo.style.display = 'none';
+				form.style.display = 'block';
+			}
+
+			function formatTime(secs){
+				var secLeft = secs%60;
+
+				var minLeft = (secs - secLeft)/60;
+				if(secLeft==0){
+					secLeft = 59;
+					minLeft--;
+				}
+				secLeft = secLeft < 10 ? '0' + secLeft : secLeft;
+				minLeft = minLeft < 10 ? '0' + minLeft : minLeft;
+
+				return minLeft + ':' + secLeft;
+			}
+		}
+	</script>
+</head>
+<body>
+	<h1>银行登录系统</h1>
+	<form>
+		<label for="username">用户名：</label>
+		<input type="text" id="username" name="username">
+		<label for="password">密码：</label>
+		<input type="text" id="password" name="password">
+		<button id="btnSubmit">登录</button>
+	</form>
+	<div id="loginInfo"></div>
+</body>
+</html>

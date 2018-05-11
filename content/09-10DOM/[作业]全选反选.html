@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>作业：全选与反选</title>
+	<script>
+		window.onload = function(){
+			/*
+				思路：
+				1）获取页面元素
+				2）全选/不选
+					给#all复选框绑定点击事件
+				3）#all复选框状态修改
+					hobby复选框全勾选，则#all为勾选状态
+					hobby复选框中只要有一个未勾选，则#all为取消状态
+				4）反选
+					遍历所有hobby复选框，勾选的取消，没勾选的勾选上
+			 */
+			
+			// 1）获取页面元素
+			var all = document.getElementById('all');
+			var fx = document.getElementById('fx');
+			var hobby = document.getElementsByName('hobby');
+
+			// 2）全选/不选
+			// 给#all复选框绑定点击事件
+			all.onclick = function(){
+				console.log(all.checked);
+				// 如果#all为选中状态，则所有的hobby复选框选中
+				// 如果#all为取消状态，则所有的hobby复选框取消选中
+				/*if(all.checked){
+					for(var i=0;i<hobby.length;i++){
+						hobby[i].checked = true;
+					}
+				}else{
+					for(var i=0;i<hobby.length;i++){
+						hobby[i].checked = false;
+					}
+				}*/
+				for(var i=0;i<hobby.length;i++){
+					hobby[i].checked = all.checked;
+				}
+			}
+
+			// 3）#all复选框状态修改
+			// 给所有hobby复选框绑定点击事件：
+			// hobby复选框全勾选，则#all为勾选状态
+			// hobby复选框中只要有一个未勾选，则#all为取消状态
+			for(var i=0;i<hobby.length;i++){
+				hobby[i].onclick = function(){
+					// 默认勾选状态为true
+					allStatus();
+				}
+			}
+
+			// 4）反选
+			// 给#fx绑定点击事件
+			fx.onclick = function(){
+				// 遍历所有hobby复选框，勾选的取消，没勾选的勾选上
+				for(var i=0;i<hobby.length;i++){
+					/*if(hobby[i].checked){
+						hobby[i].checked = false;
+					}else{
+						hobby[i].checked = true
+					}*/
+
+					hobby[i].checked = !hobby[i].checked;
+				}
+
+				allStatus();
+			}
+
+			// 封装全选状态函数
+			function allStatus(){
+				var _checked = true;
+
+				// 遍历所有所有hobby复选框，并判断他们的状态
+				for(var i=0;i<hobby.length;i++){
+					// 只要有一个不选中，则checked改为false
+					if(!hobby[i].checked){
+						_checked = false;
+
+						// 如果已经发现有一个复选框未勾选，循环就没必要再继续
+						break;
+					}
+				}
+
+				all.checked = _checked;
+			}
+		}
+	</script>
+</head>
+<body>
+	<table id="dataList">
+		<caption>爱好</caption>
+		<thead>
+			<th><input type="checkbox" name="all" id="all">全选</th>
+			<th><input type="checkbox" name="fx" id="fx">反选</th>
+		</thead>
+		<tbody>
+			<tr>
+				<td><input type="checkbox" name="hobby"></td>
+				<td>篮球</td>
+			</tr>
+			<tr>
+				<td><input type="checkbox" name="hobby"></td>
+				<td>足球</td>
+			</tr>
+			<tr>
+				<td><input type="checkbox" name="hobby"></td>
+				<td>羽毛球</td>
+			</tr>
+			<tr>
+				<td><input type="checkbox" name="hobby"></td>
+				<td>爬山</td>
+			</tr>
+			<tr>
+				<td><input type="checkbox" name="hobby"></td>
+				<td>游泳</td>
+			</tr>
+			<tr>
+				<td><input type="checkbox" name="hobby"></td>
+				<td>购物</td>
+			</tr>
+			<tr>
+				<td><input type="checkbox" name="hobby"></td>
+				<td>看电影</td>
+			</tr>
+			<tr>
+				<td><input type="checkbox" name="hobby"></td>
+				<td>旅游</td>
+			</tr>
+			<tr>
+				<td><input type="checkbox" name="hobby"></td>
+				<td>音乐</td>
+			</tr>
+			<tr>
+				<td><input type="checkbox" name="hobby"></td>
+				<td>画画</td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

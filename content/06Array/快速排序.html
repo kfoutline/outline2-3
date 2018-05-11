@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>冒泡排序</title>
+    <style>
+
+    </style>
+    <script>
+        /*
+            快速排序法
+            * 利用递归函数实现排序
+            * 每次获取数组中间元素cItem
+            * 把大于和小于cItem的元素分别放置在arrGt和arrLt两个数组中,
+            * 利用concat组合递归调用函数返回的值
+            * 直到数组的长度等于1时，直接返回元素调出递归
+         */
+        var arr = [10, 8, 20, 5, 6, 30, 11, 9];
+
+        function fastSort(arr){
+            // 递归退出条件
+            if(arr.length<=1){
+                return arr;
+            }
+
+            // 找出数组中间位置元素
+            var cIdx = parseInt(arr.length/2);
+
+            // 删除中间元素，避免与自己本身进行对比而造成死循环
+            var cItem = arr.splice(cIdx,1);//[6],arr=[10, 8, 20, 5, 30, 11, 9]
+
+            // 创建两个空数组用于保存大于或小于cItem的数字
+            var arrLt = [];//[5]
+            var arrGt = [];//[10,8,20,30,11,9]
+
+            // 遍历数组，分别与cItem进行对比
+            // 把小于cItem的数写入arrLt
+            // 把大于cItem的数写入arrGt
+            for(var i=0;i<arr.length;i++){
+                if(arr[i]<cItem[0]){
+                    arrLt.push(arr[i])
+                }else{
+                    arrGt.push(arr[i]);
+                }
+            }
+
+            // 组合排序后的数组
+            return fastSort(arrLt).concat(cItem,fastSort(arrGt));
+        }
+        console.log(fastSort(arr));
+    
+    </script>
+</head>
+    
+<body>
+    <div id="normal"></div>
+    <div id="youhua"></div>
+</body>
+
+</html>

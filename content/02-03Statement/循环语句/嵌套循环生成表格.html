@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>12嵌套循环生成表格</title>
+	<style>
+		table{border:1px solid #ddd;border-collapse:collapse;width:100%;}
+		td{border:1px solid #ddd;padding:3px 5px;}
+	</style>
+	<script>
+		// 等页面所有内容（元素、图片、视频等资源文件）加载完成后，才执行函数中的代码
+		window.onload = function(){
+
+			/*
+				题目：生成表格
+				1）获取页面元素
+				2）给按钮添加点击事件
+					* 获取输入的值
+					* 根据输入的值生成表格（嵌套循环）
+					* 把表格输出到#output
+
+				字符串拼接：+
+			 */
+			
+			// 1）获取页面元素
+			var row = document.getElementById('row');
+			var col = document.getElementById('col');
+			var btnCreateTable = document.getElementById('btnCreateTable');
+			var output = document.getElementById('output');
+
+
+			// 2）给按钮添加点击事件
+			btnCreateTable.onclick = function(){
+				// * 获取输入的值
+				var _row = row.value;
+				var _col = col.value;
+
+				var table = '<table><tbody>';
+
+				// * 根据输入的值生成表格（嵌套循环）
+				// 外层循环：控制行
+				for(var i=0;i<_row;i++){
+					// 随机颜色
+					// #ccc,rgb(204,204,204);
+					var r = parseInt(Math.random()*256);
+					var g = parseInt(Math.random()*256);
+					var b = parseInt(Math.random()*256);
+					var bgColor = 'rgb('+r+','+g+','+ b +')';
+
+					table += '<tr style="background-color:'+ bgColor +'">';
+					// 内层循环控制列
+					for(var j=0;j<_col;j++){
+						table += '<td>单元格'+i+j+'</td>';
+					}
+
+					// 闭合tr
+					table += '</tr>';
+				}
+
+				// 闭合tobdy,table
+				table += '</tbody></table>';
+				
+
+				// 把表格输出到#output
+				output.innerHTML = table;
+			}
+		}
+		
+	</script>
+</head>
+<body>
+	<h1>嵌套循环生成表格</h1>
+	<label for="row">行：</label><input type="text" id="row">
+	<label for="col">列：</label><input type="text" id="col">
+	<button id="btnCreateTable">生成表格</button>
+	<div id="output"></div>
+</body>
+</html>

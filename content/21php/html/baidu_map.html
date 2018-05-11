@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		html,body,#mymap{height:100%;}
+	</style>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=x4RLsqK9mFnB0Vf3QiNLvSMAVmuhWqPe"></script>
+	<script>
+		/*
+			1)获取外网ip
+			http://localhost:8001/api/get_real_ip.php
+			2)根据ip获取城市
+				* http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=json&ip=223.73.57.211
+				* http://ip.taobao.com/service/getIpInfo.php?ip=223.73.57.211
+			3）根据城市名定位地图
+			var map = new BMap.Map("mymap");
+			map.centerAndZoom(city, 15); 
+		 */
+		var xhr = new XMLHttpRequest();
+		xhr.onreadystatechange = function(){
+			if(xhr.readyState === 4){
+				var xhr2 = new XMLHttpRequest();
+				xhr2.onreadystatechange = function(){
+					if(xhr2.readyState === 4){
+						var city = JSON.parse(xhr2.responseText).city
+						console.log();
+
+						// 创建Map实例
+						var map = new BMap.Map("mymap");
+						map.centerAndZoom(city, 15);
+
+						// 允许缩放
+						map.enableScrollWheelZoom(true);
+
+						//构造全景控件
+						var stCtrl = new BMap.PanoramaControl(); 
+						stCtrl.setOffset(new BMap.Size(20, 20));
+
+						//添加全景控件
+						map.addControl(stCtrl);
+					}
+				}
+				xhr2.open('get','/api/get_city.php?ip='+xhr.responseText,true);
+				xhr2.send();
+			}
+		}
+		xhr.open('get','/api/outer_ip.php',true);
+		xhr.send();
+	</script>
+</head>
+<body>
+	<div id="mymap"></div>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>退出页面事件</title>
+	<script>
+		window.onbeforeunload = function(evt){
+	        evt = evt || window.event;
+	        closeStr = "----------------------------------------\n"
+	                + "|                                        |\n"
+	                + "|         请按正常方式退出系统                |\n"
+	                + "|                                        |\n"
+	                + "----------------------------------------";
+	        if(evt)
+	            evt.returnValue = closeStr;
+	        return closeStr;
+	    }
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

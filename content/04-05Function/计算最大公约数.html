@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>计算最大公约数</title>
+	<script>
+		var m = 12;
+		var n = 18;
+		//m的约数：1，12，2，3，4，6
+		//n的约数：1，18，2，3，6，9
+		//公约数：1，2，3，6
+		//最大公约数：6
+
+		//1、找出最小值
+		//2、递减找到第一个公约数就是最大公约数
+		function gcd(a,b){
+			//最小数递减法
+			/*var min = a>b ? b : a;
+			for(var i=min;i>=1;i--){
+				if(a%i==0 && b%i==0){
+					console.log(i);
+					break;
+				}
+			}*/
+
+
+			// 辗转求余法
+			var r = a%b;
+
+			if(r==0){
+				return b;
+			}
+
+			a = b;
+			b = r;
+
+			return gcd(a,b);
+		}
+
+
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

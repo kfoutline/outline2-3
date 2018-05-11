@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>冒泡演示</title>
+    <style>
+    a {
+        color: #333;
+        text-decoration: none;
+    }
+    
+    ul,
+    li {
+        margin: 0;
+        padding: 20px;
+        list-style: none;
+        border: 1px solid #ccc;
+    }
+    .container{border:1px solid transparent;}
+    #container {
+        padding: 30px;
+        border: 1px solid #ccc;
+    }
+    
+    #container li {
+        margin: 10px;
+    }
+    
+    #container a {
+        display: inline-block;
+        padding: 15px;
+        border: 1px solid #ccc;
+    }
+    
+    .active {
+        border-color: #f00 !important;
+    }
+    .active-click {
+        border-color: #f00 !important;
+        background-color:#ff9;
+    }
+
+    #dataList{width:100%;border:1px solid #ddd;border-collapse:collapse;}
+    #dataList tr:nth-child(odd){background-color:#efefef;}
+    #dataList td{padding:5px 10px;border:1px solid #ddd;}
+    #dataList td:has(a){text-align:center;}
+    #dataList a{margin:0 5px;}
+
+    
+    </style>
+    <script>
+    window.onload = function() {
+        var $container = document.getElementById('container');
+        var $list = $container.getElementsByTagName('ul')[0];
+        var $listItems = $list.children;
+        var tIndex = 0;//冒泡层次，用于测试
+
+        window.onclick = function(event){
+             var e = event || window.event;
+            var _self = this;
+            tIndex++;
+            setTimeout(function(){
+                console.log('事件冒泡到window最顶端');
+            },1000*tIndex);
+        }
+        document.onclick = function(event){
+             var e = event || window.event;
+            var _self = this;
+            tIndex++;
+            setTimeout(function(){
+                console.log('事件冒泡到document');
+            },1000*tIndex);
+        }
+        document.body.onclick = function(event){
+            var e = event || window.event;
+            var _self = this;
+            tIndex++;
+            setTimeout(function(){
+                console.log('事件冒泡到' + _self.nodeName + '元素');
+            },1000*tIndex);
+        }
+        $container.onclick = function(event) {
+            var e = event || window.event;
+            var _self = this;
+            if (e.target == this) {
+                tIndex = 0;
+            	this.className = 'active-click';
+                console.log('%c事件点击到#' + this.id + '元素', 'color:#f00;');
+            } else {
+                tIndex++;
+                setTimeout(function(){
+                    _self.className = 'active';
+                    console.log('事件冒泡到#' + _self.id + '元素');
+                },1000*tIndex);
+            	
+            }
+        }
+        $list.onclick = function(event) {
+            var e = event || window.event;
+            var _self = this;
+            if (e.target == this) {
+                tIndex = 0;
+            	this.className = 'active-click';
+                console.log('%c事件点击到' + this.nodeName + '元素', 'color:#f00;');
+            } else {
+                tIndex++;
+                setTimeout(function(){
+            	_self.className = 'active';
+                console.log('事件冒泡到' + _self.nodeName + '元素');
+                },1000*tIndex);
+            }
+        }
+        for (var i = 0; i < $listItems.length; i++) {
+            $listItems[i].id = 'item' + (i + 1);
+            $listItems[i].onclick = function(event) {
+                var e = event || window.event;
+                var _self = this;
+                if (e.target == this) {
+                    tIndex = 0;
+                    console.log('%c事件点击到#' + this.id + '元素', 'color:#f00;');
+                    this.className = 'active-click';
+                } else {
+                    tIndex++;
+                    setTimeout(function(){
+                    console.log('事件冒泡到#' + _self.id + '元素');
+                    _self.className = 'active';
+                    },1000*tIndex);
+                }
+
+            }
+
+            // 给a标签绑定事件
+            var $a = $listItems[i].getElementsByTagName('a')[0];
+            $a.id = 'btn' + (i + 1);
+            $a.onclick = function(event) {
+                var e = event || window.event;//ie9-
+                tIndex = 0;
+                this.className = 'active-click';
+                console.log('%c事件点击到#' + this.id + '元素', 'color:#f00;');
+            }
+        }
+
+        // 冒泡利用与阻止
+        var $dataList = document.getElementById('dataList');
+        var $dataParent = $dataList.parentNode;
+        $dataList.onclick = function(event){
+        	var e = event || window.event;
+        	var _target = e.target || e.srcElement;
+        	if(_target.className == 'edit'){
+        		console.log('你点击了编辑按钮');
+        	}else if(_target.className == 'del'){
+        		console.log('你点击了删除按钮');
+        	}
+        	if(window.event){
+        		e.cancelBubble = true;
+        		e.returnValue = false;
+        	}else{
+        		e.stopPropagation();
+        		e.preventDefault();
+        	}
+        	
+        }
+        $dataParent.onclick = function(event){
+        	var e = event || window.event;
+        	this.className = 'container active';
+        }
+
+        function getEvent(event){
+        	if(window.event){
+        		event = window.event;
+        		event.target = event.srcElement;
+        		event.stopPropagation = function(){
+        			event.cancelBubble = true;
+        		};
+        		event.preventDefault = function(){
+        			event.returnValue = false;
+        		}
+        	}
+        	return event;
+        }
+    }
+    </script>
+</head>
+
+<body>
+    <h1>事件冒泡测试</h1>
+    <div id="container">
+        <ul>
+            <li><a href="#">按钮1</a></li>
+            <li><a href="#">按钮2</a></li>
+            <li><a href="#">按钮3</a></li>
+            <li><a href="#">按钮4</a></li>
+        </ul>
+    </div>
+    <br><br><br>
+    <div class="container">
+    <h1>事件冒泡的利用</h1>
+    <table id="dataList">
+    	<tbody>
+    		<tr>
+    			<td>item1</td>
+    			<td>item2</td>
+    			<td>item3</td>
+    			<td>item4</td>
+    			<td><a href="#" class="edit">编辑</a><a href="#" class="del">删除</a></td>
+    		</tr>
+    		<tr>
+    			<td>item1</td>
+    			<td>item2</td>
+    			<td>item3</td>
+    			<td>item4</td>
+    			<td><a href="#" class="edit">编辑</a><a href="#" class="del">删除</a></td>
+    		</tr>
+    		<tr>
+    			<td>item1</td>
+    			<td>item2</td>
+    			<td>item3</td>
+    			<td>item4</td>
+    			<td><a href="#" class="edit">编辑</a><a href="#" class="del">删除</a></td>
+    		</tr>
+    		<tr>
+    			<td>item1</td>
+    			<td>item2</td>
+    			<td>item3</td>
+    			<td>item4</td>
+    			<td><a href="#" class="edit">编辑</a><a href="#" class="del">删除</a></td>
+    		</tr>
+    		<tr>
+    			<td>item1</td>
+    			<td>item2</td>
+    			<td>item3</td>
+    			<td>item4</td>
+    			<td><a href="#" class="edit">编辑</a><a href="#" class="del">删除</a></td>
+    		</tr>
+    		<tr>
+    			<td>item1</td>
+    			<td>item2</td>
+    			<td>item3</td>
+    			<td>item4</td>
+    			<td><a href="#" class="edit">编辑</a><a href="#" class="del">删除</a></td>
+    		</tr>
+    	</tbody>
+    </table>
+    </div>
+    <br><br><br>
+    
+</body>
+
+</html>

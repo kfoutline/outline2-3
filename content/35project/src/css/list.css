@@ -1,0 +1,35 @@
+@charset "UTF-8";
+/*
+	继承
+		* extend
+		* 占位符 %
+ */
+.popover, .login {
+  width: 600px;
+  height: 300px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.box, .container {
+  width: 800px;
+  color: #58bc58;
+  padding: 5px 10px 15px 20px;
+  background-color: #fff;
+  border: 1px soild #58bc58;
+}
+
+.container {
+  margin: 10px;
+}
+
+.popover {
+  width: 400px;
+  height: 200px;
+}
+
+.login {
+  background-color: #b0ffb0;
+}

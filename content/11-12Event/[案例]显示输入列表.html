@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>事件演示</title>
+	<style>
+		ul{margin:0;border:1px solid #ddd;padding:20px;line-height:2;width:300px;list-style:none;}
+		ul li{border-bottom:1px dotted #ddd;}
+	</style>
+	<script>
+		// 页面加载事件
+		window.onload = function(){
+			var username = document.getElementById('username');
+			var namelist = username.nextElementSibling;
+
+			// 去掉最后一个li的边框
+			namelist.lastElementChild.style.borderBottom = 'none';
+
+			// 事件绑定
+			// 只有在这个事件触发时才会执行里面的代码
+			username.onfocus = function(){
+				namelist.style.display = 'block';
+			}
+
+			// 失去焦点时
+			username.onblur = function(){
+				// 延迟隐藏
+				setTimeout(function(){
+					namelist.style.display = 'none';
+				},200);
+				
+			}
+
+			// 点击名字把当前名字赋到输入框
+			var lis = namelist.children;
+			for(var i=0;i<lis.length;i++){
+				lis[i].onclick = function(){
+					var name = this.innerHTML;
+					username.value = name;
+				}
+			}
+		}
+	</script>
+</head>
+<body>
+	<input type="text" id="username">
+	<ul style="display:none;">
+		<li>王铁锤</li>
+		<li>王小明</li>
+		<li>王宽</li>
+		<li>陈思汉</li>
+		<li>陈君文</li>
+	</ul>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Event对象</title>
+	<style>
+	body{font-size:14px;}
+	#eventList{margin:0;padding:0;list-style: none;overflow:hidden;}
+	#eventList > li{float:left;width:49%;vertical-align: top;}
+	#mousePosition{display:none;position:fixed;top:0;right:0;padding:15px;background:rgba(255,255,255,.8);color:#f60;text-align:right;}
+	#mousePosition p{margin:0;}
+	#mouseTest{margin-top:20px;padding:50px 20px;background:#efefef;border:2px solid #ddd;font-size:30px;color:#999;text-align:center;}
+	</style>
+	<script type="text/javascript">
+	window.onload = function(){
+		var keyboardevent;
+		document.onclick = function(event){
+			var e = event || window.event;
+			display($mousePosition,true);
+		}
+		document.onkeydown = function(event){
+			var e = keyboardevent = event || window.event;
+		}
+
+		// 列出鼠标事件event对象数据
+		var $mouseevent = document.getElementById('mouseevent');
+		var $eventList = document.getElementById('eventList');
+		$mouseevent.onmousedown = function(event){
+			var e = event || window.event;
+			var _html = '<h4>鼠标事件event对象详情</h4><ol>';
+			for(var name in e){
+				_html += '<li><strong>' + name + ':</strong> ' + (typeof e[name] === 'function' ? 'Function' : e[name]) + '</li>';
+			}
+			var $li = document.createElement('li');
+			$li.innerHTML = _html;
+			$eventList.appendChild($li);
+		}
+		// 列出键盘事件event对象数据
+		var $keyboardevent = document.getElementById('keyboardevent');
+		$keyboardevent.onclick = function(event){
+			var e = event || window.event;
+			if(!keyboardevent){
+				alert('请先点击键盘任意键');
+				return false;
+			}
+			var _html = '<h4>键盘事件event对象详情</h4><ol>';
+			for(var name in keyboardevent){
+				_html += '<li><strong>' + name + ':</strong> ' + (typeof keyboardevent[name] === 'function' ? 'Function' : keyboardevent[name]) + '</li>';
+			}
+			var $li = document.createElement('li');
+			$li.innerHTML = _html;
+			$eventList.appendChild($li);
+		}
+
+		// 显示光标位置
+		var $btnShowPosition = document.getElementById('btnShowPosition');
+		var $mousePosition = document.getElementById('mousePosition');
+		$btnShowPosition.onclick = function(e){
+			e = e || window.event;
+			display($mousePosition);
+			document.onmousemove = function(e){
+				e = e || window.event;
+				var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+				var scrollLeft = document.body.scrollLeft || document.documentElement.scrollLeft;
+				
+				//兼容IE8-
+				if(e.pageX == undefined){
+					e.pageX = e.clientX + scrollLeft;
+				}
+				if(e.pageY == undefined){
+					e.pageY = e.clientY + scrollTop;
+				}
+				$mousePosition.innerHTML = '<p>clientXY光标在浏览器中的位置：' + e.clientX + ',' + e.clientY + '</p><p>screenXY光标在电脑屏幕中的位置：' + e.screenX + ',' + e.screenY + '</p><p>pageXY光标相对于文档的位置：' + e.pageX + ',' + e.pageY + '</p>';
+			}
+			
+			if(window.event){
+				e.cancelBubble = true;
+			}else{
+				e.stopPropagation();
+			}
+		}
+		function display(dom,hide){
+			if(hide){
+				dom.style.display = 'none';
+				$btnShowPosition.innerText = '显示鼠标当前位置';
+				document.onmousemove = null;
+			}else{
+				dom.style.display = 'block';
+				$btnShowPosition.innerText = '显示鼠标当前位置(激活)';
+			}
+		}
+
+		// 测试鼠标按键
+		var $mouseTest = document.getElementById('mouseTest');
+		$mouseTest.onmousedown = function(e){
+			e = e || window.event;
+			console.log(e.button);
+			var _text;
+			switch(e.button){
+				case 0:
+				_text= "你按了鼠标“左键”";
+				break;
+				case 1:
+				_text = window.attachEvent ? "你按了鼠标“左键”" : '你按了鼠标“滚轮”';
+				break;
+				case 2:
+				_text = '你按了鼠标“右键”';
+				break;
+				case 4:
+				_text = '你按了鼠标“滚轮”';
+				break;
+			}
+			this.innerText = _text;
+		}
+	}
+	</script>
+</head>
+<body>
+	<button id="mouseevent">显示鼠标事件event对象</button>
+	<button id="keyboardevent">显示键盘事件event对象</button>
+	<button id="btnShowPosition">显示鼠标当前位置</button>
+	<ul id="eventList">
+	</ul>
+	<div id="mousePosition"></div>
+	<div id="mouseTest">鼠标按键检测</div>
+</body>
+</html>

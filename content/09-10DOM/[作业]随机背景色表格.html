@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>生成随机背景色表格</title>
+	<style>
+		table{margin-top:20px;width:100%;border:1px solid #ddd;border-collapse:collapse;}
+		td,th{border:1px solid #ddd;padding:5px 10px;}
+		td{padding:0;height:30px;}
+		td input{width:100%;height:30px;border:none;background-color:#ffc;}
+	</style>
+	<script>
+		window.onload = function(){
+			/*
+				生成随机背景色表格
+					1）给按钮绑定点击事件，根据#row输入框的值生成行
+						1>根据#cell输入框的值生成列
+						2>给每列生成一个随机颜色作为背景色
+
+				颜色表示方式：
+					英文: red,green
+					hex:# ff 66 00 ==> #f60
+					rgb: rgb(255,102,0)
+					rgba: alpha
+					...
+			 */
+			
+			var row = document.getElementById('row');
+			var cell = document.getElementById('cell');
+			var btnCreate = document.getElementById('btnCreate');
+			var container = document.getElementsByClassName('container')[0];
+
+			btnCreate.onclick = function(){
+				// 生成表格
+				var table = document.createElement('table');
+
+				// 根据#row输入框的值生成行
+				var _row = row.value;
+				var _cell = cell.value;
+				for(var i=0;i<_row;i++){
+					var tr = table.insertRow(i);
+
+					// 1>根据#cell输入框的值生成列
+					for(var j=0;j<_cell;j++){
+						var td = tr.insertCell(j);
+
+						// 写入随机背景色
+						td.style.backgroundColor = randomColor();
+					}
+				}
+
+				// 把表格写入页面
+				// 写入前清空.container
+				container.innerHTML = '';
+				container.appendChild(table);
+			}
+
+			// 打印索引值
+			container.onclick = function(e){
+				console.log(e.target.cellIndex)
+			}
+
+			// 随机颜色函数封装
+			function randomColor(){
+				var color = '#';
+				var str = '0123456789abcdef';
+
+				for(var i=0;i<6;i++){
+					var idx = parseInt(Math.random()*str.length);
+					color += str[idx];	//ES5 == ECMAScript5
+				}
+				
+
+				return color;
+			}
+			// randomColor();//==> #ff6600;
+		}
+	</script>
+</head>
+<body>
+	行<input type="text" id="row"> 列<input type="text" id="cell"><button id="btnCreate">生成随机背景色表格</button>
+	<div class="container"></div>
+</body>
+</html>

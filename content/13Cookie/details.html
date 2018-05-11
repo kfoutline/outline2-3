@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>作业_记录商品浏览记录</title>
+	<style>
+		ul{list-style:none;padding:0;margin:0;}
+		.goods h1{font-size:24px;}
+		.goods img{width:320px;border:2px solid #ddd;}
+		.price{color:#f00;font-weight:bold;}
+		.price::before{
+			content:"￥";
+		}
+
+		.history{position:absolute;top:0;right:0;bottom:0;padding:0 15px;width:220px;border-left:5px solid #ddd;font-size:12px;overflow-y:auto;}
+		.history h4{font-weight: normal;}
+		.history img{width:80px;}
+	</style>
+	<script>
+	window.onload = function(){
+		var history = document.getElementsByClassName('history')[0];
+		var goods = document.getElementsByClassName('goods')[0];
+
+		var currentGoods;
+		var historyList = [];
+		var cookie = document.cookie.split('; ');
+		cookie.forEach(function(item){
+			var arr = item.split('=');
+			if(arr[0] === 'currentGoods'){
+				currentGoods = JSON.parse(arr[1]);
+			}else if(arr[0] === 'historyList'){
+				historyList = JSON.parse(arr[1]);
+			}
+		});
+
+		// 把当前添加到historyList
+		// 如果当前商品已经存在，则删除旧数据（防止重复）
+		for(var i=0;i<historyList.length;i++){
+			if(historyList[i].guid === currentGoods.guid){
+				historyList.splice(i,1);
+				break;
+			}
+		}
+		historyList.unshift(currentGoods);
+		document.cookie = 'historyList=' + JSON.stringify(historyList);
+
+		// 把浏览记录写入页面
+		var ul = document.createElement('ul');
+		historyList.forEach(function(goods){
+			var li = document.createElement('li');
+			li.setAttribute('data-guid',goods.guid);
+
+			var link = document.createElement('a');
+			link.href = '#';
+
+			var img = document.createElement('img');
+			img.src = goods.imgurl;
+
+			var h4 = document.createElement('h4');
+			h4.innerHTML = goods.title;
+
+			var price = document.createElement('p');
+			price.className = 'price';
+			price.innerHTML = goods.price;
+
+
+			link.appendChild(img);
+			li.appendChild(link);
+			li.appendChild(h4);
+			li.appendChild(price);
+
+			ul.appendChild(li);
+		});
+
+		history.appendChild(ul);
+
+
+		// 写入大图
+		goods.setAttribute('data-guid',currentGoods.guid);
+
+		var img = document.createElement('img');
+		img.src = currentGoods.imgurl;
+
+		var h1 = document.createElement('h1');
+		h1.innerHTML = currentGoods.title;
+
+		var price = document.createElement('p');
+		price.className = 'price';
+		price.innerHTML = currentGoods.price;
+
+
+		goods.appendChild(img);
+		goods.appendChild(h1);
+		goods.appendChild(price);
+	}
+	</script>
+</head>
+<body>
+	<div class="goods"></div>
+	<div class="history"></div>
+</body>
+</html>

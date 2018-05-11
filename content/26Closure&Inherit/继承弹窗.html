@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>面向对象弹窗</title>
+	<style>
+	html{overflow:hidden;}
+		ul {
+	        margin: 0;
+	        padding: 0;
+	        list-style: none;
+	    }
+	    .popover{position:absolute;left:200px;top:100px;width:300px;height:200px;border:1px solid #ccc;background-color:#fff;}
+	    .popover .title{height:50px;line-height:50px;padding:0 10px;background:linear-gradient(#fff, #efefef 5%, #ddd);}
+	    .popover .content{padding:15px;}
+	    .popover .footer{position:absolute;left:0;bottom:0;right:0;padding:20px;text-align:center;}
+	    .footer button{display:inline-block;margin:0 5px;padding:5px 15px;border:1px solid #ddd;background:linear-gradient(#efefef, #cfcfcf);}
+	    .popover .btnClose{position:absolute;top:0;right:0;line-height:50px;width:30px;text-align: center;}
+	    .popover .btnClose:hover{background-color: #f00;color:#fff;}
+	    .overlay{position:fixed;left:0;top:0;right:0;bottom:0;background-color:#000;opacity:0.3;}
+	</style>
+	<script src="../common.js"></script>
+	<script>
+		function Popover(opt){
+			var defaults = {
+				title:'弹窗标题',
+				content:'弹窗内容',
+				width:500,
+				height:300,
+				pos:{x:0,y:0},
+				dragable:true,
+				overlay:0.3
+			}
+			// 覆盖默认值
+			for(var name in opt){
+				defaults[name] = opt[name];
+			}
+
+			// 描述属性
+			this.title = defaults.title;
+			this.content = defaults.content;
+			this.width = defaults.width;
+			this.height = defaults.height;
+			this.pos = defaults.pos;
+			this.dragable = defaults.dragable;
+			this.overlay = defaults.overlay;
+
+			this.init();
+		}
+
+		// 描述方法
+
+		// 初始化
+		// 生成html结构
+		Popover.prototype.init = function(){
+			var self = this;
+
+			// 弹窗主体
+			var pop = document.createElement('div');
+			pop.className = 'popover';
+
+			// 设置弹窗样式
+			pop.style.width = this.width + 'px';
+			pop.style.height = this.height + 'px';
+			pop.style.left = this.pos.x + 'px';
+			pop.style.top = this.pos.y + 'px';
+
+			// 标题
+			var title = document.createElement('div');
+			title.className = 'title';
+			title.innerHTML = this.title;
+
+			// 内容
+			var content = document.createElement('div');
+			content.className = 'content';
+			content.innerHTML = this.content;
+
+			// 生成遮罩层
+			var overlay = document.createElement('div');
+			overlay.className = 'overlay';
+
+			// 关闭按钮
+			var btnClose = document.createElement('div');
+			btnClose.className = 'btnClose';
+			btnClose.innerHTML = '&times;';
+
+			// 绑定点击事件，实现关闭弹窗效果
+			btnClose.onclick = function(){
+				self.close();
+			}
+			btnClose.onmousedown = function(e){
+				e.stopPropagation();
+			}
+
+			// 组合
+			if(self.title) pop.appendChild(title);
+			pop.appendChild(content);
+			pop.appendChild(btnClose);
+
+			// 把DOM节点赋值给对象的属性
+			this.ele = pop;
+			this.zzc = overlay;
+
+
+			// 是否可拖拽
+			if(self.dragable){
+				self.drag();
+			}
+
+			self.show();
+			
+			// 实现链式调用的关键
+			return this;
+		}
+
+		// 弹出
+		Popover.prototype.show = function(){
+			var self = this;
+			var overlay = this.zzc;
+			var pop = this.ele;
+
+			if(self.overlay){
+				// 把遮罩层写入页面
+				document.body.appendChild(overlay);
+			}
+
+			// 把弹窗写入body
+			document.body.appendChild(pop);
+
+			return this;
+		}
+		// 关闭
+		Popover.prototype.close = function(){
+			var pop = this.ele;
+			var overlay = this.zzc;
+			document.body.removeChild(pop);
+			if(this.overlay){
+				document.body.removeChild(overlay);
+			}
+
+			return this;
+		}
+
+		// 拖拽
+		Popover.prototype.drag = function(){
+			var pop = this.ele;
+
+			pop.onmousedown = function(e){
+				e = e || window.event;
+				// 获取点击时鼠标距弹窗左上角的坐标
+				var oLeft = e.offsetX;
+				var oTop = e.offsetY;
+
+				// 给document绑定move事件
+				document.onmousemove = function(evt){
+					evt = evt || window.event;
+
+					pop.style.left = evt.clientX - oLeft + 'px';
+					pop.style.top = evt.clientY - oTop + 'px';
+
+					evt.preventDefault();
+				}
+
+				e.preventDefault();
+			}
+
+			pop.onmouseup = function(){
+				document.onmousemove = null;
+			}
+
+			return this;
+		}
+
+
+		/* 
+			广告弹窗
+			1）没有遮罩层、标题、不可拖拽
+			2）显示在右下角
+			3）固定宽度
+			4）5s后自动关闭
+		*/
+	
+		function AdPop(content){
+			// 借用构造函数继承属性
+			Popover.call(this,{
+				title:false,
+				content:content || '不看广告，看疗效',
+				width:160,
+				height:200,
+				pos:{x:window.innerWidth-162,y:window.innerHeight-202},
+				dragable:false,
+				overlay:false
+			});
+
+			var self = this;
+
+			// 10s后自动关闭
+			self.timeout = setTimeout(function(){
+				self.close();
+			},5000);
+		}
+
+		// 继承方法
+		AdPop.prototype = Object.create(Popover.prototype);
+		AdPop.prototype.close = function(){
+			var self = this;
+			var pop = self.ele;
+			animate(pop,{top:window.innerHeight},function(){
+				document.body.removeChild(pop);
+			});
+
+			// 清除5s后关闭延迟
+			clearTimeout(self.timeout);
+
+			return this;
+		}
+		
+
+
+		window.onload = function(){
+			new AdPop('新型弹窗');
+			new Popover({title:'我的弹窗',width:600,content:'我的世界'});
+
+			new Popover({title:'你的弹窗',width:800,content:'你的世界',pos:{x:100,y:500},overlay:false});
+		}
+	</script>
+</head>
+<body>
+	<!-- <div class="popover">
+        <div class="title">弹窗标题</div>
+        <div class="content">弹窗内容</div>
+        <div class="footer">
+            <button class="ok">确认</button>
+            <button class="close">关闭</button>
+        </div>
+    </div>
+    <div class="overlay"></div> -->
+</body>
+</html>

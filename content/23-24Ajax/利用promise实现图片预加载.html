@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>利用promise实现图片预加载</title>
+	<script>
+		var preloadImage = function (path) {
+		  return new Promise(function (resolve, reject) {
+		    var image = new Image();
+		    image.onload  = ()=>{
+		    	resolve(image);
+		    }
+		    image.onerror = reject;
+		    image.src = path;
+		  });
+		};
+
+		//使用
+		preloadImage('https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1490299577809&di=98be7a1fe87dde72f0b3d22f13c7042c&imgtype=0&src=http%3A%2F%2Fimg.pconline.com.cn%2Fimages%2Fupload%2Fupc%2Ftx%2Fphotoblog%2F1107%2F05%2Fc5%2F8235345_8235345_1309860318137.jpg').then(function(img){
+			document.body.appendChild(img);
+		    console.log(img.offsetWidth,img.offsetHeight);
+		})
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

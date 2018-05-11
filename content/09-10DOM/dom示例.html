@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>DOM树</title>
+		<style>
+			#baidu:hover{color:#f00;}
+		</style>
+		<script>
+		/*
+			节点类型（nodeType）
+				标签节点：1
+				属性节点：2
+				文本节点：3
+			节点名称：(nodeName)
+				返回标签名（大写）
+
+			节点获取方式(在所有获取页面元素节点的方法中，getElementById速度最快)：
+				1)document.getElementById();//通过id获取节点元素,返回一个节点（元素）
+				2)getELementsByTagName();//通过标签名获取页面上的节点（元素）,返回一个类数组
+				3)getElementsByName();//通过标签name属性获取节点（元素），返回一个类数组，常用于获取表单元素
+				4)getElementsByClassName();//通过标签class属性获取节点，返回一个类数组（低版本的浏览器不支持这个方法）
+		 */
+			window.onload = function(){
+				//这里的代码会在整个html文档加载完成后执行
+				//通过ID取页面上的节点（元素）
+				var list = document.getElementById('list');
+				console.log(list.nodeType)
+
+				// 通过标签名获取页面上的节点（元素）,返回一个类数组
+				var h1 = document.getElementsByTagName('h1');//[h1,h1]
+				console.log(h1[0].nodeType)
+
+				// 获取#list下的所有a标签
+				var links = list.getElementsByTagName('a');
+				for(var i=0;i<links.length;i++){
+					console.log(links[i]);
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<h1>DOM树</h1>
+		<div id="list">
+			<a href="#">Google</a>
+			<a href="#" id="baidu">百度</a>
+			<a href="#">Bing</a>
+		</div>
+	</body>
+</html>

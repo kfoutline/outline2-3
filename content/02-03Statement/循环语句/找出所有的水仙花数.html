@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>找出所有的水仙花数</title>
+	
+</head>
+<body>
+
+	<script>
+		/*
+			找出所有的水仙花数
+				* 三位数
+				* 水仙花数 = 各位数字的立方和
+			
+			153 => 1,5,3
+		 */
+		
+		var res = '';
+
+		for(var n=100;n<1000;n++){
+			// 个位
+			var g = n%10;
+
+			// 十位
+			var s = parseInt(n/10)%10;
+
+			// 百位
+			var b = parseInt(n/100);
+
+			// 找出水仙花数
+			if(n=== b*b*b + s*s*s + g*g*g){
+				res += n + ', ';
+			}
+		}
+
+		// 输出所有水仙花数
+		document.write(res);
+		
+		
+	</script>
+</body>
+</html>

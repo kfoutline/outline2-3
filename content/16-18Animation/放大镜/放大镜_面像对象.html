@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>原生js放大镜效果</title>
+    <style>
+    .bigPic img{width:300px;}
+	.arzoom{position:relative;}
+	.arzoom .minzoom{position: absolute;width:30px;height:30px;border:1px solid #fc0;background-color:#ff0;background-color: rgba(255,255,0,.3);filter:alpha(Opacity=30);}
+	.arbzoom{position: absolute;width:200px;height:300px;overflow:hidden;}
+	.arbzoom img{position: absolute;left:0;right:0;}
+    </style>
+    <script>
+    	/*
+    		面向对象放大镜
+    			1、鼠标移入图片区域
+    				1）显示放大镜效果
+    				2）鼠标位置显示半透明方块
+    			2、鼠标移出图片区域
+    				1）放大区域消失
+    				2）半透明区域小时
+    			3、鼠标在图片区域移动
+    				1）半透明方块跟随移动
+    				2）大图跟随移动
+    					计算比例
+    	 */
+    	function Arzoom(options){
+    		this._init(options);
+    	}
+
+    	// 重新设置constructor属性
+    	Object.defineProperty(Arzoom.prototype,'constructor',{value:Arzoom});
+
+    	// 设置原型方法
+    	Arzoom.prototype = {
+    		// 初始化操作：
+    		// 生成属性、html结构等
+    		_init:function(opts){
+    			var defaults = {
+    				position:'right',
+    				gap:15,
+    				width:300,
+    				height:300,
+    				element:'.arzoom'
+    			}
+
+    			// 覆盖默认设置
+    			for(var key in opts){
+    				defaults[key] = opts[key];
+    			}
+
+    			// 设置对象属性
+    			this._opts = defaults;
+
+    			var self = this;
+
+    			// 获取页面激活元素和大图
+    			// 大图一般为当前元素内图片的data-big属性，如果没有则直接使用该图片的src属性
+    			var element = document.querySelector(this._opts.element);
+    			var smallImg = element.children[0];
+    			var bigSrc = smallImg.getAttribute('data-big') || smallImg.src;
+    			var bigImg = new Image();
+    			bigImg.src = bigSrc;
+
+    			// 生成半透明方块,并写入element对象
+				var overBlock = document.createElement('span');
+				overBlock.className = 'minzoom';
+
+    			// 生成html结构
+    			var wrap = document.createElement('div');
+    			wrap.className = 'arbzoom';
+
+    			// 设置大图区域样式
+    			var smallPos = smallImg.getBoundingClientRect();
+    			wrap.style.left = smallPos.right + self._opts.gap + 'px';
+    			wrap.style.top = smallPos.top + 'px';
+    			wrap.style.width = self._opts.width + 'px';
+    			wrap.style.height = self._opts.height + 'px';
+
+
+    			// 把大图写入wrap
+    			wrap.appendChild(bigImg);
+
+
+    			
+				
+
+    			// 给元素绑定鼠标事件
+    			element.onmouseenter = function(e){
+    				e = e || window.event;
+
+    				self.show(function(){
+    					element.appendChild(overBlock);
+
+    					// 计算大图与小图的比率，并计算透明方块的宽高
+    					ratio = smallImg.offsetWidth / bigImg.offsetWidth;
+
+    					overBlock.style.width = self._opts.width * ratio + 'px';
+    					overBlock.style.height = self._opts.height * ratio + 'px';
+    				});
+    				
+    				// 半透明方块和大图跟随鼠标移动效果
+    				element.onmousemove = function(evt){
+    					evt = evt || window.event;
+
+    					// 把方块定位到鼠标正中央
+    					var left = evt.pageX - element.offsetLeft - overBlock.offsetWidth/2;
+    					var top = evt.pageY - element.offsetTop - overBlock.offsetHeight/2;
+
+    					if(left<0){
+    						left = 0;
+    					}else if(left > smallImg.offsetWidth - overBlock.offsetWidth){
+    						left = smallImg.offsetWidth - overBlock.offsetWidth
+    					}
+    					if(top < 0){
+    						top = 0;
+    					}else if(top > smallImg.offsetHeight - overBlock.offsetHeight){
+    						top = smallImg.offsetHeight - overBlock.offsetHeight
+    					}
+    					overBlock.style.left = left + 'px';
+    					overBlock.style.top = top + 'px';
+
+    					// 设置大图对应位置
+    					var bLeft = left / ratio;
+    					var bTop = top / ratio;
+    					if(bLeft > bigImg.offsetWidth - wrap.offsetWidth){
+    						bLeft = bigImg.offsetWidth - wrap.offsetWidth;
+    					}
+    					if(bTop > bigImg.offsetHeight - wrap.offsetHeight){
+    						bTop = bigImg.offsetHeight - wrap.offsetHeight;
+    					}
+
+    					bigImg.style.left = -bLeft + 'px'; 
+    					bigImg.style.top = -bTop + 'px';
+    				}
+    			}
+
+    			element.onmouseleave = function(){
+    				self.hide(function(){
+    					element.removeChild(overBlock);
+    				});
+    			}
+
+    			this._bp = wrap;
+    			// this._sp = element;
+    			// this._ob = overBlock;
+    			 
+    			
+    		},
+    		show:function(callback){
+    			document.body.appendChild(this._bp);
+    			typeof callback === 'function' && callback();
+    		},
+    		hide:function(callback){
+    			document.body.removeChild(this._bp);
+    			typeof callback === 'function' && callback();
+    		}
+    	}
+
+
+
+    	document.onreadystatechange = function(){
+    		if(document.readyState === 'complete'){
+    			// 使用
+    			new Arzoom();
+    		}
+    	}
+    	
+    </script>
+</head>
+
+<body>
+	<!-- 
+		src:放置小图路径
+		jqimg:放置大图路径
+		(大图小图比例越大放大镜效果越明显)
+	 -->
+   <div class="bigPic arzoom"><img src="car.jpg" data-big="car.jpg"></div>
+</body>
+
+</html>

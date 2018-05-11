@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>随机生成一个五位以内的数，然后输出该数共有多少位，每位分别是什么</title>
+	<script>
+		// 随机生成一个五位以内的数
+
+		// number用数组保存每位数字
+		/*var number = [];
+
+		var tag = ['万','千','百','十','个'];
+
+		// res用于显示个、十、百、千、万对应的数字
+		var res = '';
+		for(var i=0;i<5;i++){
+			var num = parseInt(Math.random()*10);
+			number.push(num);
+
+			res += tag[i] + '位：' + num + ', '
+		}
+		console.log(number.join('') + '有' + number.length + '位，每位分别为：' + res);
+		*/
+
+
+		// 随机生成一个五位以内的数
+		var number = parseInt(Math.random()*100000);//7,67,567,1567,31567
+
+		// arr用于放置随机数的各位数字
+		// 按顺序：[万,千,百,十,个]
+		var arr = [];//[7,6,5]
+
+		// 遍历提取个、十、百、千、万、位数
+		for(var i=1;i<=number;i*=10){
+			var num = parseInt(number/i)%10;
+			arr.push(num);
+		}
+
+		// res用于显示个、十、百、千、万对应的数字
+		var res = '';
+		var tag = ["个", "十", "百", "千", "万"];
+
+		for(var i=0;i<arr.length;i++){
+			res += tag[i] + '位：' + arr[i] + ', '
+		}
+
+		console.log(number + '有' + arr.length + '位，每位分别为：' + res);
+
+		
+	</script>
+</head>
+<body>
+	<h1>随机生成一个五位以内的数，然后输出该数共有多少位，每位分别是什么</h1>
+</body>
+</html>

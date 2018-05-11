@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>贪吃蛇</title>
+	<style>
+		.container{position:relative;width:600px;height:300px;background-color:#000;}
+		.container .snake-block{position:absolute;width:8px;height:8px;background-color: #fff;}
+		.container .snake-block.head{background-color:#0f0;}
+		.container .snake-block.food{animation:shan 0.5s infinite;}
+
+		@keyframes shan{
+			0%{opacity:1;}
+			100%{opacity:0;}
+		}
+	</style>
+	<script>
+		window.onload = function(){
+			/*
+				思路：
+				1）初始化
+					* 配置信息
+					* 生成蛇身
+					* 生成食物
+				1）蛇移动
+					* 头部移动
+					* 其他逐个跟随
+				2）撞墙检测
+				3）吃掉食物
+					* 蛇身增长
+					* 蛇吃掉食物后随机出现新的食物
+			 */
+			var container = document.getElementsByClassName('container')[0];
+
+			// 用于保存蛇身
+			var snakeBlockList = [];
+
+			// 配置信息
+			var config = {
+				len:3,//初始化蛇的长度
+				xspeed:5,//水平移动速度
+				yspeed:0//垂直移动速度
+				// derection:'right'
+			}
+
+			var newBlock;
+
+			init();
+
+			// 蛇走动
+			var moveTimer = setInterval(function(){
+				var head = snakeBlockList[0];
+				head.style.left = head.offsetLeft + config.xspeed + 'px';
+				head.style.top = head.offsetTop + config.yspeed + 'px';
+				for(var i=1;i<snakeBlockList.length;i++){
+					// setPosition(snakeBlockList[0].o,y);
+					snakeBlockList[i].style.left = snakeBlockList[i-1].offsetLeft + config.xspeed*i + 'px';
+					snakeBlockList[i].style.top = snakeBlockList[i-1].offsetTop + config.yspeed*i + 'px';
+				}
+
+				// 碰撞检测
+				if(head.offsetLeft === newBlock.offsetLeft && head.offsetTop === newBlock.offsetTop){
+					eat();
+				}
+				// game over
+				else if(head.offsetLeft <= 0 || head.offsetLeft >= container.offsetWidth-head.offsetWidth || head.offsetTop <= 0 || head.offsetTop >= container.offsetHeight-head.offsetHeight){
+					gameover();
+				}
+			},300);
+
+			
+			// 初始化蛇
+			function init(){
+				for(var i=0;i<config.len;i++){
+					var snakeBlock = document.createElement('span');
+					snakeBlock.className = 'snake-block';
+					snakeBlockList.push(snakeBlock);
+					container.appendChild(snakeBlock);
+				}
+				
+				
+				setPosition(container.offsetWidth/2,container.offsetHeight/2);
+				createFood();
+
+				// 方向控制
+				document.onkeyup = function(e){
+					if(e.keyCode === 37){
+						config.yspeed = 0;
+						config.xspeed = -5;
+					}else if(e.keyCode === 39){
+						config.yspeed = 0;
+						config.xspeed = 5;
+					}else if(e.keyCode === 38){
+						config.xspeed = 0;
+						config.yspeed = -5;
+					}else if(e.keyCode === 40){
+						config.xspeed = 0;
+						config.yspeed = 5;
+					}
+				}
+			}
+
+			// 设置蛇头坐标
+			function setPosition(x,y){
+				snakeBlockList[0].style.left = x + 'px';
+				snakeBlockList[0].style.top = y + 'px';
+			}
+			
+
+			function eat(block){
+				snakeBlockList.push(block);
+
+				// 吃掉后移除food类
+				block.classList.remove('food');
+
+				// 生成新的色块
+				createFood();
+			}
+
+			// 随机出现色块
+			function createFood(){
+				newBlock = document.createElement('span');
+				newBlock.className = 'snake-block food';
+
+				// 随机位置
+				newBlock.style.cssText = 'left:' + randomNum(0,container.offsetWidth-8) + 'px;top:' + randomNum(0,container.offsetHeight-8) + 'px';
+
+				// 写入页面
+				container.appendChild(newBlock);
+			}
+
+
+			// 游戏结束
+			function gameover(){
+				clearInterval(moveTimer);
+				alert('Game Over!');
+			}
+
+
+			function randomNum(min,max){
+				return Math.floor(Math.random()*(max - min + 1)) + min;
+			}
+		}
+	</script>
+</head>
+<body>
+	<div class="container"></div>
+</body>
+</html>

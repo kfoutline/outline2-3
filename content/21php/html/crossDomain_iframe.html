@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>跨域解决方案之-iframe</title>
+	<script>
+		document.addEventListener('DOMContentLoaded',function(){
+			var iframe = document.createElement('iframe');
+			iframe.src = 'http://localhost:1001/test.html';
+			document.body.appendChild(iframe);
+			var status = 0;
+			iframe.onload = function(){
+				if(status === 0){
+					iframe.src = 'crossDomain_null.html';
+					status++;
+				}else{
+
+					console.log('onload:');
+					console.log(iframe.contentWindow.name);
+				}
+			}
+		})
+	</script>
+</head>
+<body>
+
+	
+</body>
+</html>

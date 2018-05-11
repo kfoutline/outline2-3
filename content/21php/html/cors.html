@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>利用CORS实现远程数据的获取</title>
+	<script>
+		var xhr = new XMLHttpRequest();
+
+		xhr.open('get','http://localhost/myphp/api/cors.php',true);
+
+		xhr.send(null);
+	</script>
+</head>
+<body>
+	<h1>利用CORS实现远程数据的获取</h1>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>用户登录</title>
+	<link rel="stylesheet" href="css/bootstrap.css">
+	<script src="js/require.js" data-main="js/login"></script>
+</head>
+<body>
+	<div class="container">
+		<h1>用户注册</h1>
+		<div class="form-group">
+			<label for="username">用户名：</label>
+			<input type="text" name="username" id="username" class="form-control">
+		</div>
+		<div class="form-group">
+			<label for="password">密码：</label>
+			<input type="password" class="form-control" name="password" id="password">
+		</div>
+		<div class="form-group">
+			<label for="email">email：</label>
+			<input type="email" class="form-control" name="email" id="email">
+		</div>
+		<div class="form-group">
+			<label for="grade">班级：</label>
+			<input type="text" class="form-control" name="grade" id="grade">
+		</div>
+		<div class="form-group">
+			<label for="grade">性别：</label>
+			<select name="gender" id="gender" class="form-control">
+				<option value="男">男</option>
+				<option value="女">女</option>
+			</select>
+		</div>
+		<div class="form-group">
+			<label for="birthday">生日：</label>
+			<input type="month" class="form-control" name="birthday" id="birthday">
+		</div>
+		<div class="form-group">
+			<label for="phone">手机：</label>
+			<input type="text" class="form-control" name="phone" id="phone">
+		</div>
+		<button class="btn btn-success" id="btnReg">注册</button>
+	</div>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script>
+	// 传统：
+		for (var i = 0; i < 5; ++i) {
+			setTimeout(function(){
+				console.log(i);
+			}, 100);
+		}
+
+		// 闭包
+		for(var i=0;i<5;i++){
+			(function(i){
+				setTimeout(function(){
+					console.log(i);
+				},100)
+			})(i);
+		}
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

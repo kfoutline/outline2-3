@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>计算任意数的阶乘n</title>
+	
+</head>
+<body>
+	<input type="text" id="num">
+	<button id="btn">计算阶乘</button>
+	<div id="output"></div>
+	<script>
+		/*
+			计算任意数的阶乘n
+			5! = 1*2*3*4*5 =>120
+
+			1）获取元素
+			2）给按钮添加点击事件
+				* 获取输入的值
+				* 计算这个值的阶乘
+				* 输出结果到#output
+		 */
+		
+		// 1）获取元素
+		var num = document.getElementById('num');
+		var btn = document.getElementById('btn');
+		var output = document.getElementById('output');
+
+		// 2）给按钮添加点击事件
+		btn.onclick = function(){
+			// * 获取输入的值
+			var _num = num.value;
+
+			var res = 1;
+
+			// * 计算这个值的阶乘
+			for(var n=2;n<=_num;n++){
+				// res = res * n;
+				res *= n;
+			}
+
+			// * 输出结果到#output
+			output.innerHTML = res;
+		}
+	</script>
+</body>
+</html>

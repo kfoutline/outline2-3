@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script>
+		var xhr = new XMLHttpRequest();
+		xhr.onload =function(){
+			console.log(xhr.responseText);
+		}
+		xhr.open('post','http://test02.egoal-tech.com/TradeSystem/MobileService2_8_7/StockServiceMobile.svc/GetLatestTradeDate',true);
+		// xhr.setRequestHeader('content-type','application/x-www-form-urlencode');
+		xhr.setRequestHeader('content-type',"application/x-www-form-urlencoded");
+		xhr.send('AccountId=7fa9cdd9-2a70-44fa-bfba-830ae4f1a885&opKey=260ac07c-5f69-4fcf-b75f-3a46065dBBBB');
+	</script>
+</head>
+<body>
+
+</body>
+</html>

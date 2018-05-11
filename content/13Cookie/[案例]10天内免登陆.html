@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>10天免登录</title>
+	<style type="text/css">
+		    body{
+			    background-color:rgb(177, 208,224); font: normal 12px Trebuchet MS; color:#000;
+		    }
+		    form{ 
+			    width:220px; padding:10px;
+			    background-color:#DDEEF6; 
+			    box-shadow: 0px 0px 10px 0px #888888;
+			    border:1px solid #DDEEF6;
+			    border-radius:6px;
+			    margin: auto;
+		    }
+		    .roundedCorners-textbox{ 
+				border:1px solid #999; width:160px;
+		    }
+			.checkbox {
+				margin-left: 30px;
+				border:1px solid #999; width:20px;
+			}
+	</style>
+</head>
+<script src="../common.js"></script>
+<script>
+	window.onload = function(){
+		/*
+			10天免登录
+				1)点击提交按钮时，判断是否勾选"10天内免登陆"选项
+					把用户名和密码写入cookie（添加过期时间是10天后）
+				2）页面刷新时，检查cookie是否存在
+					存在：直接跳转到百度页面
+					不存在：停留到当前页面
+
+		 */
+		var btnSubmit = document.getElementById('btnSubmit');
+		var checkbox = document.getElementsByClassName('checkbox')[0];
+		var username = document.getElementById('username');
+		var password = document.getElementById('password');
+
+		// 绑定点击事件
+		btnSubmit.onclick = function(e){
+			// 如果输入的用户名或密码为空，则阻止表单提交
+			if(username.value == '' || password.value == ''){
+				alert('你输入了吗？');
+				e.preventDefault();
+			}
+			// if(/^\s/.test(username.value) || password.value == ''){
+			// 	alert('你输入了吗？');
+			// 	e.preventDefault();
+			// }
+			// console.log(username.value.replace(/^\s*|\s*$/g,'').length)
+			// e.preventDefault()
+			// 获取当前时间
+			var now = new Date();
+
+			//在当前时间的基础上加10天
+			now.setDate(now.getDate() + 10);
+
+			//如果勾选“10天免登录”,写入cookie
+			if(checkbox.checked){
+				// document.cookie = 'username=' + username.value + ';expires=' + now;
+				// document.cookie = 'password=' + password.value + ';expires=' + now;
+				
+				// 利用封装函数实现cookie的写入
+				setCookie('username',username.value,now);
+				setCookie('password',password.value,now);
+			}
+		}
+
+		// 读取cookie
+		var _username  = getCookie('username');
+		var _password = getCookie('password');
+
+		if(_username && _password){
+			document.forms[0].submit();
+		}
+	}
+</script>
+<body>
+	<form action="http://www.baidu.com" method="get">	
+		<label>账号</label>
+		<input id="username" type="text" /><br /><br />
+		<label>密码</label>
+		<input id="password" type="text" /><br /><br />	
+    	<label><input type="checkbox" class="checkbox" />
+		10天内免登陆</label>
+    	<br/><br/>
+		<input type="submit" value="确定" id="btnSubmit" />
+		<input type="reset" value="清空" />
+	</form>	
+</body>
+</html>

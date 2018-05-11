@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>ES6的继承</title>
+	<script>
+		class Person{
+			// 这里定义方法不能使用function关键字，否则报错
+			// 这里也不能声明属性，只能声明取值器/设值器
+
+			// 构造函数
+			constructor(name){
+				// 定义属性必须写在构造函数内
+				this._name = name;
+			}
+
+			// 原型方法
+			say(){
+				console.log(`hi, my name is ${this.name}`);
+			}
+
+			// 取值器
+			get name(){
+				return this._name;
+			}
+
+			// 设置器
+			set name(name){
+				this._name = name;
+			}
+		}
+
+		var p1 = new Person('laoxie');
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

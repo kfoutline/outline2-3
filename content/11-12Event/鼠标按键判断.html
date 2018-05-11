@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>判断鼠标按键</title>
+	<style>
+		#box{padding:30px;background-color:#efefef;border:1px solid #ddd;font-size:30px;text-align:center;color:#999;}
+	</style>
+	<script>
+		window.onload = function(){
+			var box = document.getElementById('box');
+
+			box.onmousedown = function(e){
+				console.log(e.button);
+				if(e.button == 0){
+					box.innerHTML = '你按了左键'
+				}else if(e.button == 1){
+					box.innerHTML = '你滚了吧';
+				}else if(e.button == 2){
+					box.innerHTML = '你按了右键';
+				}
+			}
+
+			document.oncontextmenu = function(e){
+				e.preventDefault();
+			}
+		}
+	</script>
+</head>
+<body>
+	<div id="box">鼠标按键测试</div>
+</body>
+</html>

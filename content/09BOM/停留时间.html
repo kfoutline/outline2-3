@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>轮播图</title>
+	<script>
+	/*
+		[案例]停留在页面的时间
+			1)获取进入页面的时间
+			2)每秒更新，显示“当前时间”与“进入页面”时间的差值
+	 */
+	window.onload = function(){
+		var oGap = document.getElementById('gap');
+		var start = new Date();//进入页面的时间
+		var end = start;
+		setInterval(function(){
+			end = new Date();
+
+			// 获取毫秒差值
+			// var gap = (Date.parse(end) - Date.parse(start)) / 1000;
+			// var gap = Math.round((end - start)/1000);
+			var gap = (end.getTime() -start.getTime())/1000;
+			oGap.innerHTML = '您在页面停留了'+ gap + '秒';
+			// document.write('您在页面停留了'+ gap + '秒');
+		},1000);
+	}
+	</script>		
+</head>
+<body>
+	<div id="gap"></div>
+</body>
+</html>

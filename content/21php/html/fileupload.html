@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>文件上传</title>
+	<script>
+		document.addEventListener('DOMContentLoaded',function(){
+			var myPic = document.querySelector('#myPic');
+			var btn = document.querySelector('.btnSubmit');
+			var output = document.querySelector('#output');
+
+			var xhr = new XMLHttpRequest();  
+			
+			xhr.onload = function(e) {  
+			      if (xhr.status == 200) {  
+			          output.innerHTML = "Uploaded!" ;  
+			     } else {  
+			          output.innerHTML = "Error " + xhr.status + " occurred uploading your file.<br \/>";  
+			     }  
+			};  
+
+			btn.onclick = function(){
+				// var data = new FormData(document.forms['fileupload']);
+				var data = new FormData();
+				data.append("myPic", document.getElementById("myPic").files[0]);
+				xhr.open("POST", "/api/file_upload.php" , true);
+				xhr.send(data);console.log(data);
+				return false;
+			}
+		})
+	</script>
+</head>
+<body>
+	<!-- <form action="/api/file_upload.php" method="post" enctype="multipart/form-data" name="fileupload"> -->
+	<form name="fileupload">
+		<input type="file" id="myPic" name="myPic">
+		<button class="btnSubmit">提交</button>
+	</form>
+	<div id="output"></div>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>jsonp</title>
+	<script src="js/jquery-3.1.1.js"></script>
+	<script>
+	function getData(data){
+		console.log(1111);
+		console.log(data)
+	}
+		jQuery(function($){
+			$.ajax({
+				url:'http://localhost:8000/api/jsonp.php',
+				dataType:'jsonp',
+
+				// 改变参数
+				jsonp:'cb',
+
+				// 改变接收数据函数名
+				jsonpCallback:'getData',
+				
+				success:function(data){
+					console.log(data)
+				}
+			})
+
+		})
+	</script>
+</head>
+<body>
+	<h1>jquery jsonp</h1>
+</body>
+</html>

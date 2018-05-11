@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>获取页面元素</title>
+	<script>
+		window.onload = function(){
+			var box = document.getElementById('box');
+			// var container = box.getElementById('container');
+
+			// var b = document.getElementsByClassName('box');
+			var c = box.getElementsByClassName('con');console.log(c);
+			var list = document.getElementsByName('list');console.log(list)
+		}
+	</script>
+</head>
+<body>
+	<div id="box" class="box">
+		<div id="con" class="con">
+			<ul name="list">
+				<li>列表01</li>
+				<li>列表02</li>
+				<li>列表03</li>
+				<li>列表04</li>
+				<li>列表05</li>
+				<li>列表06</li>
+				<li>列表07</li>
+				<li>列表08</li>
+				<li>列表09</li>
+				<li>列表10</li>
+			</ul>
+		</div>
+	</div>
+</body>
+</html>

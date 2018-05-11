@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script>
+		let xhr = new XMLHttpRequest();
+
+		xhr.onload = function(){
+			console.log(xhr.responseText);
+			document.body.innerHTML = xhr.responseText;
+		}
+
+		xhr.open('get','../api/goods.php',true);
+		xhr.send();
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

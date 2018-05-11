@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Cookie保存位置信息</title>
+    <style>
+		html,body{padding-bottom:1000px;}
+		#hg{position:absolute;top:0;right:0;background-color:#f00;}
+    </style>
+    <script>
+    window.onload = function() {
+    	/*
+    		Cookie的存储
+    			保存：
+    			document.cookie = '';
+    				每次只能保存一个cookie,只要名字不一样，就不会覆盖
+				读取：
+					var cookie = document.cookie;
+						//"top=150; left=262"
+    	 */
+        var hg = document.getElementById('hg');
+
+        // 查找当前是否保存cookie数据
+        // 如果有数据，就给图片设置top,left属性
+        var cookie = document.cookie;
+        if(cookie){
+        	//["top=150","left=262","test=1601"]
+        	var cookies = cookie.split('; ');
+
+        	// 把数组转成对象
+        	var cookieObj = {};
+        	for(var i=0;i<cookies.length;i++){
+        		//_obj=['top','150'],['left','262']
+        		var _obj = cookies[i].split('=');
+        		cookieObj[_obj[0]] = _obj[1];//cookieObj={top:'150',left:'262'}
+        	}
+
+        	hg.style.left = cookieObj.left + 'px';
+        	hg.style.top = cookieObj.top + 'px';
+        }
+
+        hg.onmousedown = function(e) {
+            var offsetX = e.offsetX;
+            var offsetY = e.offsetY;
+            document.onmousemove = function(evt) {
+                var top = evt.pageY - offsetY;
+                var left = evt.pageX - offsetX;
+
+                hg.style.top = top + 'px';
+                hg.style.left = left + 'px';
+
+                var now = new Date();
+
+                // 在当前时间上加2分钟
+                now.setMinutes(now.getMinutes() + 1);
+
+                // 保存cookie
+                document.cookie = 'top='+top + ';expires='+now;
+                document.cookie = 'left='+left + ';expires='+now;
+
+                // 阻止浏览器默认行为（图片的移动）
+                evt.preventDefault();
+            }
+            e.preventDefault();
+        }
+
+        // 清除浏览器默认行为
+        /*hg.ondragstart = function(e){
+        	e.preventDefault();
+        }
+*/
+        document.onmouseup = function() {
+            document.onmousemove = null;
+        }
+    }
+    </script>
+</head>
+
+<body>
+<img src="img/bird.jpg" id="hg">
+</body>
+
+</html>

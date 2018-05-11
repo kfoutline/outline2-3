@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>判断数据类型</title>
+	<script>
+		//借用构造函数
+		//call & apply
+		
+		function type(data){
+			var res;
+			res = Object.prototype.toString.call(data);
+			res = res.slice(8,-1).toLowerCase();
+
+			return res;
+		}
+
+		
+		//type([]);//array
+		//type(10);//number
+		//type({});//object
+		//type(true)//boolean
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

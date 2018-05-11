@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>动态生成表格</title>
+	<style>
+		table{margin-top:20px;width:800px;border:1px solid #ddd;border-collapse:collapse;}
+		td,th{border:1px solid #ddd;padding:5px 10px;}
+	</style>
+	<script>
+	window.onload = function(){
+		/*
+			[案例]动态生成表格
+				1)获取子节点：
+				2）新建节点：
+				3）添加节点：
+				4）删除节点：
+				5）获取元素属性值：getAttribute()/setAttribute()
+				6）自定义属性：data-*
+			
+			table对象属性&方法：
+				rows	返回包含表格中所有行的一个数组
+				tBodies	返回包含表格中所有 tbody 的一个数组
+				insertRow(index)	在表格中插入一个新行。
+				deleteRow(index)	从表格删除一行。
+
+			tr对象属性&方法
+				cells	返回包含表格中所有单元格的一个数组
+				rowIndex			返回该行在表中的位置
+				sectionRowIndex		返回在 tBody 、tHead 或 tFoot 中行的位置。
+				insertCell(index)	在一行中的指定位置插入一个空的列	
+				deleteCell(index)	删除行中的指定的单元格
+
+			td/th对象属性&方法：
+				cellIndex	返回单元格在表格行的单元格集合中的位置。
+
+		 */
+		
+		var username = document.getElementById('username');
+		var age = document.getElementById('age');
+		var tel = document.getElementById('tel');
+		var qq = document.getElementById('qq');
+		var btnSave = document.getElementById('btnSave');
+		var tableList = document.getElementById('tableList');
+
+		// #tableList表格最后一个<子>节点
+		var tbody = tableList.lastChild;
+		var trs = tbody.children;//得到的就仅仅是html元素节点
+
+		// 绑定点击事件
+		btnSave.onclick = function(){
+			// 当前已存在的行数
+			var len = trs.length;
+
+			// 新建一行tr
+			var tr = tbody.insertRow(len);
+
+			// 创建列
+			var cell0 = tr.insertCell(0);
+			var cell1 = tr.insertCell(1);
+			var cell2 = tr.insertCell(2);
+			var cell3 = tr.insertCell(3);
+			var cell4 = tr.insertCell(4);
+			var cell5 = tr.insertCell(5);
+
+			cell0.innerHTML = len + 1;
+			cell1.innerHTML = username.value;
+			cell2.innerHTML = age.value;
+			cell3.innerHTML = tel.value;
+			cell4.innerHTML = qq.value;
+
+			// 删除按钮
+			var btnDel = document.createElement('button');
+			btnDel.innerHTML = '删除';
+			btnDel.setAttribute('data-index',len);
+			btnDel.className = 'del';
+			cell5.appendChild(btnDel);
+
+			btnDel.onclick = function(){
+				var currentTr = this.parentNode.parentNode;
+				tbody.deleteRow(currentTr.sectionRowIndex);
+			}
+
+			
+		}
+	}
+	</script>
+</head>
+<body>
+	<label for="username">姓名</label>
+	<input type="text" id="username" name="username">
+	<label for="age">年龄</label>
+	<input type="text" id="age" name="age">
+	<label for="tel">电话</label>
+	<input type="text" id="tel" name="tel">
+	<label for="qq">QQ号</label>
+	<input type="text" id="qq" name="qq">
+	<button id="btnSave">保存</button>
+	<div class="list">
+		<table id="tableList">
+			<thead>
+				<tr>
+					<th width="40">序号</th>
+					<th>姓名</th>
+					<th>年龄</th>
+					<th>电话</th>
+					<th>QQ号</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody></tbody></table>
+</body>
+</html>

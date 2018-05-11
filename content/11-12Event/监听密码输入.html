@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>监听密码输入</title>
+	<script>
+		window.onload = function(){
+			/*
+				监听密码输入
+					1）获取页面元素
+					2）给输入框绑定keypress事件
+						e.keyCode ==> ascii ==> 字符（String.fromCharCode()）
+					3）清空输入框
+			 */
+			// 1）获取页面元素
+			var psw = document.getElementById('psw');
+			var output = document.getElementById('output');
+			var btnClear = psw.nextElementSibling;
+
+			// 2）给输入框绑定keypress事件
+			psw.onkeypress = function(e){
+				// 兼容event
+				e = e || window.event;console.log(psw.value)
+
+				// output.innerHTML += String.fromCharCode(e.keyCode);
+				output.innerHTML = psw.value;
+			}
+
+			// 清空输入
+			btnClear.onclick = function(){
+				psw.value = '';
+				output.innerHTML = '';
+
+				// 清空后获得焦点
+				psw.focus();
+			}
+
+		}
+	</script>
+</head>
+<body>
+	<h1>监听密码输入</h1>
+	<input type="password" id="psw"><button>清除</button>
+	<div id="output"></div>
+</body>
+</html>

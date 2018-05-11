@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>判断一个数是偶数还是奇数，并输出判断结果</title>
+
+</head>
+<body>
+	<input type="text" id="number">
+	<button onclick="jiou()">奇偶判断</button>
+	<div id="output"></div>
+
+	<script>
+		/*
+			要求：判断一个数是偶数还是奇数，并输出判断结果；
+			目的：点击按钮，判断输入数字的奇偶
+				1）给按钮添加点击事件
+				2）声明一个函数
+					* 获取输入的值
+					* 判断是奇数还是偶数
+		 */
+		
+		// 获取页面元素
+		var number = document.getElementById('number');
+		var output = document.getElementById('output');
+
+		// 得到是#output的内容（String），内容跟元素没有任何关系
+		// var content = document.getElementById('output').innerHTML;
+			
+		// 2）声明一个函数
+		function jiou(){
+			// * 获取输入的值
+			var _num = number.value;
+
+			// * 判断是奇数还是偶数
+			if(_num%2 === 0){
+				output.innerHTML = '偶数';
+
+				// 改变的是content这个变量，不能修改元素的内容
+				// content = '偶数';
+			}else{
+				output.innerHTML = '奇数';
+			}
+		}
+	</script>
+</body>
+</html>

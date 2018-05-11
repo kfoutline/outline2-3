@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>函数实现加减乘除</title>
+	<script>
+		window.onload = function(){
+			var num1 = document.getElementById('number1');
+			var num2 = document.getElementById('number2');
+			var res = document.getElementById('result');
+
+			var btnAdd = document.getElementById('btnAdd');
+			var btnSub = document.getElementById('btnSub');
+			var btnMul = document.getElementById('btnMul');
+			var btnDiv = document.getElementById('btnDiv');
+
+			//添加单击事件
+			btnAdd.onclick = function(){
+				add();
+			}
+			btnSub.onclick = function(){
+				sub();
+			}
+			btnMul.onclick = function(){
+				mul();
+			}
+			btnDiv.onclick = function(){
+				div();
+			}
+
+			var result;//运算结果
+			// 加法
+			function add(){
+				result = Number(num1.value) + Number(num2.value);
+				res.innerHTML = result;
+			}
+
+			// 减法
+			function sub(){
+				result = num1.value - num2.value;
+				res.innerHTML = result;
+			}
+
+			// 乘法
+			function mul(){
+				result = num1.value * num2.value;
+				res.innerHTML = result;
+			}
+
+			// 除法
+			function div(){
+				result = num1.value / num2.value;
+				res.innerHTML = result;
+			}
+
+			
+		}
+	</script>
+</head>
+<body>
+	<input type="text" id="number1">
+	<input type="text" id="number2">
+	<button id="btnAdd">+</button>
+	<button id="btnSub">-</button>
+	<button id="btnMul">x</button>
+	<button id="btnDiv">/</button>
+	<div id="result"></div>
+</body>
+</html>

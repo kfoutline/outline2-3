@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>06计算王根基的薪资</title>
+	<script>
+		/*
+			小王入职薪水10K，每年涨幅10%，10年后工资多少？
+				这10年小王赚了多少钱
+		*/
+	
+		// 第一年薪水
+		var salary = 10000;
+
+		var total = salary*12;
+
+		for(var year=2;year<=10;year++){
+			salary = salary + salary*0.1;
+
+			total = total + salary*12;
+		}
+
+		document.write('十年后，小王工资为：' + salary.toFixed(2));
+		document.write('<br>');
+		document.write('这十年小王赚了：' + total.toFixed(2));
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

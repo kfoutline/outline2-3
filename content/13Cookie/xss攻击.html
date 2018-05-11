@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>xss攻击</title>
+	<script>
+		window.onload = function(){
+			var datalist = document.getElementById('datalist');
+			var msg = document.getElementById('msg');
+			var btn = msg.nextElementSibling;
+
+			btn.onclick = function(){
+				var p = document.createElement('p');
+				p.innerHTML = msg.value;
+
+				datalist.appendChild(p);
+			}
+		}
+	</script>
+</head>
+<body>
+	<div id="datalist">
+		
+	</div>
+	<textarea id="msg"></textarea>
+	<button>提交</button>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>画时钟</title>
+	<style>
+		#box{position:absolute;left:50%;top:50%;margin:-100px 0 0 -100px;width:200px;height:200px;border:1px solid #ddd;border-radius:50%;}
+		.hour{position:absolute;width:10px;height:5px;background-color: #ddd;}
+		.min{position:absolute;width:5px;height:3px;background-color: #ddd;}
+	</style>
+	<script>
+		window.onload = function(){
+			var box = document.getElementById('box');
+			var h12 = document.getElementById('h12');
+			var h3 = document.getElementById('h3');
+			var h6 = document.getElementById('h6');
+			var h9 = document.getElementById('h9');
+
+			for(var i=0;i<60;i++){
+				var div = document.createElement('div');
+				var r;
+				if(i%5===0){
+					div.className ='hour';
+					r = 0;
+				}else{
+					div.className ='min';
+					r = 0;
+				}
+				div.style.left = 100*Math.cos(360/60*i*Math.PI/180) + 100 + 10*Math.cos(360/60*i*Math.PI/180) + 'px';
+				div.style.top = 100*Math.sin(360/60*i*Math.PI/180) + 100 + 10*Math.sin(360/60*i*Math.PI/180) + 'px';
+				div.style.transform = 'rotate('+i*6+'deg)';
+				box.appendChild(div);
+			}
+		}
+	</script>
+</head>
+<body>
+	<div id="box"></div>
+</body>
+</html>

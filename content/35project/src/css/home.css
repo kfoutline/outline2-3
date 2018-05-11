@@ -1,0 +1,97 @@
+@charset "UTF-8";
+/*
+	支持css写法
+	* 注释：
+		* 单行
+		* 多行
+	* 嵌套
+	* 变量
+		* 全局
+		* 局部
+		* 多值变量
+		* 特殊变量
+ */
+/*
+	导航样式
+
+ */
+.nav {
+  height: 40px;
+  padding: 5px 20px;
+  line-height: 40px;
+  background-color: #5b8c58;
+  color: #fff;
+}
+
+.nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+.nav li {
+  float: left;
+  padding: 5px 15px;
+  position: relative;
+  color: #666;
+}
+
+.nav li a {
+  display: inline-block;
+  color: #fff;
+}
+
+.nav li a.home {
+  background-color: #fc0;
+}
+
+.nav li ul {
+  position: absolute;
+  padding: 5px 20px;
+  color: #ccc;
+}
+
+.nav li ul a:hover {
+  color: #5b8c58;
+}
+
+.nav li:last-child {
+  float: right;
+}
+
+h1 {
+  font-size: 72px;
+  color: #fff;
+  background-color: #5b8c58;
+}
+
+h2 {
+  font-size: 36px;
+  color: #fff;
+  background-color: #5b8c58;
+}
+
+h3 {
+  font-size: 24px;
+  color: #fff;
+  background-color: #5b8c58;
+}
+
+h4 {
+  font-size: 18px;
+  color: #fff;
+  background-color: #5b8c58;
+}
+
+h5 {
+  font-size: 14.4px;
+  color: #fff;
+  background-color: #5b8c58;
+}
+
+h6 {
+  font-size: 12px;
+  color: #fff;
+  background-color: #5b8c58;
+}

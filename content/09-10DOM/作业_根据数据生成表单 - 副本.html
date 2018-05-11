@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>根据数据生成表单</title>
+	<script>
+	window.onload = function(){
+		/*
+			根据数据生成表单
+			目的：根据数据生成html结构
+				1）生成select下拉框 ==> <label for="">xx</label><select><option></option></select>
+				2）生成多行文本框   ==> <label>xx</label><textarea></textarea>
+				3）checkbox/radio ==> <labe>xx</labe> <label><input type="checkbox">篮球</label>
+				4）其他情况 ==> <label>xxx</label> <input type="text">
+		 */
+		
+		var arr = [{
+                label: "用户名",
+                name: "username",
+                type: "text"
+            }, {
+                label: "密码",
+                name: "password",
+                type: "password"
+            }, {
+                label: "性别",
+                name: "gender",
+                type: "select",
+                value: ['男', '女', '不男', '不女', 'Gay', '妖王']
+            }, {
+                label: "爱好",
+                name: "hobby",
+                type: "checkbox",
+                value: ['篮球', '足球', '羽毛球', '兵乓球', '爬山', '购物', '旅游', '看美女']
+            }, {
+                label: '是否已婚',
+                name: 'married',
+                type: 'radio',
+                value: ['已婚', '未婚']
+            },
+            {
+                label: '简介',
+                name: 'resume',
+                type: 'textarea'
+            }];
+
+        var form = document.createElement('form');
+
+        // 遍历数据，根据类型生成不同的html结构
+        arr.forEach(function(item){
+            // 生成一个p标签,用于方式表单元素
+            var p = document.createElement('p');
+
+            // 生成label标签，每一个表单元素都以一个与其对应的label标签
+            var label = document.createElement('label');
+            label.for = item.name;
+            label.innerHTML = item.label;
+
+            // 表单元素：select,textarea,checkbox,radio,input
+            var input;
+
+            switch(item.type){
+                case 'select':
+                    input = document.createElement('select');
+                    input.name = item.name;
+                    input.id = item.name;
+
+                    // 生成下拉列表
+                    input.innerHTML = item.value.map(function(opt){
+                        return '<option value="'+opt+'">' + opt + '</option>';
+                    }).join('');
+                    break;
+                case 'textarea':
+                    input = document.createElement('textarea');
+                    input.name = item.name;
+                    input.id = item.name;
+                    break;
+                case 'checkbox':
+                case 'radio':
+                    // 由于单选复选框选项较多，所以生成一个span标签，用于包裹所有的checkbox或radio
+                    input = document.createElement('span');
+
+                    input.innerHTML = item.value.map(function(opt){
+                        return '<label><input type="'+item.type+'" value="'+opt+'">'+opt+'</label>'
+                    }).join('');
+                    break;
+                default:
+                    input = document.createElement('input');
+                    input.type = item.type;
+                    input.name = item.name;
+                    input.id = item.name;
+            }
+
+            // 把label与input放进p标签
+            p.appendChild(label);
+            p.appendChild(input);
+
+            // 把p标签写入表单
+            form.appendChild(p);
+        });
+
+        // 遍历完成后把form表单写入页面
+        document.body.appendChild(form);
+	}
+		
+
+
+
+	</script>
+</head>
+<body>
+	<!-- <form>
+        <p>
+            <label for="username">用户名</label>
+            <input type="text" name="username" id="username">
+        </p>
+        <p>
+            <label for="password">密码</label>
+            <input type="password" name="password" id="password">
+        </p>   
+    </form> -->
+</body>
+</html>

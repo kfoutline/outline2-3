@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>js功能演示</title>
+	<style>
+		#girl{transition:transform 1s;}
+		.move{transform:translateX(600px);}
+	</style>
+</head>
+<body>
+	<div><img src="images/mv0.jpg" id="girl"></div>
+	<button id="btnKan">美女走开</button>
+	<button id="btnChange">换一个</button>
+	<button id="btnGo">走你~</button>
+	<script>
+		var girl = document.getElementById('girl');
+		var btnKan = document.getElementById('btnKan');
+		var btnChange = document.getElementById('btnChange');
+		var btnGo = document.getElementById('btnGo');
+		var index = 0;
+
+		btnKan.onclick = function(){
+			if(girl.style.display === 'none'){
+				girl.style.display = 'block';
+				btnKan.innerHTML = '美女走开';
+			}else{
+				girl.style.display = 'none';
+				btnKan.innerHTML = '美女回来';
+			}
+		}
+
+		btnChange.onclick = function(){
+			index++;
+			index %= 5;
+			girl.src = 'images/mv'+index+'.jpg';
+		}
+
+		btnGo.onclick = function(){
+			girl.className = 'move';
+		}
+	</script>
+</body>
+</html>

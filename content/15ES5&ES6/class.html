@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>es6的类</title>
+	<script>
+		class Person{
+			constructor(name,age){
+				this.name = name;
+				this.age = age;
+			}
+
+			// 静态方法
+			static getInfo(){
+				return `我叫${this.name},今年${this.age}岁`;
+			}
+			say(){
+		        console.log(`Hello everyone, my name is ${this.name}, I'm ${this.age} years old`)
+		    }
+		}
+		var p = new Person('lx',18);
+
+ 
+ 		// 继承
+		class Man extends Person {
+		    constructor(name, age, hobby) {
+		        //this.gender = gender; // 报错
+		        super(name, age);
+		        this.gender = '男'; // 正确
+		        this.hobby = hobby
+		    }
+		}
+
+		var m = new Man('老王',40,'住隔壁');
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

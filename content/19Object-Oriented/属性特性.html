@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>属性特性</title>
+	<script>
+		var mySymbol = Symbol();
+		var obj = {
+			name:'xxx',
+			[mySymbol]: 'textS'
+		}
+
+		console.log(obj[mySymbol])
+
+		Object.defineProperty(obj,'age',{
+			get:function(){
+				return obj[mySymbol];
+			},
+			set:function(val){
+				obj[mySymbol] = val;
+			}
+		})
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>04显示当月的天数</title>
+	
+</head>
+<body>
+	<input type="text" id="month">
+	<button id="btn">查看天数</button>
+	<div id="output"></div>
+	<script>
+		/*
+			题目：输入月份，显示当月的天数
+			要求：使用switch语句
+				1）获取页面元素
+				2）给按钮添加点击事件
+				3）声明一个函数
+					* 获取输入的月份
+					* 输入当前月份的天数
+
+			月份天数
+				* 1月：31
+				* 2月：28
+				* 3月：31
+				* 4月：30
+				* 5月：31
+				* 6月：30
+				* 7月：31
+				* 8月：31
+				* 9月：30
+				* 10月：31
+				* 11月：30
+				* 12月：31
+
+			switch语句穿透
+		 */
+		
+		// 1）获取页面元素
+		var month = document.getElementById('month');
+		var output = document.getElementById('output');
+		var btn = document.getElementById('btn');
+
+		// 2）给按钮添加点击事件
+		btn.onclick = showDays;
+
+
+		// 3）声明一个函数
+		function showDays(){
+			// * 获取输入的月份
+			var _month = Number(month.value);
+
+			switch(_month){
+				case 1:
+				case 3:
+				case 5:
+				case 7:
+				case 8:
+				case 10:
+				case 12:
+					// 符合条件，则从这里开始向下执行
+					output.innerHTML = _month + '月份有31天';
+					break;
+				case 2:
+					output.innerHTML = _month + '月份有28天';
+					break;
+				case 4:
+				case 6:
+				case 9:
+				case 11:
+					output.innerHTML = _month + '月份有30天';
+					break;
+				default:
+					output.innerHTML = '请输入正确的月份';
+			}
+		}
+	</script>
+</body>
+</html>

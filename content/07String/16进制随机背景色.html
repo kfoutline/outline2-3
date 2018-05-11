@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		body{background-color:#cfcfcf;}
+	</style>
+	<script>
+		window.onload = function(){
+			var btn = document.getElementById('btn');
+
+
+			btn.onclick = function(){
+				// rgb(255,0,0);
+				var color = 'rgb('+ parseInt(Math.random()*256) +','+ parseInt(Math.random()*256) +','+ parseInt(Math.random()*256) +')';
+
+				/*		'rgb(    255    ,    0        ,    0       )'
+				color = 'rgb(' + red + ',' + green + ',' + blue + ')';
+						'rgb(255'
+						'rgb(255,'
+						'rgb(255,0'
+						'rgb(255,0,'
+						'rgb(255,0,0'
+						'rgb(255,0,0)'*/
+
+				console.log(color)
+
+				// 获取body元素
+				document.body.style.backgroundColor = color;
+
+				// 改变css样式
+				// .style
+			}
+		}
+	</script>
+</head>
+<body>
+	<button id="btn">随机背景色</button>
+</body>
+</html>

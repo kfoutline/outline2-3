@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Promise对象</title>
+	<script>
+		var p = new Promise(function(resolve,reject){
+			console.log(resolve,reject,'setTimeout');
+			setTimeout(function(){
+				resolve('延迟2秒');
+			},2000);
+		});
+
+		p.then(function(data){
+			console.log(data);
+			return '你是我的玫瑰，你是我的花'
+		}).then(function(data){
+			console.log(data);
+
+			var p = new Promise(function(resolve,reject){
+				setTimeout(function(){
+					resolve('准备结束');
+				},2000);
+			});
+			return p;
+		}).then(function(data){
+			console.log(3,data);
+		});
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

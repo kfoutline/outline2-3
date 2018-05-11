@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>xss测试</title>
+	<style>
+		textarea{display:block;width:400px;height:100px;}
+		.datalist{width:500px;}
+		.datalist li{position:relative;line-height:2;border-bottom:1px dotted #ddd;}
+		.datalist li time{position: absolute;right:0;top:0;color:#999;}
+	</style>
+	<script>
+	window.onload = function(){
+		var btnSend = document.querySelector('#btnSend');
+		var msg = document.querySelector('#msg');
+		var datalist = document.querySelector('.datalist');
+
+		var xhr = new XMLHttpRequest();
+		xhr.onreadystatechange = function(){
+			if(xhr.readyState === 4 && xhr.status === 200){
+				var res = JSON.parse(xhr.responseText);
+
+				var ul = document.createElement('ul');
+				ul.innerHTML = res.map(function(item){
+					return '<li>'+item.msg+'<time>'+item.create_time+'</time></li>';
+				}).join('');
+
+				datalist.innerHTML = '';
+				datalist.appendChild(ul);
+			}
+		}
+
+		
+
+		var xhr_send = new XMLHttpRequest();
+		xhr_send.onreadystatechange = function(){
+			if(xhr_send.readyState === 4 && xhr_send.status === 200){
+				console.log(xhr_send.responseText);
+				msg.value = '';
+				getMsg();
+			}
+		}
+
+
+		
+		getMsg();
+		btnSend.onclick = function(){
+			var _msg = msg.value;
+			
+			xhr_send.open('get','../api/xss.php?msg='+_msg,true);
+			xhr_send.send();
+		}
+
+
+		function getMsg(){
+			xhr.open('get','../api/xss.php',true);
+			xhr.send();
+		}
+	}
+		
+	</script>
+</head>
+<body>
+	<h1>xss跨站攻击演示</h1>
+	<p>输入的内容没有过滤，直接存入数据库</p>
+	<textarea name="msg" id="msg"></textarea>
+	<button id="btnSend">发送</button>
+
+	<div class="datalist">
+		
+	</div>
+	
+</body>
+</html>

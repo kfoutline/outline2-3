@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>放烟花效果</title>
+	<style type="text/css">
+	html,body{overflow:hidden;height:100%;}
+	body,div,p{margin:0;padding:0;}
+	body{background:#000;font:12px/1.5 arial;color:#7A7A7A;}
+	a{text-decoration:none;outline:none;}
+	#tips,#copyright{position:absolute;width:100%;height:50px;text-align:center;background:#171717;border:2px solid #484848;}
+	#tips{top:0;border-width:0 0 2px;}
+	#tips a{font:14px/30px arial;color:#FFF;background:#F06;display:inline-block;margin:10px 5px 0;padding:0 15px;border-radius:15px;}
+	#tips a.active{background:#FE0000;}
+	#copyright{bottom:0;line-height:50px;border-width:2px 0 0;}
+	#copyright a{color:#FFF;background:#7A7A7A;padding:2px 5px;border-radius:10px;}
+	#copyright a:hover{background:#F90;}
+	p{position:absolute;top:55px;width:100%;text-align:center;}
+	.fire {
+		width: 3px;
+		height: 30px;
+		background: white;
+		position: absolute;top:100%;
+	} 
+	.spark {
+		position: absolute;
+		width: 3px;
+		height: 3px;
+	}
+</style>
+<script src="../common.js"></script>
+<script>
+	/*
+		放烟花效果
+			思路：
+			1）烟花飞入阶段
+				1>给document绑定点击事件,得到点击的坐标(x,y)
+				2>生成一个烟花：left = x;
+				3>烟花飞入：top = y; animate()
+
+			2）烟花爆炸阶段
+	 */
+	// 1）烟花飞入阶段
+	
+	// coord = {x:44,y:66}
+	function Fire(coord){
+		this.left = coord.x;
+		this.top = coord.y;
+
+		this.init().move();
+	}
+
+	// 烟花方法
+	Fire.prototype.init = function(){
+		// 生成div
+		var _fire = document.createElement('div');
+		_fire.className = 'fire';
+
+		// 设定烟花出现的位置
+		_fire.style.left = this.left + 'px';
+
+		// 把烟花写入页面
+		document.body.appendChild(_fire);
+
+		this.ele = _fire;
+
+		return this;
+	}
+
+	Fire.prototype.move = function(){
+		var self = this;
+		var _fire = self.ele;
+
+		// 飞入过程改变top,height
+		// 当飞入指定位置后，产生爆炸效果
+		// 所以爆炸效果要写在回调函数内
+		animate(_fire,{top:self.top,height:3},function(){
+			// 清除烟花
+			document.body.removeChild(_fire);
+
+			// 爆炸效果
+			boom(self.left,self.top);
+		});
+	}
+
+	window.onload = function(){
+		var btnAuto = document.getElementById('auto');
+
+		// 1>给document绑定点击事件,得到点击的坐标(x,y)
+		document.onclick = function(e){
+			e = e || window.event;
+
+			// 2>生成一个烟花
+			new Fire({x:e.clientX,y:e.clientY});
+		}
+
+		var timer;
+		btnAuto.onclick = function(e){
+			if(timer === undefined){
+				timer = setInterval(function(){
+					new Fire({x:getRandomNum(10,window.innerWidth-10),y:getRandomNum(10,window.innerHeight-100)})
+				},2000);
+				btnAuto.innerHTML += '(激活)'
+			}else{
+				clearInterval(timer);
+				btnAuto.innerHTML = '自动放烟花'
+			}
+			
+			e.stopPropagation();
+		}
+
+		
+	}
+
+	// 爆炸函数
+	function boom(left,top){
+		for(var i=0;i<50;i++){
+			new Spark(left,top);
+		}
+	}
+
+	// 烟灰构造函数
+	function Spark(left,top){
+		this.left = left;
+		this.top = top;
+
+		this.init().move();
+	}
+
+	Spark.prototype.init = function(){
+		// 生成一个div
+		var _spark = document.createElement('div');
+		_spark.className = 'spark';
+
+		// 随机颜色
+		_spark.style.backgroundColor = getRandomColor();
+
+		// 确定烟灰的位置
+		_spark.style.left = this.left + 'px';
+		_spark.style.top = this.top + 'px';
+
+		document.body.appendChild(_spark);
+
+		this.ele = _spark;
+
+		return this;
+	}
+
+	// 烟灰移动的方法
+	Spark.prototype.move = function(){
+		var _spark = this.ele;
+
+		// 随机速度
+		var hspeed = getRandomNum(-20,20);//horizontal
+		var vspeed = getRandomNum(-20,20);//vertical
+
+		var timer = setInterval(function(){
+			// 烟灰飞出屏幕后清除
+			// window.innerWidth:窗口宽度
+			// window.innerHeight:窗口高度
+			if(_spark.offsetLeft < 0 || _spark.offsetLeft > window.innerWidth || _spark.offsetTop > window.innerHeight){
+				document.body.removeChild(_spark);
+				// 清除定时器
+				clearInterval(timer);
+			}
+			_spark.style.left = _spark.offsetLeft + hspeed + 'px';
+			_spark.style.top = _spark.offsetTop + vspeed++ + 'px';
+		},30);
+
+		return this;
+	}
+</script>
+</head>
+<body>
+	<div id="tips"><a id="auto" href="javascript:;" class="">自动放烟花</a></div>
+</body>
+</html>

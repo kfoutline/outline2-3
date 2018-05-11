@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>聊天室</title>
+	<link href="css/bootstrap.css" type="text/css" rel="stylesheet">
+	<style>
+		.loginBar{position:relative;margin-top:15px;}
+		.loginBar .logout{position:absolute;right:35px;top:50%;margin-top:-10px;}
+		.loginBar h1{margin-top:0;}
+		.media{padding-bottom:15px;border-bottom:1px dotted #ccc;}
+		.media h4{margin:0;font-size:14px;overflow:hidden;text-overflow:ellipsis;}
+		.media .alert{margin-bottom:5px;}
+		#chatWindow{padding-right:10px;padding-bottom:20px;height:330px;overflow-y:auto;}
+		.chat-area{display:none;}
+		.current{color:#5cb85c;}
+		.current .media-body{text-align:right;}
+	</style>
+	<script>
+	document.addEventListener('DOMContentLoaded',()=>{
+		// 获取页面元素
+	 	var loginBar = document.querySelector('.loginBar');
+	 	var username = loginBar.querySelector('#username');
+	 	var gender = loginBar.querySelectorAll('input[name=gender]');
+	 	var btnLogin = loginBar.querySelector('#btnLogin');
+	 	
+	 	var chatArea = document.querySelector('.chat-area');
+	 	var chatWin = chatArea.querySelector('#chatWindow');
+	 	
+	 	var btnSend = chatArea.querySelector('#btnSend');
+		var msg = chatArea.querySelector('#msg');
+
+
+	 	var host = 'http://localhost:8001';
+	 	var ipUrl = host + '/api/getip.php';
+	 	var chatUrl = host + '/api/chats.php';
+		var getUrl = chatUrl + '?type=query';
+		var sendUrl = chatUrl + '?type=send';
+		var loginUrl = host + '/api/login.php';
+
+
+		// 全局变量
+		var _userIP;
+		var _username = '';
+		var _gender = '';
+		var timer;
+
+
+		// 获取IP
+		var ipXHR = new XMLHttpRequest();
+
+		// 处理数据
+		ipXHR.onreadystatechange = ()=>{
+			if(ipXHR.readyState === 4 && ipXHR.status === 200){
+				_userIP = ipXHR.responseText;
+			}
+		}
+
+		
+		var loginXHR = new XMLHttpRequest();
+
+		// 处理数据
+		loginXHR.onreadystatechange = ()=>{
+			if(loginXHR.readyState === 4 && loginXHR.status === 200){
+				var res = loginXHR.responseText;
+
+				try{
+					res = JSON.parse(res);
+					_username = res.username;
+					_gender = res.gender;
+
+					// 登录成功显示聊天窗口，并立即获取信息
+					showMsg();
+					getMsg();
+
+					// 利用定时器每隔3s发送一次ajax请求
+					timer = setInterval(getMsg,3000);
+				}catch(err){
+					clearInterval(timer);
+				}
+				
+			}
+		}
+
+		//获取信息对象
+		var getXHR = new XMLHttpRequest();
+
+		// 处理数据
+		getXHR.onreadystatechange = ()=>{
+			if(getXHR.readyState === 4 && getXHR.status === 200){
+				var res = JSON.parse(getXHR.responseText);
+				render(res);
+			}
+		}
+		
+
+		// 创建请求对象（发送）
+		var sendXHR = new XMLHttpRequest();
+
+		// 处理
+		sendXHR.onreadystatechange = function(){
+			if(sendXHR.readyState == 4  && (sendXHR.status === 200 || sendXHR.status === 304)){
+				console.log(sendXHR.responseText);
+
+				// 发送成功后清空输入框，保持焦点状态
+				msg.value = '';
+				msg.focus();
+
+
+				// 发送成功后立即获取数据
+				getMsg();
+			}
+		}
+
+		getIP();
+		checkLogin();
+
+
+		btnSend.onclick = sendMsg;
+
+		// ctrl + enter发送消息
+		msg.onkeyup = function(e){
+			e = e || window.event;
+			if(e.ctrlKey && e.keyCode === 13){
+				sendMsg();
+			}
+		}
+
+		
+		
+
+		// 1）点击登录时
+	 	btnLogin.onclick = function(){
+	 		_username = username.value;
+
+	 		// 验证用户名不能为空
+	 		if(/^\s*$/.test(_username)){
+	 			alert('好汉，留下的大名');
+	 			return;
+	 		}
+
+	 		// 验证性别
+	 		// 先获取选择的性别
+	 		
+	 		for(var i=0;i<gender.length;i++){
+	 			if(gender[i].checked){
+	 				_gender = gender[i].value;
+	 				break;
+	 			}
+	 		}
+	 		if(!_gender){
+	 			alert('你的性别还是秘密吗？');
+	 			return;
+	 		}
+
+			// 保存登录状态
+			checkLogin('login');
+			
+	 	}
+
+
+	 	// 登出
+	 	loginBar.onclick = e=>{
+	 		if(e.target.className.includes('logout')){
+	 			checkLogin('logout');
+	 			location.reload();
+	 		}
+	 	}
+
+
+		
+	 	function getIP(){
+			// ajax获取服务器数据
+			ipXHR.open('get',ipUrl,false);
+			ipXHR.send();
+		}
+
+		function checkLogin(action){
+			var url = loginUrl;
+			if(action){
+				url += '?action=' + action;
+			}
+			if(_username && _gender){
+				url += '&username='+_username + '&gender='+_gender
+			}
+
+			
+
+			loginXHR.open('get',url,true);
+			loginXHR.send();
+		}
+
+		function getMsg(){
+			// ajax获取服务器数据
+			getXHR.open('get',getUrl,true);
+			getXHR.send();
+		}
+
+		function showMsg(show){
+
+			// 1>显示聊天窗口
+			chatArea.style.display = 'block';
+
+			// 2>隐藏登录窗口，并显示登陆信息
+			loginBar.innerHTML = _username + ' ' + _gender + ', 欢迎登陆多人聊天系统，您当前的IP地址为：' + _userIP + '<button class="btn btn-default btn-xs logout">退出</button>';
+		}
+
+		// 封装发送消息
+		function sendMsg(){
+			// 先获取输入的信息
+			var _msg = msg.value;
+
+			sendXHR.open('post',sendUrl + '&sender=' + _username + '&msg=' + _msg + '&gender=' + _gender,true);
+			sendXHR.send(null);
+		}
+
+		// 数据写入页面函数
+	 	function render(data){
+	 		// var data = res.data;
+
+	 		// 遍历数组
+	 		chatWin.innerHTML = '';
+	 		// data.forEach(function(item){
+	 		for(var i=data.length-1;i>=0;i--){
+	 			var item = data[i];
+
+	 			var media = document.createElement('div');
+	 			media.className = 'media';
+	 			var mLeft = document.createElement('div');
+	 			mLeft.className = 'media-left';
+	 			mLeft.innerHTML = '<span class="glyphicon glyphicon-user alert alert-warning"></span><h4>'+item.username+'</h4>';
+	 			var mBody = document.createElement('div');
+	 			mBody.className = 'media-body';
+	 			mBody.innerHTML = item.content;
+
+	 			// 高亮显示本人发送的消息
+	 			if(_userIP === item.ip){
+	 				media.className = 'current';
+		 			media.appendChild(mBody);
+		 			mLeft.className = 'media-right';
+	 				media.appendChild(mLeft);
+	 			}else{
+	 				// 拼接
+		 			media.appendChild(mLeft);
+		 			media.appendChild(mBody);
+	 			}
+
+	 			chatWin.appendChild(media);
+	 		}
+
+	 		// 让最后一条消息可见
+	 		chatWin.lastElementChild.scrollIntoView();
+	 	}
+	});
+		
+	</script>
+</head>
+<body>
+	<div class="container">
+			<div class="loginBar jumbotron">
+				<h1>多人聊天系统</h1>
+				<div class="form-group">
+					<label for="username">用户名：</label>
+					<input type="text" id="username" class="form-control">
+				</div>
+				<div class="form-group">
+					<label for="gender">性别：</label>
+					<label class="checkbox-inline"><input type="radio" name="gender" value="男"> 男</label>
+					<label class="checkbox-inline"><input type="radio" name="gender" value="女"> 女</label>
+					<label class="checkbox-inline"><input type="radio" name="gender" value="保密"> 保密</label>
+				</div>
+				<button id="btnLogin" class="btn btn-primary">登录</button>
+			</div>
+			<div class="chat-area">
+				<div id="chatWindow">
+					<!-- <div class="media">
+						<div class="media-left">
+							<span class="glyphicon glyphicon-user alert alert-warning"></span>
+							<h4>yintao</h4>
+						</div>
+						<div class="media-body">
+							哈哈哈哈
+						</div>
+					</div>
+					<div class="media">
+						<div class="media-body">
+							aaaaaaaaaaaaaaaaa
+						</div>
+						<div class="media-right">
+							<span class="glyphicon glyphicon-user alert alert-success"></span>
+							<h4>xiaoming</h4>
+						</div>
+					</div>
+					<div class="media">
+						<div class="media-left">
+							<span class="glyphicon glyphicon-user alert alert-success"></span>
+							<h4>xiaomingxiaoming</h4>
+						</div>
+						<div class="media-body">bbbbbbbbbb</div>
+					</div>
+					<div class="media">
+						<div class="media-left">
+							<span class="glyphicon glyphicon-user alert alert-success"></span>
+							<h4>xiaoming</h4>
+						</div>
+						<div class="media-body">ccccccccccccc</div>
+					</div> -->
+				</div>
+				<div class="form-group">
+					<textarea id="msg" class="form-control"></textarea>
+				</div>
+				<div class="form-group">
+					<button class="btn btn-primary" id="btnSend">发送</button>
+				</div>
+			</div>
+		</div>
+</body>
+</html>

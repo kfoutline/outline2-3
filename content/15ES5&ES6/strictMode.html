@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>严格模式</title>
+	<script>
+		'use strict';
+
+		var obj={
+			p:"小王",
+			p:'王大锤'
+		}
+
+		// delete obj;
+
+		//function sum(a,a,b){}
+
+
+		var res = JSON.parse('{"a": 10, "b": 20,"c":15}', function(key,value){
+		    console.log(value);
+		    if(key==''){
+		    	return value;
+		    }
+		    if(value < 15){
+		        return undefined;
+		    }else{
+		        return value*value
+		    }
+		});
+		console.log(res);
+
+
+		var arr = [10,2,3,50];
+	    if(arr.length>3){
+	        function sum(){//报错
+
+	        }
+	    }
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

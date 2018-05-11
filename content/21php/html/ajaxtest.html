@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>测试ajax接口可用性</title>
+	<script>
+		var xhr = new XMLHttpRequest();
+		xhr.onreadystatechange = ()=>{
+			if(xhr.readyState === 4 && xhr.status === 200){
+				console.log(xhr.responseText);
+			}
+		}
+
+
+		xhr.open('get','http://localhost/myphp/api/ajaxtest.php',true);
+		xhr.send('name=xxx;age=20')
+	</script>
+</head>
+<body>
+	<h1>测试ajax接口可用性</h1>
+	<ol>
+		<li>
+			<h4>http://localhost/myphp/api/ajaxtest.php</h4>
+			<p>返回：字符串</p>
+		</li>
+	</ol>
+</body>
+</html>

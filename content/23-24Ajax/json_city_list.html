@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>城市列表_天气预报</title>
+	<style>
+		ul{list-style: none;padding:0;margin:0;}
+		a{text-decoration:none;}
+		.city-wrap { overflow-y: auto; }
+		.city-wrap h2 { margin: 0; padding: .5em; background: #ccc; color: #fff; }
+		.city-wrap ul { padding: 0; margin: 0; }
+		.city-wrap ul li { padding: 5px 0; border-top: 1px dotted #ddd; }
+		.city-wrap ul li:hover { background: #efefef; }
+		.city-wrap ul li > span { display: inline-block; padding: .5em; color: #26c8ac; }
+		.city-wrap a { display: inline-block; padding: .5em; color: #444; }
+		.city-wrap ul a:hover { color: #26c8ac; text-decoration: none; }
+		.city-wrap .hotCity a { width: 3.5em; text-align: center; }
+
+		.index-bar{background-color:#efefef;}
+		.index-bar a{width: 5.5em;}
+
+		#weather{border:1px solid #ddd;padding:10px;font-size:12px;}
+		#weather ul{padding:5px;overflow:hidden;}
+		#weather li{float:left;padding:5px;width:20%;height:200px;border-right:1px dotted #ddd;box-sizing:border-box;}
+		#weather li.last{border-right:none;float:right;}
+		#weather .date{padding-bottom:10px;margin-bottom:10px;text-align:center;font-weight:bold;border-bottom:1px dotted #ddd;}
+		
+		.type{height:70px;}
+		.qt{background:url(tianqi/1.png) no-repeat center;}
+		.zheny{background:url(tianqi/10.png) no-repeat center;}
+		.dy{background:url(tianqi/3.png) no-repeat center;}
+		.by{background:url(tianqi/12.png) no-repeat center;}
+		.zy{background:url(tianqi/10.png) no-repeat center;}
+		.xy{background:url(tianqi/9.png) no-repeat center;}
+		.yin{background:url(tianqi/4.png) no-repeat center;}
+	</style>
+	<script>
+		/*
+			城市列表
+				1）创建一个ajax请求，获取到数据
+					url:region.json
+				2)遍历数组
+					获取《热门城市》
+						写入hotCity数组
+					获取《拼音首字母》
+						生成一个A-Z为属性名的对象indexCity
+						把所有城市放入与首字母对应的indexCity对象属性里
+				3)遍历hotCity和indexCity，然后写入页面
+				4)给城市绑定点击事件
+					点击城市所在标签，jsonp获取对应天气数据
+		 */
+		window.onload = function(){
+			var cityWrap = document.getElementsByClassName('city-wrap')[0];
+			var req = new XMLHttpRequest();
+			req.onreadystatechange = function(){
+				if(req.readyState == 4 && req.status == 200){
+					// 获取所有的城市列表
+					var data = JSON.parse(req.responseText).regions;
+
+					//用于放置热门城市
+					var hotCity = [];
+
+					// 生成一个A-Z为属性名的对象indexCity
+					// {A:[{name:'澳门',id=xxx}]}
+					var indexCity = {};
+					'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach(function(name){
+						indexCity[name] = [];
+					});
+
+
+					//遍历data数组
+					data.forEach(function(province,idx){
+						// 如果province为直辖市或特别行政区
+						if(province.municipality || province.special){
+							if(province.hot){
+								hotCity.push({id:province.id,name:province.name});
+							}
+							indexCity[province.pinyin[0]].push({id:province.id,name:province.name});
+							return;
+						}
+
+						province.regions.forEach(function(city,idx){
+							if(city.hot){
+								hotCity.push({id:city.id,name:city.name});
+							}
+							indexCity[city.pinyin[0]].push({id:city.id,name:city.name});
+						});
+					});
+
+					// 把热门城市列表写入页面
+					var _html_hotcity = '<h2>热门城市</h2><ul><li>';
+					hotCity.forEach(function(city,idx){
+						_html_hotcity += '<a href="#" data-id="'+city.id+'">' + city.name + '</a>'
+					});
+					_html_hotcity += '</li></ul>';
+
+					var oHotCity = document.getElementsByClassName('hotCity')[0];
+					oHotCity.innerHTML = _html_hotcity;
+
+					// 城市首字母索引
+					// name:A-Z
+					var _html_letterIndex = '<div class="index-bar">';
+					var _html_cityList = '<ul>';
+
+					for(var name in indexCity){
+						// 当前字母没有对象城市时，不在页面显示
+						if(indexCity[name].length <= 0){
+							continue;
+						}
+						_html_letterIndex += '<a href="#'+name+'">'+name+'</a>';
+						_html_cityList += '<li><span id="'+name+'">'+name+'</span>'
+
+						// 遍历当前索引所包含的城市
+						// [{},{},{}]
+						indexCity[name].forEach(function(city,idx){
+							_html_cityList += '<a href="#" data-id="'+city.id + '">'+city.name + '</a>';
+						});
+						_html_cityList += '</li>';
+
+					}
+					_html_letterIndex += '</div>';
+					_html_cityList += '</ul>';
+
+					// 获取页面元素
+					var oIndexCity = document.getElementsByClassName('indexCity')[0];
+					oIndexCity.innerHTML = '<h2>按拼音字母查询</h2>' + _html_letterIndex + _html_cityList;
+				}
+			}
+			req.open('get','data/region.json',true);
+			req.send();
+
+			
+
+			// 创建script标签
+			
+
+			// 给父级city-wrap绑定点击事件
+			cityWrap.onclick = function(e){
+				e = e || window.event;
+				var citykey = e.target.getAttribute('data-id');
+				if(e.target.tagName == 'A' && citykey){
+					var script = document.getElementById('jsonpWeather');
+					if(script){
+						document.body.removeChild(script);
+					}
+					script = document.createElement('script');
+					script.id = 'jsonpWeather';
+						
+					// script.src = 'http://wthrcdn.etouch.cn/weather_mini?citykey='+citykey+'&callback=getWeather';
+					var cityname = e.target.innerHTML.replace('市','');
+					script.src = 'http://wthrcdn.etouch.cn/weather_mini?city='+cityname+'&callback=getWeather';
+					// 把script标签添加到head
+					document.body.appendChild(script);
+				}
+				e.preventDefault();
+			}
+		}
+
+		// 点击城市获取天气预报
+		function getWeather(data){console.log(data)
+			var weather = document.getElementById('weather');
+
+			// 昨天的天气
+			var yesterday = data.data.yesterday;
+
+			// 今天和未来四天的天气
+			var weathers = data.data.forecast;
+
+			var title = '<h2>'+data.data.city+'未来5天天气预报</h2>';
+			var ul = document.createElement('ul');
+			weathers.forEach(function(obj,idx){
+				var li = document.createElement('li');
+				// 给最后一个li添加样式
+				if(idx == weathers.length-1) li.className = 'last';
+
+				var _type;
+				switch(obj.type){
+					case '多云':
+						_type = 'dy';
+						break;
+					case '阴':
+						_type = 'yin';
+						break;
+					case '大到暴雨':
+						_type = 'by';
+						break;
+					case '中雨':
+						_type = 'zy';
+						break;
+					case '阵雨':
+					case '小雨':
+						_type = 'zheny';
+						break;
+					case '晴':
+						_type = 'qt';
+						break;
+				}
+				
+				li.innerHTML = '<div class="date">'+obj.date+ '</div><div class="type '+ _type +'">'+obj.type+'</div><div class="temp">'+obj.low.split(' ')[1] + '~' + obj.high.split(' ')[1] + '</div><div class="feng"><strong>'+obj.fengli+'</strong><span>'+obj.fengxiang+'</span></div>';
+				ul.appendChild(li);
+			});
+
+			// 写入前先清空
+			weather.innerHTML = '';
+			weather.innerHTML = title;
+			weather.appendChild(ul);
+		}
+	</script>
+</head>
+<body>
+	<div id="weather"></div>
+	<div class="city-wrap">
+		<div class="hotCity">
+			
+		</div>
+		<div class="indexCity">
+			
+		</div>
+	</div>
+</body>
+</html>

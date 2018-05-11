@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>面向对象弹窗</title>
+    <style type="text/css">
+    ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+    .popover{position:absolute;left:200px;top:100px;width:300px;height:200px;border:1px solid #ccc;background-color:#fff;}
+    .popover .title{height:50px;line-height:50px;padding:0 10px;background:linear-gradient(#fff, #efefef 5%, #ddd);}
+    .popover .content{padding:15px;}
+    .popover .footer{position:absolute;left:0;bottom:0;right:0;padding:20px;text-align:center;}
+    .footer button{display:inline-block;margin:0 5px;padding:5px 15px;border:1px solid #ddd;background:linear-gradient(#efefef, #cfcfcf);}
+    .popover .btn-close{position:absolute;right:0;top:0;padding:0 10px;line-height:50px;cursor:default;}
+    .popover .btn-close:hover{color:#f00;}
+    </style>
+    <script>
+        /*
+            面向对象的弹窗
+                1)自定义css:宽，高，位置
+                2)自定义内容，标题
+                3)可关闭
+                4)可拖拽
+         */
+        function Popover(opt){
+            opt = opt || {};
+            // this指向实例：pop
+            this.title = opt.title || '弹窗标题';
+            this.content = opt.content || '弹窗内容';
+            this.css = opt.css;
+            this.drag = opt.drag===undefined ? true : opt.drag;
+
+            // @链式调用
+            // 原理：在每个方法执行完毕后，返回当前对象
+            this.init().show();
+        }
+
+        Popover.prototype = {
+            constructor:Popover,
+
+            // 初始化函数
+            // 生成html结构
+            init:function(){
+                // this为当前对象，当前对象指向实例：pop
+                var self = this;
+                
+                // 生成弹窗外框
+                var _pop = document.createElement('div');
+                _pop.className = 'popover';
+
+                /*
+                    设置弹窗css样式
+                 */
+                if(this.css){
+                    _pop.style.cssText = this.css;
+                }
+
+                // 生成标题
+                var _title = document.createElement('div');
+                _title.className = 'title';
+                _title.innerHTML = this.title;
+
+                // 生成内容
+                var _content = document.createElement('div');
+                _content.className = 'content';
+                _content.innerHTML = this.content;
+
+                // 生成关闭按钮
+                var btnClose = document.createElement('div');
+                btnClose.className = 'btn-close';
+                btnClose.innerHTML = '&times;';
+
+                // 关闭按钮绑定点击事件
+                btnClose.onclick = function(){
+                    self.close();
+                }
+
+                _pop.appendChild(_title);
+                _pop.appendChild(_content);
+                _pop.appendChild(btnClose);
+
+                /*
+                    是否可拖拽
+                 */
+                if(self.drag){
+                    _title.onmousedown = function(e){
+                        e = e || window.event;
+
+                        // 记录按下时位置
+                        // offsetX:鼠标点击位置距当前元素左侧的距离
+                        // offsetY:鼠标点击位置距当前元素顶部的距离
+                        var offsetLeft = e.offsetX;//e.clientX - _title.offsetLeft;
+                        var offsetTop = e.offsetY;//e.clientY - _title.offsetTop;
+
+                        document.onmousemove = function(evt){
+                            evt = evt || window.event;
+
+                            var x = evt.clientX - offsetLeft;
+                            var y = evt.clientY - offsetTop;
+
+                            self.move(x,y);
+
+                            // 阻止选中文字
+                            evt.preventDefault();
+                        }
+
+                        // 标准阻止默认行为：
+                        e.preventDefault();
+                        //IE阻止默认行为:e.returnValue = false;
+                        //IE阻止冒泡：e.cancelBubble = true;
+                        //标准：e.stopPropagation();
+                    }
+
+                    // 鼠标弹开时清除mousemove事件
+                    _title.onmouseup = function(){
+                        document.onmousemove = null;
+                    }
+                }
+
+                
+                self.ele = _pop;
+
+                // 链式调用的关键:
+                // 在对象方法执行完后返回当前对象this
+                return self;
+            },
+            show:function(){
+                document.body.appendChild(this.ele);
+                return this;
+            },
+            close:function(){
+                document.body.removeChild(this.ele);
+                return this;
+            },
+            move:function(x,y){
+                this.ele.style.left = x + 'px';
+                this.ele.style.top = y + 'px';
+                return this;
+            }
+        }
+
+        window.onload = function(){
+            var pop = new Popover({title:'唐僧',css:'left:600px;top:50px;width:500px;'});//[[prototype]]==Popover.prototype
+            var pop = new Popover({title:'八戒',css:'height:600px;',drag:false});
+
+            var pop = new Popover({title:'沙僧',css:'left:600px;top:300px;',content:'大师兄，师傅被妖怪抓走了'});
+
+            
+        }
+        
+
+        
+
+        // console.log(Object.getPrototypeOf(pop) === Popover.prototype)
+    </script>
+</head>
+
+<body>
+    <!-- <div class="popover">
+        <div class="title">弹窗标题</div>
+        <div class="content">弹窗内容</div>
+        <div class="btn-close">&times;</div>
+        <div class="footer">
+            <button class="ok">确认</button>
+            <button class="close">关闭</button>
+        </div>
+    </div> -->
+</body>
+
+</html>

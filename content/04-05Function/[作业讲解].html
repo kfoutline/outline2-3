@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>函数作业</title>
+	<script>
+		/*
+			作业1：写出一个函数，判断输入年份是否为闰年，并返回结果
+		 */
+		function isRunnian(year){
+			if(year%4 ==0 && year%100 != 0 || year%400 == 0){
+				return true;
+			}else{
+				return false;
+			}
+		}
+
+		console.log(isRunnian(2016));//true
+		console.log(isRunnian(2015));//false
+
+		window.onload = function(){
+			// 取到页面上的元素
+			var year = document.getElementById('year');
+			var btnCheck = document.getElementById('btnCheck');
+
+			btnCheck.onclick = function(){
+				if(isRunnian(year.value)){
+					alert('是闰年');
+				}else{
+					alert('是平年');
+				}
+			}
+		}
+
+		/*
+			作业2：写出一个函数，判断输入分数是否及格，并返回结果
+		 */
+		function isJige(score){
+			if(score >= 60){
+				alert('恭喜你，及格了');
+			}else{
+				alert('还是恭喜你，留级了');
+			}
+		}
+
+		//isJige(70);//及格
+		//isJige(20);//不及格
+
+		/*
+			作业3：用函数递归计算100的阶乘
+				1)10! = 10x9x8x7x6x5x4x3x2x1
+				2) 9! =    9x8x7x6x5x4x3x2x1
+				3) 8! =      8x7x6x5x4x3x2x1
+
+				==> 10! = 10 * 9!
+				==> n! = n * (n-1)
+				==> f(n) = n * f(n-1);
+		 */
+		//循环实现!100
+		var res = 1;
+		for(var i=1;i<=100;i++){
+			res *=i;
+		}
+		console.log(res);
+
+		function jieCheng(num){
+			if(num==1){
+				return 1;
+			}
+			return num * arguments.callee(num-1);
+		}
+		/*
+			jiecheng(5)
+				5 * jiecheng(4)			5 * 4 * 3 * 2 * 1
+					4 * jiecheng(3)			4 * 3 * 2 * 1
+						3 * jiecheng(2)			3 * 2 * 1
+							2 * jiecheng(1) //stop	2 * 1
+								1 * jiecheng(0)
+									0 * jiecheng(-1)
+		 */
+		
+		/*
+			[案例]斐波那契数列
+			1,1,2,3,5,8,13,21,34,55,89...
+		 */
+		//递归实现
+		//month代表月份
+		function fbn(month){
+			if(month < 3){
+				return 1;
+			}
+			return fbn(month-1) + fbn(month-2);
+		}
+
+		// 非递归实现
+		function fbnq(month){
+			if(month < 3) return 1;
+			var f1=0,f2=1,f3;
+			for(var i=2;i<=month;i++){
+				f3 = f1 + f2;
+				f1 = f2;
+				f2 = f3;
+			}
+			return f3;
+		}
+
+		// 获取某个月之前的斐波那契数列
+		// 利用数组实现
+		function fbnq(month){
+			var arr = [];
+			for(var i=0;i<month;i++){
+				if(i<2){
+					arr.push(1);
+				}else{
+					arr.push(arr[i-2] + arr[i-1]);
+				}
+			}
+			return arr;
+		}
+		fbnq(6);//1,1,2,3,5,8
+
+		//输出50个斐波那契数列
+		var str = ''
+		for(var i=1;i<=1000;i++){
+			str +=fbnq(i) + ', ';
+		}
+		document.write(str);
+	</script>
+</head>
+<body>
+	<input type="text" id="year"><button id="btnCheck">判断是否为闰年</button>
+</body>
+</html>

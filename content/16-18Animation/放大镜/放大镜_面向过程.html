@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>原生js放大镜效果</title>
+    <style>
+    .smallPic img{width:300px;}
+	.arzoom{position:relative;}
+	.arzoom .minzoom{position: absolute;width:30px;height:30px;border:1px solid #fc0;background-color:#ff0;background-color: rgba(255,255,0,.3);filter:alpha(Opacity=30);}
+	.arbzoom{position: absolute;width:400px;height:300px;overflow:hidden;}
+	.arbzoom img{position: absolute;left:0;right:0;}
+    </style>
+    <script>
+    	document.addEventListener('DOMContentLoaded',()=>{
+            var smallContainer = document.querySelector('.smallPic');
+            var smallImg = smallContainer.children[0];
+
+            // 创建大图
+            var bigContainer = document.createElement('div');
+            bigContainer.classList.add('arbzoom');
+            var bigImg = new Image();
+            bigImg.src = smallImg.dataset.big || smallImg.src;
+            bigContainer.appendChild(bigImg);
+
+            bigContainer.style.top = smallContainer.offsetTop + 'px';
+            bigContainer.style.left = smallImg.offsetLeft + smallImg.offsetWidth + 20 + 'px';
+
+
+            // 创建小图中放大镜
+            var minZoom = document.createElement('span');
+            minZoom.classList.add('minzoom');
+
+            // 计算大图小图的比率
+            var ratio;
+            // bigImg.onload = ()=>{
+            //     ratio = smallImg.offsetWidth/bigImg.offsetWidth;
+            // }
+            
+
+            //鼠标移入
+            smallContainer.onmouseenter = (e)=>{
+                document.body.appendChild(bigContainer);
+                smallContainer.appendChild(minZoom);
+
+                // console.log(smallImg.offsetWidth,bigImg.offsetWidth)
+                ratio = smallImg.offsetWidth/bigImg.offsetWidth;
+
+                // 设置minZoom形状
+                minZoom.style.width = bigContainer.offsetWidth*ratio + 'px';
+                minZoom.style.height = bigContainer.offsetHeight*ratio + 'px';
+            }
+
+            smallContainer.onmousemove = (e)=>{
+                // 定位minZoom
+                // 定位在光标正中央
+                var left = e.pageX - smallContainer.offsetLeft - minZoom.offsetWidth/2;
+                var top = e.pageY - smallContainer.offsetTop - minZoom.offsetHeight/2;
+
+                if(left < 0){
+                    left = 0;
+                }else if(left >= smallImg.offsetWidth - minZoom.offsetWidth){
+                    left = smallImg.offsetWidth - minZoom.offsetWidth;
+                }
+
+                if(top < 0){
+                    top = 0;
+                }else if(top >= smallImg.offsetHeight - minZoom.offsetHeight){
+                    top = smallImg.offsetHeight - minZoom.offsetHeight;
+                }
+
+
+                minZoom.style.left = left + 'px';
+                minZoom.style.top = top + 'px';
+
+                var bleft = left/ratio;
+                var btop = top/ratio;
+
+                if(bleft > bigImg.offsetWidth - bigContainer.offsetWidth){
+                    bleft = bigImg.offsetWidth - bigContainer.offsetWidth;
+                }
+                if(btop > bigImg.offsetHeight - bigContainer.offsetHeight){
+                    btop = bigImg.offsetHeight - bigContainer.offsetHeight;
+                }
+
+                bigImg.style.left = -bleft + 'px';
+                bigImg.style.top = -btop + 'px';
+            }
+
+            smallContainer.onmouseleave = (e)=>{
+                document.body.removeChild(bigContainer);
+                smallContainer.removeChild(minZoom);
+            }
+        });
+    	
+    </script>
+</head>
+
+<body>
+	<!-- 
+		src:放置小图路径
+		jqimg:放置大图路径
+		(大图小图比例越大放大镜效果越明显)
+	 -->
+   <div class="smallPic arzoom"><img src="car.jpg" data-big="car.jpg"></div>
+</body>
+
+</html>

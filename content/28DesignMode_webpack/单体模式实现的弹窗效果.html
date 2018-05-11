@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>单体模式实现的弹窗效果</title>
+	<style>
+		.pop{padding:20px;width:200px;height:60px;border:1px solid #ddd;background-color:#fff;}
+	</style>
+	<script>
+	document.addEventListener('DOMContentLoaded',()=>{
+		/*
+			传统实现弹窗方式
+			缺点：
+			* 频繁的点击按钮，会不断创建多个弹窗
+			* 虽然我们可以移除已生成的弹窗，但太过频繁的创建和删除DOM节点是个不好的实现，对性能会有很大的影响，因此这是非常不好的习惯
+		 */
+		function Popover(content){
+			this.init(content);
+		}
+		Popover.prototype.init = function(content){
+			var div = document.createElement("div");
+		    div.className = 'pop';
+		    div.innerHTML = content;
+		    div.style.display = 'none';
+		    document.body.appendChild(div);
+		    this.ele =  div;
+		    return this;
+		}
+		Popover.prototype.show = function(){
+			this.ele.style.display = 'block';
+			return this;
+		}
+		Popover.prototype.close = function(){
+			this.ele.style.display = 'none';
+			return this;
+		}
+
+		document.getElementById("btnCT").onclick = function(){
+		    // 点击后先创建一个div元素
+		    var win = new Popover('我是传统弹窗内容');
+		    win.show();
+		}
+
+
+		/*
+			单体模式实现的弹窗效果
+		 */
+		var createWin = (function(){
+		    var div;
+		    return function(){
+		        if(!div) {
+		            div = new Popover('我是单体模式弹窗内容');
+		        }
+		        return div;
+		    }
+		})();
+
+		document.getElementById("btnDT").onclick = function(){
+		    // 点击后先创建一个div元素
+		    var win = createWin();
+		    win.show();
+		}
+	});
+		
+	</script>
+</head>
+<body>
+	<button id="btnCT">传统实现弹窗方式</button>
+	<button id="btnDT">单体模式实现弹窗方式</button>
+</body>
+</html>

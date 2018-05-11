@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>设置模式 - 工厂模式</title>
+	<script>
+	document.addEventListener('DOMContentLoaded',()=>{
+		/*
+			工厂模式
+			优点：能解决多个相似的问题。
+			缺点：不能知道对象识别的问题(对象的类型不知道)。
+		 */
+		function Person({name,age,gender}){
+			//let obj = {};
+			obj.name = name;
+			obj.age = age;
+			obj.gender = gender;
+
+			//return obj;
+		}
+
+		var p = new Person('laoxie',18,'male');
+	});
+	
+
+	</script>
+</head>
+<body>
+
+</body>
+</html>

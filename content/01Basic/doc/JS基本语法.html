@@ -1102,28 +1102,26 @@ body .markdown-body
 <h2 id="_3"><a name="user-content-_3" href="#_3" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>语法</h2>
 <h3 id="js_4"><a name="user-content-js_4" href="#js_4" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>js代码的编写位置</h3>
 <ul>
-<li>html属性<br />
-<code>&lt;a href="javascript:alert(100)"&gt;&lt;/a&gt;</code></li>
 <li>script标签<br />
 <pre><code>&lt;script type=&quot;text/javascript&quot;&gt;
     alert('你好')
 &lt;/script&gt;
+</code></pre></li>
+<li>js文件<br />
+独立的js文件需要引入页面才能执行<br />
+<pre><code>&lt;script type=&quot;text/javascript&quot; src=&quot;js/common.js&quot;&gt;&lt;script&gt;
 </code></pre><br />
 script标签属性<ul>
-<li>type:类型(可选)</li>
+<li>type:类型</li>
 <li>src :js文件路径<br />
     带src属性的script标签内不能写js代码</li>
 </ul>
 </li>
-<li>js文件<br />
-独立的js文件需要引入页面才能执行<br />
-<pre><code>&lt;script type=&quot;text/javascript&quot; src=&quot;js/common.js&quot;&gt;&lt;script&gt;
-</code></pre></li>
 </ul>
 <h3 id="js_5"><a name="user-content-js_5" href="#js_5" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>JS变量的定义、关键字</h3>
 <ul>
 <li>
-<p>变量定义(使用var关键字)：变量是存储信息的容器<br />
+<p>变量定义(使用var关键字)：变量是存储数据的容器<br />
 <code>var age;       //var 是关键字，age是变量名</code></p>
 </li>
 <li>
@@ -1145,11 +1143,12 @@ script标签属性<ul>
 <li>变量名必须是数字,字母,下划线<code>_</code>和美元符<code>$</code>组成;</li>
 <li>第一个字符不能为数字</li>
 <li>不能使用关键字或保留字</li>
+</ul>
+</li>
+<li>代码可读性<ul>
 <li>标识符区分大小写，如：age和Age是不同的变量。但强烈不建议用同一个单词的大小写区分两个变量。</li>
 <li>变量命名尽量遵守驼峰原则: myStudentScore</li>
 <li>变量命名尽量见名知意</li>
-</ul>
-</li>
 <li>保持代码缩进</li>
 <li>JS语句的末尾尽量写上分号;</li>
 <li>运算符两边都留一个空格, 如 <code>var n = 1 + 2</code>;</li>
@@ -1158,6 +1157,8 @@ script标签属性<ul>
 <li>多行注释（和CSS注释一样）<ul>
 <li><code>/*注释内容*/</code></li>
 <li>多行注释不能嵌套</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -1316,7 +1317,7 @@ typeof null //=&gt;object
 <p>+, -, *, /, %:加,减,乘,除,取余(取模)</p>
 <ul>
 <li>toFixed(num): 在数字后面调用，num为小数位，有四舍五入的功能，得到一个字符串</li>
-<li>parseInt()：取整</li>
+<li>parseInt()：取整:获取到第一个不为数字的字符为止</li>
 <li>parseFloat()：取小数</li>
 </ul>
 <p><strong>+ 的特殊用法：字符串拼接</strong></p>
@@ -1439,12 +1440,12 @@ parseInt(x,16);
 <p><strong>[作业]</strong></p>
 <ol>
 <li>计算两个文本框的加减乘除，并把结果写入第三个文本框<br />
-<img alt="" src="///F://mydoc/kphone/newOutline/section2/javascript/01Basic/doc/img/hw.png" title="" /></li>
+<img alt="" src="///F://mydoc/kphone/h5/Outline3/Section2/content/01Basic/doc/img/hw.png" title="" /></li>
 </ol>
 <p><strong>[扩展作业]</strong></p>
 <ol>
 <li>计算商品价格<br />
-<img alt="" src="///F://mydoc/kphone/newOutline/section2/javascript/01Basic/doc/img/hwx.png" title="" /></li>
+<img alt="" src="///F://mydoc/kphone/h5/Outline3/Section2/content/01Basic/doc/img/hwx.png" title="" /></li>
 </ol>
 <hr />
 <h2 id="_12"><a name="user-content-_12" href="#_12" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>参考资料</h2>

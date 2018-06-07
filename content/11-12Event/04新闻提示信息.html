@@ -15,34 +15,51 @@
 	</style>
 	<script>
 		window.onload = function(){
+			/*
+				* 鼠标移入
+					* 显示
+					* 写入内容：a的title属性
+					* 删除title属性
+				* 鼠标移出
+					* 隐藏
+					* 恢复title属性
+				* 鼠标移动
+					* 改变left,top
+			 */
+			
 			var newslist = document.getElementsByClassName('newslist')[0];
-			var links = newslist.getElementsByTagName('a');
 			var details = document.getElementsByClassName('details')[0];
+			var links = newslist.getElementsByTagName('a');
 
-			// 遍历a标签，给每个a标签绑定点击事件
 			for(var i=0;i<links.length;i++){
-
 				// 鼠标移入
 				links[i].onmouseover = function(){
-					// 把当前a标签的title属性内容写入.details
-					// 并显示.details
-
+					// 显示和写入内容
 					details.innerHTML = this.title;
 					details.style.display = 'block';
+
+					// 把title的内容存入节点属性
+					this.news = this.title;
+
+					// 删除title属性
+					this.removeAttribute('title');
 				}
 
-				// 鼠标移出
+
+				// 鼠标移开
 				links[i].onmouseout = function(){
-					// 隐藏.details
+					// 隐藏
 					details.style.display = 'none';
+
+					// 恢复title属性，为下次继续显示
+					this.title = this.news;
 				}
 
 
-				// 鼠标移动事件
+				// 跟随鼠标
 				links[i].onmousemove = function(e){
-					// 让.details跟随鼠标移动
-					details.style.left = e.clientX - 20 + 'px';
-					details.style.top = e.clientY + 40 + 'px';
+					details.style.left = e.pageX-30 + 'px';
+					details.style.top = e.pageY+40 + 'px';
 				}
 			}
 		}

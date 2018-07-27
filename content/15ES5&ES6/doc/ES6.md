@@ -3,15 +3,15 @@
 
 ##变量声明
 * let: 代码块内的变量声明
-     1）变量声明不会提前
-     2）块级作用域
-     3）let不允许相同作用域内多次声明同一变量
+     1. 变量声明不会提前
+     2. 块级作用域
+     3. let不允许相同作用域内多次声明同一变量
 
 * const:常量声明
-     1）变量声明不会提前
-     2）块级作用域
-     3）const不允许相同作用域内多次声明同一变量
-     4）声明后无法修改值
+     1. 变量声明不会提前
+     2. 块级作用域
+     3. const不允许相同作用域内多次声明同一变量
+     4. 声明后无法修改值
 >const常用与引用第三方库的声明
 
 ##解构赋值Destructuring
@@ -25,9 +25,9 @@ ES6允许我们对数组和对象中提取值，对变量进行赋值，这被�
 ```
 
 * 对象：
-     1）var {a,b}={a:'html',b:'css'}
-     2）变量必须与对象属性名相同，否则为undefined
-     3）如果变量名与属性名不相同，则必须写成以下格式才能取到值
+     * var {a,b}={a:'html',b:'css'}
+     * 变量必须与对象属性名相同，否则为undefined
+     * 如果变量名与属性名不相同，则必须写成以下格式才能取到值
         `var {a:test} ={a:'html',b:'css'} //test=>html`
 * 解构失败：
      `var [a]=[],[b]=1,[c]='jiegou',[d]=false //a,b,c,d都得到undefined`
@@ -63,7 +63,7 @@ function test({x,y,z}){}
 test({x:10,y:20,z:30})
 
 //参数可以设置默认值
-fuction test({x=10,y=20,z}){}
+function test({x=10,y=20,z}){}
 ```
 
 ##字符串扩展
@@ -242,7 +242,7 @@ func1(); // 得到 3
 
 * 剩余参数Rest
 ```
-var func2 = (x, ...args) => { console.log(args) };
+var func2 = (x, ...args) => console.log(args);
 func2(1,2,3); // 输出 [2, 3]
 ```
 
@@ -252,6 +252,13 @@ func2(1,2,3); // 输出 [2, 3]
 
 ##Symbol数据类型
 ES6引入了一种新的原始数据类型Symbol，表示独一无二的值，一旦创建后就不可更改，是一种类似于字符串的数据类型，但Symbol 值不能与其他类型的值进行运算，否则报错。
+
+###定义
+* Symbol()
+* Symbol('laoxie')
+* Symbol.for('laoxie')
+>Symbol值不能与其他类型的值进行运算
+    
 ```
 // 没有参数的情况
 var s1 = Symbol();
@@ -269,7 +276,17 @@ var s2 = Symbol("foo");
 
 s1 === s2 // false
 ```
-* Symbol值不能与其他类型的值进行运算
+* Symbol.for()
+有时我们希望重新使用同一个Symbol值，Symbol.for方法可以做到这一点，首先在全局中搜索**已登记**的Symbol值，如果有，就返回这个Symbol值，否则就新建并返回一个以该字符串为名称的Symbol值
+>直接用Symbol()方法创建的Symbol值不会被登记
+
+```
+let one = Symbol("laoxie");
+let two = Symbol.for("laoxie");
+
+//由于创建了两个Symbol值，所以他们不相等
+console.log(one===two);//false
+```
 
 ###用途
 * 给对象创建私有属性
@@ -290,20 +307,7 @@ var a = {
 a[mySymbol] // "Nani"
 ```
 
-###常用方法
-* Symbol.for()
-有时我们希望重新使用同一个Symbol值，Symbol.for方法可以做到这一点，首先在全局中搜索**已登记**的Symbol值，如果有，就返回这个Symbol值，否则就新建并返回一个以该字符串为名称的Symbol值
->直接用Symbol()方法创建的Symbol值不会被登记
-```
-let one = Symbol("laoxie");
-let two = Symbol.for("laoxie");
 
-//由于创建了两个Symbol值，所以他们不相等
-console.log(one===two);//false
-```
-* Symbol.keyFor()
-获取被登记的Symbol值
->直接使用Symbo()创建的Symbol值的键不会被登记，所以也就获取不到
 
 ##Set集合
 Set集合，类似于数组，但是成员的值都是唯一的，可自动去重。

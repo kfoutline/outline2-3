@@ -22,7 +22,7 @@ var str = new String('我不是黄蓉，我不会武功');
 ###字符串的获取方法
 * charAt(3) //获取下标为3的字符
 
-###字符串的查找方法
+###字符串的查找替换方法
 * indexOf/lastIndexOf(keyword [,startIndex])  从开头/尾部向后查找字符串`keyword`第一次出现的位置,如果没找到返回-1
 * search(str|regExp) 查找字符串第一次出现的位置
 >与indexOf的区别：search方法支持正则表达式
@@ -50,7 +50,7 @@ var str = new String('我不是黄蓉，我不会武功');
 * str[3]//通过下标获取
 * trim()：删除前后所有空格，返回新的字符串
 
-##ASCII码和字符集
+##编码与字符集(了解)
 * charCodeAt(3) //获取下标为3的字符的ASCII(American Standard Code for * Information Interchange) == > unicode编码
 * String.fromCharCode(94) //编码转换成字符
 

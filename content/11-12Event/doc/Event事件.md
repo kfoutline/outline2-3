@@ -104,7 +104,10 @@ div.onclick = function(e){}
 * 检测鼠标按键e.button
 * 实时显示光标位置
 * 制作跟随鼠标移动提示框
+
 ![Alt text](./img/case2.png "Optional title")
+
+
 * 愤怒的小鸟
     - 键盘实现上下左右移动
 
@@ -112,22 +115,31 @@ div.onclick = function(e){}
 
 1. 给自动回复机器人添加ctrl+回车发送消息功能
 2. 鼠标移入替换图片
+
 ![Alt text](./img/鼠标移入替换图片.png "Optional title")
+
 3. 输入框默认提示
     - 兼容IE8-
+
 ![Alt text](./img/case1.png "Optional title")
+
 4. 放大镜简单版
+
 ![放大镜简单版](./img/xh1.png "放大镜简单版")
 
 **[作业]**
 
 1. 下拉菜单
-![Alt text](./img/case3.png "Optional title")
     * 键盘上下键选择
     * 回车键写入输入框
 
+![Alt text](./img/case3.png "Optional title")
+
+
 **[扩展]**
+
 1. 鼠标跟随一连串效果
+
 ![鼠标跟随一连串效果](./img/case5.png "鼠标跟随一连串效果")
 
 ###事件冒泡
@@ -227,6 +239,7 @@ target.addEventListener("click", fn, false);
 
 1. 360°全景展示效果
 2. 单元格拖拽交换位置
+
 ![Alt text](img/case4.png "Optional title")
 
 ---

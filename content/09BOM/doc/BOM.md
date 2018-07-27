@@ -31,18 +31,17 @@ delete obj.name;
 	+ scrollTo(x,y) //指定滚动位置
 	+ scrollBy(xnum,ynum) //设置基于当前位置滚动的距离，可以为负数
 
-####常用方法(了解)
-- 系统对话框
-	+ alert(msg)//弹出对话框
-	+ confirm(msg)//弹出警告框，返回布尔值
-	+ prompt(msg,default)//弹出输入框，返回消息或null
-	>以上三个方法都会暂停代码的执行
-	+ `open(url,name,[options])` : 打开一个新窗口并返回新 window 对象
-		* name:不命名会每次打开新窗口，命名的第一次打开新窗口,之后在这个窗口中加载
-		* options为字符串：`'width=400,height=400,top=200,left=200'`
-		* opener父窗口对象，通过open方法打开的窗口才有opener对象
-	+ close(): 关闭窗口
-	+ print(): 调出打印对话框
+####系统对话框(了解)
++ alert(msg)//弹出对话框
++ confirm(msg)//弹出警告框，返回布尔值
++ prompt(msg,default)//弹出输入框，返回消息或null
+>以上三个方法都会暂停代码的执行
++ `open(url,name,[options])` : 打开一个新窗口并返回新 window 对象
+	* name:不命名会每次打开新窗口，命名的第一次打开新窗口,之后在这个窗口中加载
+	* options为字符串：`'width=400,height=400,top=200,left=200'`
+	* opener父窗口对象，通过open方法打开的窗口才有opener对象
++ close(): 关闭窗口
++ print(): 调出打印对话框
 
 
 ####属性对象
@@ -95,13 +94,13 @@ location是BOM最有用的对象之一，保存着当前窗口中加载文档的
 
 * 点击按钮实现浏览器前进后退
 * 顶部悬浮(吸顶菜单)
-* 点击回到顶部动画效果
 * js实现居中弹窗
 * 页面之间数据传递
 
 **[练习]**
 
-1. 图片轮播
+1. 点击回到顶部动画效果
+2. 图片轮播
 	- 鼠标移入停止轮播，鼠标离开恢复轮播
 	- 添加上一张，下一张按钮
 

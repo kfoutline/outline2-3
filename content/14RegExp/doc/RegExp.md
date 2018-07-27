@@ -23,7 +23,7 @@ var reg= new RegExp('\\d\\w+');\d\w+
 * 第二个参数可选，模式修饰符
     - i: case-insensitive，表示忽略大小写
     - g: global，表示全局匹配
-    - m: multiline，表示多行匹配
+    - m: multiline，表示多行匹配,影响^，$的匹配结果
 
     ```
     var reg = new RegExp('study', 'ig');
@@ -125,7 +125,7 @@ var reg= new RegExp('\\d\\w+');\d\w+
 * 表单验证
     * 验证账号
         - 不能为空，
-        - 不能使用特殊字符（数字、字母、下划线、横杠），
+        - 不能使用特殊字符（只能使用数字、字母、下划线、横杠），
         - 必须以字母开头，
         - 长度6-20 
     * 昵称只能输入中文

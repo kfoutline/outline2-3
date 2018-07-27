@@ -1,17 +1,13 @@
 let Cookie = {
-	set(name,val,expires,path,domain,secure){
-		console.log('set Cookie')
+	set(name, val, expires, path, domain, secure) {
+		console.log(`set Cookie`);
 	},
-	get(name){
-		return name
+	get(name) {
+		return name;
 	}
-}
+};
 
-function show(a=0,b=1){
-	return a + b;
-}
+let show = (a,b)=>a+b;
 
-let myName = 'laoxie';
-var str = `
-	<h4>${myName}</h4>
-`
+let myName = `laoxie`;
+let str = `<h4>${myName}</h4>`;

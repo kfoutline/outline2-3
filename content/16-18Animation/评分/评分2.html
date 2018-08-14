@@ -22,62 +22,76 @@
     
     #star .active{background-position:0 -29px;}
     
-    .default {}
     </style>
     <script>
+        /*
+            评分效果
+                * 鼠标移入
+                    * 高亮当前及之前的星星
+                    * 去除当前后的星星高亮
+                * 鼠标移出
+                * 鼠标点击
+                    * 评分
+         */
     	document.addEventListener('DOMContentLoaded',function(){
     		var star = document.querySelector('#star');
     		var info = document.querySelector('#info');
             var lis = star.children;
-            var currentStar = 0;
 
-    		var arr = ['差评', '不推荐', '一般', '推荐', '强力推荐'];
+            var len = lis.length;
 
-    		// 鼠标移入高亮星星
-    		star.onmouseover = function(e){
-    			if(e.target.tagName.toLowerCase() === 'li'){
-    				var current = e.target
+            // 声明变量，用于存放分数（0-4）
+            var score=0;
+            var arr_txt = ['差评','一般','良好','满意','非常满意'];
+
+            // 鼠标移入
+            star.onmouseover = e=>{
+                if(e.target.tagName.toLowerCase() === 'li'){
+                    // 确定当前li：遍历所有，找出与e.target一样的li
                     var currentIdx;
-
-                    for(var i=0;i<lis.length;i++){
-                        if(lis[i] === current){
+                    for(var i=0;i<len;i++){
+                        if(lis[i] === e.target){
                             currentIdx = i;
-                            break;
                         }
                     }
 
-                    for(var i=0;i<lis.length;i++){
+                    // 高亮<=currentIdx的li
+                    // 去除高亮>currentIdx的li
+                    for(var i=0;i<len;i++){
                         if(i<=currentIdx){
-                            lis[i].classList.add('active');
+                            lis[i].className = 'active'
                         }else{
-                            lis[i].classList.remove('active');
+                            lis[i].className = '';
                         }
-                    }
-    			}
-    		}
-
-            star.onmouseout = function(){
-                for(var i=0;i<lis.length;i++){
-                    if(i>currentStar){
-                        lis[i].classList.remove('active');
-                    }else{
-                        lis[i].classList.add('active');
                     }
                 }
             }
 
-    		// 点击li显示对应信息
-    		star.onclick = function(e){
-    			if(e.target.tagName.toLowerCase() === 'li'){
-    				for(var i=0;i<star.children.length;i++){
-    					if(e.target === star.children[i]){
-    						info.innerHTML = arr[i];
-                            currentStar = i;
-    						break;
-    					}
-    				}
-    			}
-    		}
+            // 鼠标点击：评分
+            star.onclick = e=>{
+                if(e.target.tagName.toLowerCase() === 'li'){
+                    
+                    for(var i=0;i<len;i++){
+                        if(lis[i] === e.target){
+                            score = i;
+                        }
+                    }
+
+                    // 显示对应文本
+                    info.innerText = arr_txt[score];
+                }
+            }
+
+            // 鼠标移开
+            star.onmouseout = ()=>{
+                for(var i=0;i<len;i++){
+                    if(i<=score){
+                        lis[i].className = 'active'
+                    }else{
+                        lis[i].className = '';
+                    }
+                }
+            }
     	});
     </script>
 </head>

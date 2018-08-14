@@ -15,18 +15,20 @@
     		var totop = document.getElementsByClassName('totop')[0];
 
     		var speed,timer;
-    		var scrollObj = document.body || document.documentElement;
+    		// var scrollObj = document.body || document.documentElement;
     		totop.onclick = function(){
     			timer = setInterval(function(){
-    				var scrollTop = scrollObj.scrollTop;
+                    // var scrollTop = scrollObj.scrollTop;
+    				var scrollTop = window.scrollY;
 	    			speed = parseInt(scrollTop/10);
 	    			console.log(scrollTop);
 	    			if(speed <= 5){
 	    				clearInterval(timer);
-	    				scrollObj.scrollTop = 0;
+	    				// scrollObj.scrollTop = 0;
 	    				return;
 	    			}
-	    			scrollObj.scrollTop = scrollTop - speed;
+	    			// scrollObj.scrollTop = scrollTop - speed;
+                    scrollBy(0,-speed);
     			},20);
     			
     		}

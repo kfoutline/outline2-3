@@ -48,8 +48,8 @@ jQuery('#box');//得到jquery对象（实例）
     - 页面DOM渲染完成时执行，用来替代window.onload;
     - 简写方式:`jQuery(function($){})`;
 * 编写jquery代码只需两步
-1. 选择元素
-2. 操作元素
+    1. 选择元素
+    2. 操作元素
 
 
 ##选择器
@@ -231,7 +231,6 @@ $('<div>生成一个div</div>');
 
 * 元素删除
     - remove();   删除元素, 虽然元素从文档中删除了，但js内部依然保留对它引用
-    - empty();    清空内容
 
 * 元素复制
     - clone([Event[,deepEvent]])

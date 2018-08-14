@@ -106,7 +106,7 @@ WampServer下载地址：http://www.wampserver.com/
                 echo $GLOBALS['x'];
 
                 //在函数中创建全局变量
-                $GLOBALS['y'] = $GLOBALS['x'] + $GLOBALS['y'];
+                $GLOBALS['y'] = $GLOBALS['x'] + 'y';
             } 
             myTest();
             echo $y;
@@ -221,11 +221,9 @@ WampServer下载地址：http://www.wampserver.com/
     echo $txt1 . ", " . $txt2; 
 ?>
 ```
-+ strlen()
-+ mb_strlen()
-获取字符串长度，得到的字符的字节数
-+ strpos() 
-查找某个字符在字符串中的索引，如果未找到匹配，则返回 false
++ strlen() 得到的字符的字节数
++ mb_strlen() 获取字符串长度
++ strpos() 查找某个字符在字符串中的索引，如果未找到匹配，则返回 false
 `strpos("Hello world!","world");//=>6`
 
 ###Array
@@ -280,6 +278,8 @@ $age=array("Peter"=>"35","Ben"=>"37","Joe"=>"43");
     + ksort() 根据关联数组的键，对数组进行升序排列
     + arsort() 根据关联数组的值，对数组进行降序排列
     + krsort() 根据关联数组的键，对数组进行降序排列
+    + array_multisort($arr(一维数组),排序方式(SOTR_ASC,SOTR_DESC),$需排序的数组(可以是二维的))
+        *  array_column()：配合排序，一般用于得到二维数组中某些值组成的一维数组
 
 ##函数
 
@@ -353,19 +353,6 @@ class Web{
     >this是指向对象实例的一个指针
 
 
-* 访问控制
-PHP 对属性或方法的访问控制，是通过在属性/方法前面添加关键字来实现。
-    - public（公有，默认）：公有的类成员可以在任何地方被访问。
-    - private（私有）：私有的类成员只能在类本身中访问。
-    - protected（受保护）：受保护的类成员只能在类本身、子类、父类中访问。
-    - static（静态）：声明类属性或方法为静态，就可以不实例化类而直接访问
-        + 访问方式：`类名::方法`
-
->PS：
-    - 类属性必须定义为公有，受保护，私有之一。如果用 var 定义，则被视为公有。
-    - 类中的方法可以被定义为公有，私有或受保护。如果没有设置这些关键字，则该方法默认为公有。
-
-
 ###继承
 使用关键字 extends 来继承一个类，继承后子类就拥有父类的属性和方法（私有除外），格式如下：
 ```php
@@ -382,7 +369,6 @@ class Man extends Person {
     }
 }
 ```
-- 私有属性/方法不能被继承
 
 
 ###本地数据操作
@@ -429,7 +415,8 @@ class Man extends Person {
 
 ###远程数据操作
 * ajax跨域请求之服务端代理（爬虫）
-原理：获取页面所有内容，并利用正则匹配所需内容
+>原理：获取页面所有内容，并利用正则匹配所需内容
+
     - file_get_contents($url)
     - preg_match_all($reg,$str,$res)
     - preg_match($reg,$str,$res)
@@ -460,12 +447,6 @@ class Man extends Person {
 * iconv(current,out,str) 修改文件编码
 
 
-####动态页面传参
-* $_GET
-* $_POST
-* $_REQUREST
-
->商品列表与商品详情的传参
 
 ####session
 * session_start()：启动新会话

@@ -9,7 +9,7 @@
 	}
 
 	//超过60s为超时
-	$overtime = (time() - $_SESSION['last-access']) > 60;
+	$overtime = (time() - $_SESSION['last-access']) > 10;
 	echo time() - $_SESSION['last-access'];
 ?>
 <!DOCTYPE html>

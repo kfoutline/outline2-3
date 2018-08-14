@@ -190,6 +190,8 @@ CORS是一个W3C标准，全称是"跨域资源共享"（Cross-origin resource s
 * Access-Control-Allow-Origin
 该字段是必须的。需要在后端响应头添加词字段，值要么是一个*，表示接受任意域名的请求，要么指定一个域名`http://localhost`,如想指定若干个请使用判断语句，php代码如下
 ```php
+    $origin = $_SERVER['HTTP_ORIGIN'];
+    
     $allow_origin = array(  
         'http://www.client.com',  
         'http://www.client2.com'  
@@ -299,23 +301,28 @@ Promise的构造函数接收一个回调函数作为参数，并且传入两个�
 ##API
     
 * 本地服务器API
-    - 向服务器请求数据：
-        + 接口地址：api/ajaxtest.php  
-        + 接口描述：返回一段字符串，无特殊功能
-
     - 判断用户名是否已被注册
         + 接口地址：api/checkname.php
-        + 接口描述：该地址验证所提交的用户名是否存在，如果已存在，返回字符串no，不存在返回yes
-        + 参数说明：regname:注册用户名，必填
-        >已经存在的名字：'张三','李四','王尼玛','奥巴马'
+        + 接口描述：验证所提交的用户名是否存在
+            * 已存在（不可注册）：返回no
+            * 不存在（可注册）：返回yes
+        + 参数说明：
+            + regname:注册用户名（必填）
+        >已经存在的名字：'laoxie','lemon','王尼玛','奥巴马'
 
-    - 微博消息获取：
-        + 接口地址：api/weibo.php
-        + 接口描述：返回包含多条微博记录的json数据
+    - 微博消息
+        - 获取：
+            * 接口地址：api/weibo.php
+            * 接口描述：返回包含多条微博记录的json数据
+         + 点赞：
+            * 接口地址：api/weibo.php
+            * 接口描述：点赞数量+1
+            * 参数说明：
+                * id: 消息对应id（必填）
 
     - 分页获取数据：
         + 接口地址：api/football.php    
-        + 接口描述：该地址请求多条微博信息，分页获取，pageNo指定获取第几页的数据
+        + 接口描述：根据分页和每页数量请求多条微博信息的数据
         + 参数说明：
             - pageNo:当前分页，默认1
             - qty:每页显示数量，默认10
@@ -325,14 +332,11 @@ Promise的构造函数接收一个回调函数作为参数，并且传入两个�
         + 接口描述：聊天室的发送与信息获取
         + 参数说明：
             - type
-                + query: 查询
-                + send: 发送
+                + query: 获取聊天消息
+                + send: 发送信息
             - sender: 发送信息用户名
             - msg: 信息内容
 
-    - 获取ip地址
-        + 本机内网ip地址：api/inner_ip.php
-        + 利用服务器代理获取外网ip:api/outer_ip.php
 
     - 利用jsonp获取远程数据
         + 接口地址：api/jsonp.php
@@ -341,6 +345,10 @@ Promise的构造函数接收一个回调函数作为参数，并且传入两个�
     - 获取CORS获取远程数据
         + 接口地址：api/cors.php
         + 接口描述：CORS跨域解决方案
+
+    - 获取ip地址
+        + 本机内网ip地址：api/inner_ip.php
+        + 利用服务器代理获取外网ip:api/outer_ip.php
 
 * 跨域api
     - 利用jsonp实现百度搜索关键字建议
@@ -352,19 +360,19 @@ Promise的构造函数接收一个回调函数作为参数，并且传入两个�
 
     - 利用服务器代理根据ip获取城市
         + 根据IP获取所在城市
-    `http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=json&ip=27.46.236.176`
+    `http://ip.taobao.com/service/getIpInfo.php?ip=61.144.96.228`
 
 ---
 
-[案例]
+【案例】
 
-1. 滚动页面加载更多...
+1. 滚动页面加载更（懒加载）
 2. 封装ajax函数，要求如下：
     * 简化ajax请求操作
     * 解决兼容性问题
     * 支持跨域JSONP请求
 
-**[作业]**
+**【作业】**
 
 1. ajax请求json数据实现实现城市列表的展示
     * 显示热门城市
@@ -372,7 +380,7 @@ Promise的构造函数接收一个回调函数作为参数，并且传入两个�
     * 点击城市显示相应天气信息
     ![Alt text](img/1.png "Optional title")
 
-**[扩展]**
+**【扩展】**
 
 * 全国地市三级联动效果
 ![Alt text](img/2.png "Optional title")

@@ -1,5 +1,13 @@
 <?php
-	// header("content-type:text/html;charset=utf8");
+/*
+	上传文件操作
+		* $_FILES["file"]["name"] 上传文件的名称
+	    * $_FILES["file"]["type"] 上传文件的类型
+	    * $_FILES["file"]["size"] 上传文件的大小，以字节计
+	    * $_FILES["file"]["tmp_name"] 存储在服务器的文件的临时副本的名称
+	    * $_FILES["file"]["error"] 由文件上传导致的错误代码
+ */
+	header("content-type:text/plain;charset=utf8");
 	$file = $_FILES['myPic'];
 	$filename = $file['name'];
 	
@@ -12,11 +20,12 @@
 		'image/jpeg',
 		'image/jpg',
 		'application/x-zip-compressed',
-		'application/x-rar-compressed'
+		'application/x-rar-compressed',
+		'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
 	);
 
 	// 允许上传的类型
-	$allowedExts = array("gif", "jpeg", "jpg", "png",'zip','rar','7z');
+	$allowedExts = array("gif", "jpeg", "jpg", "png",'zip','rar','7z','docx');
 
 	// 最大文件大小2M
 	$maxSize = 2048*1024;

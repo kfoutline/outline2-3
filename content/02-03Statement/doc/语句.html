@@ -1083,35 +1083,35 @@ body .markdown-body
 <ul>
 <li>
 <p>if单分支：
-<div class="codehilite"><pre>if(条件){
-    //条件成立(返回true)时，执行这里的代码，否则不执行
-}
+<div class="codehilite"><pre><span class="k">if</span><span class="p">(</span><span class="nx">条件</span><span class="p">){</span>
+    <span class="c1">//条件成立(返回true)时，执行这里的代码，否则不执行</span>
+<span class="p">}</span>
 </pre></div></p>
 </li>
 <li>
 <p>if双分支：
-当if括号内的表达式结果成立，执行执行语句1，否则执行执行语句2
-<div class="codehilite"><pre>    if(条件){
-        语句1
-        //条件成立(返回true)时，执行这里的代码，忽略以下代码
-    }else{
-        语句2
-        //条件不成立(返回false)时，执行这里的代码
-    }
+当if括号内的表达式结果成立，执行执行代码1，否则执行执行代码2
+<div class="codehilite"><pre>    <span class="k">if</span><span class="p">(</span><span class="nx">条件</span><span class="p">){</span>
+        <span class="c1">//代码1</span>
+        <span class="c1">//条件成立(返回true)时，执行这里的代码，忽略以下代码</span>
+    <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+        <span class="c1">//代码2</span>
+        <span class="c1">//条件不成立(返回false)时，执行这里的代码</span>
+    <span class="p">}</span>
 </pre></div></p>
 </li>
 <li>
 <p>if多分支：
 从上往下，满足哪个条件就执行其相对应的语句，都不满足时，执行最后的else的语句，只能进入其中之一
-<div class="codehilite"><pre>if(条件1){
-    //条件1成立(返回true)时，执行这里的代码，忽略以下代码
-}else if(条件2){
-    //条件2成立(返回true)时，执行这里的代码，忽略以下代码
-}
-...
-else{
-    //以上条件都不成立(都返回false)时，执行这里的代码
-}
+<div class="codehilite"><pre><span class="k">if</span><span class="p">(</span><span class="nx">条件1</span><span class="p">){</span>
+    <span class="c1">//条件1成立(返回true)时，执行这里的代码，忽略以下代码</span>
+<span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">条件2</span><span class="p">){</span>
+    <span class="c1">//条件2成立(返回true)时，执行这里的代码，忽略以下代码</span>
+<span class="p">}</span>
+<span class="p">...</span>
+<span class="k">else</span><span class="p">{</span>
+    <span class="c1">//以上条件都不成立(都返回false)时，执行这里的代码</span>
+<span class="p">}</span>
 </pre></div></p>
 </li>
 </ul>
@@ -1136,7 +1136,7 @@ else{
         <span class="c1">//如果表达式的值恒等于value4，代码从这里开始执行</span>
         <span class="k">break</span><span class="p">;</span>
     <span class="k">default</span><span class="o">:</span> 
-        <span class="nx">如果以上条件都不成立</span><span class="err">，</span><span class="nx">默认执行这里的代码</span>
+        <span class="c1">//如果以上条件都不成立，默认执行这里的代码</span>
 <span class="p">}</span>
 </pre></div>
 
@@ -1147,7 +1147,7 @@ else{
 <li>default: 当所有的case都不满足的情况下会执行defalut下面的语句</li>
 </ul>
 <hr />
-<p><strong>[案例]</strong></p>
+<p><strong>【案例】</strong></p>
 <ol>
 <li>判断一个数是偶数还是奇数，并输出判断结果；</li>
 <li>求两个数的最大数；</li>
@@ -1157,29 +1157,30 @@ else{
 </ul>
 </li>
 </ol>
-<p><strong>[练习]</strong></p>
+<p><strong>【练习】</strong></p>
 <ol>
-<li>输入数字，显示星期几</li>
+<li>
+<p>开发一款软件，根据公式（身高-108）*2=体重，可以有10斤左右的浮动。来观察测试者体重是否合适</p>
+<p><img alt="测试身材" src="///F://mydoc/kphone/h5/Section2/Outline3/content/02-03Statement/doc/img/case1.png" title="测试身材" /></p>
+</li>
 <li>
 <p>输入成绩，进行成绩判定(要求用if和switch两种写法)</p>
 <ul>
 <li>大于85 优秀</li>
 <li>大于等于75小于等于85 良好</li>
 <li>大于等于60小于75 及格</li>
-<li>小于60  不及格
-<img alt="成绩判定" src="///F://mydoc/kphone/h5/Section2/Outline3/content/02-03Statement/doc/img/case2.png" title="成绩判定" /></li>
+<li>小于60  不及格</li>
 </ul>
-</li>
-<li>
-<p>开发一款软件，根据公式（身高-108）*2=体重，可以有10斤左右的浮动。来观察测试者体重是否合适
-<img alt="测试身材" src="///F://mydoc/kphone/h5/Section2/Outline3/content/02-03Statement/doc/img/case1.png" title="测试身材" /></p>
+<p><img alt="成绩判定" src="///F://mydoc/kphone/h5/Section2/Outline3/content/02-03Statement/doc/img/case2.png" title="成绩判定" /></p>
 </li>
 </ol>
-<p><strong>[作业]</strong></p>
+<p><strong>【作业】</strong></p>
 <ul>
 <li>
-<p>BMI指数（即身体质量指数，简称体质指数又称体重，英文为Body Mass Index，简称BMI），是用体重公斤数除以身高米数平方得出的数字，是目前国际上常用的衡量人体胖瘦程度以及是否健康的一个标准。主要用于统计用途，当我们需要比较及分析一个人的体重对于不同高度的人所带来的健康影响时，BMI值是一个中立而可靠的指标。
-    <strong>成人的BMI数值：</strong></p>
+<p>BMI指数（即身体质量指数，简称体质指数又称体重，英文为Body Mass Index，简称BMI），是用体重公斤数除以身高米数平方得出的数字，是目前国际上常用的衡量人体胖瘦程度以及是否健康的一个标准。主要用于统计用途，当我们需要比较及分析一个人的体重对于不同高度的人所带来的健康影响时，BMI值是一个中立而可靠的指标。</p>
+<blockquote>
+<p><strong>成人的BMI数值：</strong></p>
+</blockquote>
 <ul>
 <li>过轻：低于18.5</li>
 <li>正常：18.5-24.99</li>
@@ -1228,10 +1229,9 @@ do {
 <ul>
 <li>两个分号必须写</li>
 </ul>
-<p><strong>[案例]</strong></p>
+<p><strong>【案例】</strong></p>
 <ul>
 <li>打印100以内的奇数</li>
-<li>打印1~100的7的倍数和带7的数</li>
 <li>小王入职薪水10K，每年涨幅5%，10年后工资多少？<ul>
 <li>这10年小王赚了多少钱</li>
 </ul>
@@ -1243,9 +1243,10 @@ do {
 </blockquote>
 </li>
 </ul>
-<p><strong>[练习]</strong></p>
+<p><strong>【练习】</strong></p>
 <ul>
 <li>打印100以内所有偶数的和</li>
+<li>打印1~100的7的倍数和带7的数</li>
 <li>打印100–200之间所有能被3或者7整除的数</li>
 <li>求出1-1/2+1/3-1/4…..1/100的和</li>
 <li>山上有一口缸可以装50升水，现在有15升水。老和尚叫小和尚下山挑水，每次可以挑5升。问：小和尚要挑几次水才可以把水缸挑满？通过编程解决这个问题。</li>
@@ -1270,7 +1271,7 @@ do {
 </blockquote>
 </li>
 <li>
-<p>break与continue的区别
+<p>break与continue的区别（如图）
 <img alt="break与continue的区别" src="///F://mydoc/kphone/h5/Section2/Outline3/content/02-03Statement/doc/img/break_continue.png" title="break与continue的区别" /></p>
 </li>
 </ul>
@@ -1290,20 +1291,20 @@ do {
 </pre></div>
 
 <hr />
-<p><strong>[案例]</strong></p>
+<p><strong>【案例】</strong></p>
 <ul>
 <li>打印2月份除2和12号中的天数。</li>
+<li>打印99乘法表</li>
+<li>生成任意表格</li>
+</ul>
+<p><strong>【练习】</strong></p>
+<ul>
 <li>打印三角形
 <div class="codehilite"><pre>*
 **
 ***
 ****
 </pre></div></li>
-<li>打印99乘法表</li>
-<li>生成任意表格</li>
-</ul>
-<p><strong>[练习]</strong></p>
-<ul>
 <li>求1!+2!+3!+4!+5!&hellip;20! </li>
 <li>
 <p>输入两个数，求两个数的最大公约数</p>
@@ -1340,7 +1341,7 @@ do {
 如: 12321</p>
 </li>
 </ul>
-<p><strong>[作业]</strong></p>
+<p><strong>【作业】</strong></p>
 <ul>
 <li>篮球从5米高的地方掉下来，每次弹起的高度是原来的30%，经过几次弹起，篮球弹起的最终高度小于0.1米</li>
 <li>宰相的麦子：相传古印度宰相达依尔，是国际象棋的发明者。有一次，国王因为他的贡献要奖励他，问他想要什么。达依尔说：“只要在国际象棋棋盘上（共64格）摆上这么些麦子就行了：第一格一粒，第二格两粒，……，后面一格的麦子总是前一格麦子数的两倍，摆满整个棋盘，我就感恩不尽了。”国王一想，这还不容易，刚想答应，如果你这时在国王旁边站着，你会不会劝国王别答应，为什么？<ul>

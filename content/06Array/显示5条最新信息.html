@@ -36,29 +36,34 @@
 		render();
 
 		// 3)添加新闻
-		
-		// 给按钮绑定点击事件
 		btnAdd.onclick = function(){
+			// 获取输入的新闻信息
 			var _news = news.value;
 
-			//给newsList数组添加新的新闻
+			if(_news === ''){
+				alert('请输入内容');
+				return;
+			}
+
+			// 把最新的新闻写入数组
 			newslist.unshift(_news);
 
-			// 更新页面上的新闻列表
 			render();
 
-			// 清空输入框
-			news.value = ''
+			// 清空表单并自动获得焦点
+			news.value = '';
+			news.focus();
 		}
 
-		// 封装显示新闻列表函数
 		function render(){
-			var lis = '';
-			for(var i=0;i<newslist.length;i++){
-				lis += '<li><a href="#">' + newslist[i] + '</a></li>';
-			}
-			newsList.innerHTML = lis;
+			newslist = newslist.slice(0,5);
+			
+			// 2)把新闻写入页面
+			newsList.innerHTML = newslist.map(function(news,idx){
+				return '<li><a href="#">'+(idx+1) + '. ' +news+'</a></li>';
+			}).join('');
 		}
+
 	}
 		
 	</script>

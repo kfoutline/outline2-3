@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>轮播图切换</title>
+	
+</head>
+<body>
+	<h1>轮播图切换</h1>
+	<img src="img/g1.jpg" id="meinv">
+	<script>
+		/*
+			轮播图切换
+		 */
+		
+		var meinv = document.getElementById('meinv');
+
+		// 显示第一张
+		var idx = 1;
+
+		var timer = setInterval(show,1000);
+
+
+		// 鼠标移入
+		meinv.onmouseover = function(){
+			clearInterval(timer);
+		}
+
+		// 鼠标移出
+		meinv.onmouseout = function(){
+			// timer不能为局部变量
+			timer = setInterval(show,1000);
+		}
+
+		function show(){
+			idx++;
+
+			// 判断临界值
+			if(idx>5){
+				idx = 1;
+			}
+
+			meinv.src = 'img/g'+idx + '.jpg';
+		}
+	</script>
+</body>
+</html>

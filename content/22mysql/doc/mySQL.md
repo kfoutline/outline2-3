@@ -114,6 +114,7 @@
 * MySQL支持大型数据库，支持5000万条记录的数据仓库，32位系统表文件最大可支持4GB，64位系统支持最大的表文件为8TB。
 
 ##数据库操作
+
 ###表操作(了解)
 * 连接数据库
 格式：`mysql -h主机地址 -u用户名 -p用户密码`
@@ -132,7 +133,7 @@
 
 * 创建数据表
 格式：`create table <表名> (<字段名1> <类型1> [,..<字段名n> <类型n>]);`
-```
+```sql
     create table MyGuests (
     id int(6) unsigned auto_increment primary key, 
     firstname varchar(30) not null,
@@ -160,9 +161,9 @@
 
 * 删除表：
 格式：`drop table <表名>;`
-```
-drop table MyGuests;
-drop table if exists MyGuests
+```sql
+    drop table MyGuests;
+    drop table if exists MyGuests
 ```
 
 * 查询表结构：
@@ -187,41 +188,44 @@ drop table if exists MyGuests
 * 数据导出
 
 
-###数据操作（重点）
-* 插入数据
+###数据操作：sql语句编写（重点）
+* 增：插入数据
 格式：`insert into <表名> [(<字段名1>[,..<字段名n > ])] values ( 值1 )[, (值n )];`
-```
-//单条数据
-insert into MyGuests (firstname, lastname, email)
-values ('John', 'Doe', 'john@example.com')
-```
 
-* 删除表数据
-格式：delete from 表名 where 表达式
-```
-//删除MyGuests表中id为1的数据
-DELETE FROM MyGuests where id=1;
-
-//删除所有数据
-DELETE FROM MyGuests
-
+```sql
+    --单条数据
+    insert into MyGuests (firstname, lastname, email)
+    values ('John', 'Doe', 'john@example.com')
 ```
 
-* 查询表中的数据
-格式： select <字段1, 字段2, ...> from < 表名 > where < 表达式 >;
-```
-//查看表 MyGuests 中所有数据
-select * from MyGuests;
+* 删：删除表数据
+格式：`delete from <表名> where 表达式`
 
-//查看表 MyGuests 中前10行数据：
-select * from MyGuests order by id limit 0,10;
+```sql
+    --删除MyGuests表中id为1的数据
+    DELETE FROM MyGuests where id=1;
+
+    --删除所有数据
+    DELETE FROM MyGuests
+
+```
+
+* 查：查询表中的数据
+格式： `select <字段1, 字段2, ...> from <表名> where < 表达式 >`
+
+```sql
+    --查看表 MyGuests 中所有数据
+    select * from MyGuests;
+
+    --查看表 MyGuests 中前10行数据：
+    select * from MyGuests order by id limit 0,10;
 ```
 >select一般配合where使用，以查询更精确更复杂的数据。
 
-* 修改表中的数据。
-格式：update 表名 set 字段=新值,… where 条件;
-```
-update MyGuests set name='Mary' where id=1;
+* 改：修改表中的数据。
+格式：`update <表名> set 字段=新值,… where 条件`
+```sql
+    update MyGuests set name='Mary' where id=1;
 ```
 
 * 条件控制语句
@@ -242,11 +246,10 @@ update MyGuests set name='Mary' where id=1;
 
 
 ##php操作数据库
-###连接 MySQL
-PHP 5 及以上版本建议使用以下方式连接 MySQL :
 
-* MySQLi extension ("i" 意为 improved)
-安装：Linux 和 Windows: 在 php5 mysql 包安装时 MySQLi 扩展多数情况下是自动安装
+###连接 MySQL
+PHP 5 及以上版本建议使用以下方式连接 MySQL
+
 ```php
     <?php
         $servername = "localhost";
@@ -269,7 +272,23 @@ PHP 5 及以上版本建议使用以下方式连接 MySQL :
     ?>
 ```
 
-* 执行sql语句查询结果集
+<strong style="color:#58bc58">数据的增删该查都是通过连接对象$conn的query(sql)方法来实现，参数为sql语句，可配合php的特性来组合成最终的sql语句。</strong>
+
+* 增删改查语句执行后对应的返回值
+    - 返回布尔值
+        + insert
+        + update
+        + delete
+    - 返回查询结果集
+        + select语句
+
+###读取数据SELECT
+
+* `num_rows` ： 结果集中的数量，用于判断是否查询到结果
+* `fetch_all(MYSQLI_ASSOC)`： 得到所有结果
+* `fetch_assoc()`             得到第一个结果
+
+
 ```php
     //编写sql语句
     $sql = 'select * from student';
@@ -292,64 +311,42 @@ PHP 5 及以上版本建议使用以下方式连接 MySQL :
 
 ```
 
-
 ###插入数据INSERT INTO
 * 单条数据
-```php
-$sql = "INSERT INTO MyGuests (firstname, lastname, email)
-VALUES ('John', 'Doe', 'john@example.com')";
+    ```php
+        //编写sql语句
+        $sql = "INSERT INTO MyGuests (firstname, lastname, email) VALUES ('John','Doe','john@example.com')";
 
-if ($conn->query($sql)) {
-    echo "新记录插入成功";
-} else {
-    echo "Error: " . $sql . "<br>" . $conn->error;
-}
-```
+        if ($conn->query($sql)) {
+            echo "新记录插入成功";
+        } else {
+            echo "Error: " . $sql . "<br>" . $conn->error;
+        }
+
+    ```
 
 * 多条数据
-```php
-    $sql = "INSERT INTO `projects` (`name`, `url`, `description`) VALUES ";
-    foreach ($projects as $item) {
-        $sql .= "('$item',NULL, NULL),";
-    }
-    $sql = substr($sql,0,-1);
-
-    if ($conn->query($sql)) {
-        echo "新记录插入成功";
-    } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
-    }
-```
-
-###读取数据
-SELECT...FROM，得到查询结果集
-
-* num_rows ：结果集中的数量，用于判断是否查询到结果
-* fetch_all(MYSQLI_ASSOC)   得到所有结果
-* fetch_assoc()             得到第一个结果
-* fetch_row()
-
-```php
-    $sql = "SELECT id, firstname, lastname FROM MyGuests";
-    $result = $conn->query($sql);
-
-    if ($result->num_rows > 0) {
-        // 输出每行数据
-        while($row = $result->fetch_assoc()) {
-            echo "<br> id: ". $row["id"]. " - Name: ". $row["firstname"]. " " . $row["lastname"];
+    ```php
+        
+       $namelist = array('laoxie','tiantian','lemon','xxx');
+        $sql = "INSERT INTO `projects` (`name`, `url`, `description`) VALUES ";
+        foreach ($namelist as $item) {
+            $sql .= "('$item',NULL, NULL),";
         }
-    } else {
-        echo "0 个结果";
-    }
-```
 
-###mySQL语句返回值
-* 返回布尔值
-    - insert
-    - update
-    - delete
-* 返回查询结果集
-    - select语句
+        //最后删除多余逗号
+        $sql = substr($sql,0,-1);
+
+        if ($conn->query($sql)) {
+            echo "新记录插入成功";
+        } else {
+            echo "Error: " . $sql . "<br>" . $conn->error;
+        }
+    ```
+
+###删除数据DELETE FROM
+###修改数据UPDATE SET
+
 
 ---
 ##下节预习

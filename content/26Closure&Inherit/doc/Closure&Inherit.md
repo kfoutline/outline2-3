@@ -36,11 +36,11 @@ Object.defineProperty(Popover.prototype,'constructor',{
 ##对象属性的遍历与判断
 * for…in：遍历对象中的所有可枚举属性, 无论该属性存在于实例中还是原型中
 * in：只要通过对象能够访问到属性就返回true, 无论该属性存在于实例中还是原型中
-```javascript
-if(name in s1){
-
-}
-```
+    ```javascript
+        if(name in s1){
+            
+        }
+    ```
 * 对象.hasOwnProperty(属性)：检测一个`属性`是存在于`对象`本身中
     - 返回true，说明属性存在对象中
     - 返回false，说明属性不存在或在原型中
@@ -232,3 +232,43 @@ class Man extends Person {}
 
 * 点击按钮打印当前索引值
 * tab标签切换
+
+
+---
+
+##ES5对象扩展(了解)
+
+* 属性特性
+* Object.create(prototype)
+以指定的原型创建对象
+
+* Object.defineProperty(object, propertyname, descriptor)
+对指定的对象的一个属性设置属性特性
+    - 值属性
+        + configurable
+        可配置性，控制着其描述的属性的修改，表示能否修改属性的特性
+        + enumerable
+        可枚举性，表示能否通过for-in遍历得到属性
+        + writable
+        可写性，表示能否修改属性的值
+        + value
+        数据属性，表示属性的值。默认值为undefined
+    - 访问器属性
+        + configurable
+        + enumerable
+        + get
+        在读取属性时调用的函数。只指定get则表示属性为只读属性。默认值为undefined
+        + set
+        在写入属性时调用的函数。只指定set则表示属性为只写属性。默认值为undefined
+
+* Object.defineProperties(object, descriptors)
+对指定的对象的一组属性设置属性特性
+
+* Object.getOwnPropertyDescriptor(object, propertyname)
+返回属性特性
+
+* Object.keys(object)
+返回对象所有可枚举属性的名称
+
+* Object.getOwnPropertyNames(object)
+返回所有属性的名称（哪怕说是不能枚举的属性）

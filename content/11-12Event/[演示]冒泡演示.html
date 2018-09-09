@@ -86,12 +86,12 @@
             if (e.target == this) {
                 tIndex = 0;
             	this.className = 'active-click';
-                console.log('%c事件点击到#' + this.id + '元素', 'color:#f00;');
+                console.log('%c事件点击到' +_self.nodeName+ '#' + this.id + '元素', 'color:#f00;');
             } else {
                 tIndex++;
                 setTimeout(function(){
                     _self.className = 'active';
-                    console.log('事件冒泡到#' + _self.id + '元素');
+                    console.log('事件冒泡到' +_self.nodeName+ '#' + _self.id + '元素');
                 },1000*tIndex);
             	
             }
@@ -118,12 +118,12 @@
                 var _self = this;
                 if (e.target == this) {
                     tIndex = 0;
-                    console.log('%c事件点击到#' + this.id + '元素', 'color:#f00;');
+                    console.log('%c事件点击到' +_self.nodeName+ '#' + this.id + '元素', 'color:#f00;');
                     this.className = 'active-click';
                 } else {
                     tIndex++;
                     setTimeout(function(){
-                    console.log('事件冒泡到#' + _self.id + '元素');
+                    console.log('事件冒泡到' +_self.nodeName+ '#' + _self.id + '元素');
                     _self.className = 'active';
                     },1000*tIndex);
                 }
@@ -137,7 +137,7 @@
                 var e = event || window.event;//ie9-
                 tIndex = 0;
                 this.className = 'active-click';
-                console.log('%c事件点击到#' + this.id + '元素', 'color:#f00;');
+                console.log('%c事件点击到' +this.nodeName+ '#' + this.id + '元素', 'color:#f00;');
             }
         }
 

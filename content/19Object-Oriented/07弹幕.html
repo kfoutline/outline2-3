@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>弹幕</title>
+	<style>
+	.container{width:800px;margin:0 auto;padding-bottom:10px;background-color:#dfdfdf;}
+	#barrage{position:relative;height:600px;margin-bottom:10px;background-color:#000;overflow:hidden;}
+	#barrage .bar-item{position:absolute;left:100%;white-space:nowrap;}
+	#msg{margin-left:10px;width:400px;height:30px;border:1px solid #999;border-right:none;box-sizing:border-box;vertical-align:middle;}
+	#msg+button{padding:0 10px;height:30px;vertical-align:middle;}
+	</style>
+	<script src="../common.js"></script>
+	<script>
+		/*
+			面向对象的弹幕
+				找对象：
+					* 文字
+						* 属性：随机颜色，速度，字体大小，位置
+						* 方法：走动，消失
+					* 页面
+						* 属性：输入框，按钮，显示区域
+						* 方法：发送消息
+				效果：
+					1）从右往左移动
+					2）离开显示区域消失
+
+				
+		 */
+		
+		document.addEventListener('DOMContentLoaded',function(){
+			// 页面对象：创建对象
+			var page = {
+				// 属性：
+				input:'#msg',
+				button:null,
+				view:'#barrage',
+
+
+				// 方法
+
+				/*
+					初始化：
+						* 获取/生成页面元素
+						* 绑定事件
+				 */
+				init(){
+					// 获取页面元素
+					this.view = document.querySelector(this.view);
+					this.input = document.querySelector(this.input);
+					this.button = this.input.nextElementSibling;
+
+
+					// 绑定事件
+					this.button.onclick = ()=>{
+						// 获取输入的消息
+						var msg = this.input.value;
+
+						this.send(msg);
+
+						// 清空获得焦点
+						this.input.value = '';
+						this.input.focus();
+					}
+
+					// 回车发送消息
+				},
+				send(msg){
+					// 没发送一次消息，生成一个文字对象
+
+					new Barage(msg);
+				}
+			}
+
+
+			// 文字对象：
+			function Barage(msg){
+				// 属性
+				// 颜色
+				this.color = randomColor();
+				// 字体大小
+				this.fontSize = randomNumber(12,30);
+				// 速度
+				this.speed = randomNumber(-10,-1);
+				// 位置
+				this.top = randomNumber(10,page.view.clientHeight-this.fontSize-10);
+
+				this.init(msg);
+
+			}
+
+			// 方法：写到原型对象中
+			Barage.prototype.init = function(msg){
+				// 生成文字节点
+				var item = document.createElement('span');
+				item.className = 'bar-item';
+				item.innerText = msg;
+
+				// 设置css样式
+				// item.style.cssText = `font-size:${this.fontSize}px;`
+				item.style.fontSize = this.fontSize + 'px';
+				item.style.top = this.top + 'px';
+				item.style.color = this.color;
+
+				// 写入页面page.view
+				page.view.appendChild(item);
+
+				// 传递item
+				this.ele = item;
+
+
+				// 移动
+				this.move();
+
+			} 
+
+			// 移动
+			Barage.prototype.move = function(){
+				let timer = setInterval(()=>{
+					let left = this.ele.offsetLeft
+					this.ele.style.left = left + this.speed + 'px';
+
+					// 结束移动
+					if(left<-this.ele.offsetWidth){
+						clearInterval(timer);
+						this.remove();
+					}
+				},30);
+			}
+
+			// 消失
+			Barage.prototype.remove = function(){
+				this.ele.parentNode.removeChild(this.ele);
+			}
+			
+
+			// 页面初始化
+			page.init();
+		})
+		
+	</script>
+</head>
+<body>
+	<div class="container">
+		<div id="barrage"></div>
+		<input type="text" id="msg"><button>发送</button>
+	</div>
+</body>
+</html>

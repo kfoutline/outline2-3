@@ -21,13 +21,13 @@ gulp是当下最流行的自动化工具 ，可以自动化完成我们开发过
 ##安装与运行
 >前提是安装了nodejs环境
 
-1. 全局安装 gulp：
+1. 全局安装 gulp（一台电脑安装一次）：
 ```
     npm install --global gulp
 ```
-说明：全局安装gulp目的是为了通过它执行gulp任务
+说明：全局安装gulp目的是为了通过它执行gulp任务（在不同的目录下都可以运行gulp）
 
-2. 本地安装gulp：
+2. 本地安装gulp（项目安装：一个项目安装一次）：
 作为项目的开发依赖（devDependencies）安装：
 ```
     npm install --save-dev gulp

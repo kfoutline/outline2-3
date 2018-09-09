@@ -56,18 +56,18 @@ sass的变量必须是$开头，后面紧跟变量名，而变量值和变量名
     $headings: (h1: 2em, h2: 1.5em, h3: 1.2em);
 
     //使用
-    h1{map-get($headings,h1)}
+    h1{font-size:map-get($headings,h1)}
     ```
     
 * 嵌套(Nesting)
 css中重复写选择器是非常恼人的。如果要写一大串指向页面中同一块的样式时，往往需要 一遍又一遍地写同一个ID
-```
+```css
     #content article h1 { color: #333 }
     #content article p { margin-bottom: 1.4em }
     #content aside { background-color: #EEE }
 ```
 sass写法：
-```
+```sass
     #content {
       article {
         h1 { color: #333 }
@@ -80,7 +80,7 @@ sass写法：
 
 
 * 混合器(了解)
-变量可以实现简单样式的重用（如color,width等），但是当你的样式变得越来越复杂，你需要大段大段的重用样式的代码，可以通过sass的混合器实现重用
+>变量可以实现简单样式的重用（如color,width等），但是当你的样式变得越来越复杂，你需要大段大段的重用样式的代码，可以通过sass的混合器实现重用
 
     sass中使用`@mixin`声明混合，通过@include来调用
 
@@ -89,7 +89,7 @@ sass写法：
     + 多个参数mixin：多个参数以逗号分开
     + @content：多用于媒体查询的封装
 
-    ```
+    ```scss
         @mixin max-screen($res){
           @media only screen and ( max-width: $res )
           {
@@ -108,7 +108,7 @@ sass写法：
     - 继承一般样式
         @extend h1
     - 占位选择器%
-    ```
+    ```scss
     //占位符编译后不存在css样式中
         %ir{
           color: transparent;

@@ -202,6 +202,22 @@ WampServer下载地址：http://www.wampserver.com/
 * do...while
 * for
 
+##函数
+
+###内建函数
+PHP 的真正威力源自于它的函数。在 PHP 中，提供了超过 1000 个内建的函数，请参考文档
+
+###自定义函数
+* 参数
+    - 参数默认值
+* return返回值
+```php
+    function add($x,$y){
+        $total=$x+$y;
+        return $total;
+    }
+
+```
 
 ##数据类型
 * String（字符串）
@@ -221,10 +237,12 @@ WampServer下载地址：http://www.wampserver.com/
     echo $txt1 . ", " . $txt2; 
 ?>
 ```
-+ strlen() 得到的字符的字节数
-+ mb_strlen() 获取字符串长度
-+ strpos() 查找某个字符在字符串中的索引，如果未找到匹配，则返回 false
-`strpos("Hello world!","world");//=>6`
+* 常用方法
+    * strlen() 得到的字符的字节数
+    * mb_strlen() 获取字符串长度
+    * strpos() 查找某个字符在字符串中的索引，如果未找到匹配，则返回 false
+    `strpos("Hello world!","world");//=>6`
+    * explode() 拆分字符串为数组
 
 ###Array
 >数组是一个能在单个变量中存储多个值的特殊变量。
@@ -247,6 +265,7 @@ $age=array("Peter"=>"35","Ben"=>"37","Joe"=>"43");
     * in_array() 判断某个值是否存在数组中
     * array_slice() 从数组中取出一段
     * array_rand() 随机获取索引值
+    * array_search() 查找字符串在数组中的索引值
 
 - 遍历数组
     + for
@@ -272,8 +291,8 @@ $age=array("Peter"=>"35","Ben"=>"37","Joe"=>"43");
 ```
 
 - 数组排序
-    + sort() 对数组进行升序排列
-    + rsort() 对数组进行降序排列
+    + sort() 对数值数组进行升序排列
+    + rsort() 对数值数组进行降序排列
     + asort() 根据关联数组的值，对数组进行升序排列
     + ksort() 根据关联数组的键，对数组进行升序排列
     + arsort() 根据关联数组的值，对数组进行降序排列
@@ -281,22 +300,6 @@ $age=array("Peter"=>"35","Ben"=>"37","Joe"=>"43");
     + array_multisort($arr(一维数组),排序方式(SOTR_ASC,SOTR_DESC),$需排序的数组(可以是二维的))
         *  array_column()：配合排序，一般用于得到二维数组中某些值组成的一维数组
 
-##函数
-
-###内建函数
-PHP 的真正威力源自于它的函数。在 PHP 中，提供了超过 1000 个内建的函数，请参考文档
-
-###自定义函数
-* 参数
-    - 参数默认值
-* return返回值
-```
-function add($x,$y){
-    $total=$x+$y;
-    return $total;
-}
-
-```
 
 
 ##面向对象

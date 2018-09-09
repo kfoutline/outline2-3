@@ -1,3 +1,43 @@
+function randomNumber(min,max){
+	// 假设
+	// Math.random()最小时 -> min
+	// ....
+	// Math.random()最大时 -> max
+	var res = parseInt(Math.random()*(max-min+1))+min;//0.999
+
+
+	return res;
+}
+
+// randomNumber(1,100);
+// randomNumber(100,999);
+// randomNumber(10,20);
+
+/**
+ * [随机颜色]
+ * @return {String} [返回rgb格式随机颜色]
+ */
+function randomColor(num){
+	if(num === 16){
+		var str = '0123456789abcdef';
+		var res = '#';
+
+		for(var i=0;i<6;i++){
+			// 获取随机索引值
+			var idx = parseInt(Math.random()*str.length);
+			res += str.charAt(idx);
+		}
+
+		return res;
+	}
+
+	var r = parseInt(Math.random()*256);
+	var g = parseInt(Math.random()*256);
+	var b = parseInt(Math.random()*256);
+
+	return 'rgb('+r+','+g+','+b+')';//rgb(244,12,23)
+}
+
 /*
 	选择元素
 		支持css选择器

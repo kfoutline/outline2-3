@@ -97,20 +97,20 @@ git push origin master
 * git pull
 格式：`git pull 远程仓库名 远程分支名:本地分支名`
 拉取远程分支内容到本地并与本地分支进行合并（本地分支名省略表示合并到与远程分支名相同的分支）
-```
-git pull origin master
+```bash
+    git pull origin master
 ```
 * git fetch
 拉取远程分支内容
 * git merge
 合并分支内容
 
-```
-git pull origin master
+```bash
+    git pull origin master
 
-//以上命令相当与以下命令等效
-git fetch origin master
-git merge origin/master
+    //以上命令相当与以下命令等效
+    git fetch origin master
+    git merge origin/master
 ```
 
 >**push和pull后的分支顺序格式：<来源地>:<目的地>
@@ -118,6 +118,7 @@ git merge origin/master
 
 
 ##版本回退
+
 * 回退命令：`git reset`
     - 回退到上一个版本
     `git reset --hard HEAD^`
@@ -156,17 +157,17 @@ git merge origin/master
 一般来说每个Git项目中都需要一个“.gitignore”文件，这个文件的作用就是告诉Git哪些文件不需要添加到版本管理中。
 
 ```
-#过滤dist根目录下的文件（不过滤其他目录下的dist文件夹）
-/dist 
+    #过滤dist根目录下的文件（不过滤其他目录下的dist文件夹）
+    /dist 
 
-#过滤所有mtk文件夹
-mtk/ 
+    #过滤所有mtk文件夹
+    mtk/ 
 
-#过滤所有.zip文件
-*.zip 
+    #过滤所有.zip文件
+    *.zip 
 
-#过滤某个具体文件
-/mtk/do.c 
+    #过滤某个具体文件
+    /mtk/do.c 
 ```
 
 * `#为注释`
@@ -185,6 +186,7 @@ mtk/
     - Fast-forward：快速合并
     禁用快速合并： --no-ff     （保持分支信息）
 >合并要创建一个新的commit，所以加上-m参数，把commit描述写进去
+
 * 删除分支：`git branch -d 分支名`
 强行删除，需要使用命令`git branch -D feature-vulcan`
 * 获取远程分支
@@ -199,4 +201,5 @@ mtk/
 你和你的小伙伴们每个人都在dev分支上干活，每个人都有自己的分支，时不时地往dev分支上合并就可以了。
 
 所以，团队合作的分支看起来就像这样：
+
 ![工作分支示意图](img/branch.png "工作分支示意图")

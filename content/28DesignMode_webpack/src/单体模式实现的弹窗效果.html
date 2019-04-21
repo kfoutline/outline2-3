@@ -4,7 +4,8 @@
 	<meta charset="UTF-8">
 	<title>单体模式实现的弹窗效果</title>
 	<style>
-		.pop{padding:20px;width:200px;height:60px;border:1px solid #ddd;background-color:#fff;}
+		.pop{position:relative;padding:20px;width:200px;height:60px;border:1px solid #ddd;background-color:#fff;}
+		.pop .btn-close{position: absolute;top:0;right:0;padding:5px;}
 	</style>
 	<script>
 	document.addEventListener('DOMContentLoaded',()=>{
@@ -22,6 +23,17 @@
 		    div.className = 'pop';
 		    div.innerHTML = content;
 		    div.style.display = 'none';
+
+		    let btnClose = document.createElement('span');
+		    btnClose.className = 'btn-close';
+		    btnClose.innerHTML = '&times;';
+
+		    btnClose.onclick = ()=>{
+		    	this.close();
+		    }
+
+		    div.appendChild(btnClose);
+
 		    document.body.appendChild(div);
 		    this.ele =  div;
 		    return this;

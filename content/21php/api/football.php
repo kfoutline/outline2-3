@@ -2,6 +2,8 @@
 	include 'charset.php';
 	include 'util.php';
 
+	header('Access-Control-Allow-Origin:*');
+
 	/*
 		分页获取数据：
 	    * pageNo=1    
@@ -26,7 +28,8 @@
 	// 根据分页截取数据
 	$res = array(
 		'data'=>array_slice($arr_data, ($page_no-1)*$qty,$qty),
-		'total'=>count($arr_data)
+		'total'=>count($arr_data),
+		'qty' => $qty*1
 	);
 
 	// 输出json字符串
